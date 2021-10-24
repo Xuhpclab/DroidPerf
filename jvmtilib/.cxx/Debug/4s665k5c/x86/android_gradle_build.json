@@ -1,0 +1,53 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/4s665k5c/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/4s665k5c/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "jvmti_agent-Debug-x86": {
+      "buildCommandComponents": [
+        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/4s665k5c/x86",
+        "jvmti_agent"
+      ],
+      "buildType": "debug",
+      "abi": "x86",
+      "artifactName": "jvmti_agent",
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cxx/Debug/4s665k5c/obj/x86/libjvmti_agent.so",
+      "runtimeFiles": []
+    },
+    "dexter-Debug-x86": {
+      "buildCommandComponents": [
+        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/4s665k5c/x86",
+        "dexter"
+      ],
+      "buildType": "debug",
+      "abi": "x86",
+      "artifactName": "dexter",
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/4s665k5c/x86/libdexter.a"
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cc",
+    "cpp"
+  ]
+}

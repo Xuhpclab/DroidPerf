@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/CMakeLists.txt",
+    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
+    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86\" clean"
+  ],
+  "buildTargetsCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "jvmti_agent-Release-x86": {
+      "artifactName": "jvmti_agent",
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86\" jvmti_agent",
+      "abi": "x86",
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cmake/release/obj/x86/libjvmti_agent.so",
+      "runtimeFiles": []
+    },
+    "dexter-Release-x86": {
+      "artifactName": "dexter",
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86\" dexter",
+      "abi": "x86",
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86/libdexter.a",
+      "runtimeFiles": []
+    }
+  }
+}

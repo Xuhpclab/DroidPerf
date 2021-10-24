@@ -1,0 +1,186 @@
+{
+  "stringTable": {
+    "0": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a",
+    "1": "--target=armv7-none-linux-androideabi16 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djvmti_agent_EXPORTS -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -Oz -DNDEBUG -fPIC",
+    "2": "--target=armv7-none-linux-androideabi16 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -Oz -DNDEBUG -fPIC"
+  },
+  "buildFiles": [
+    "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/CMakeLists.txt",
+    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
+    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a\" clean"
+  ],
+  "buildTargetsCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "dexter-Release-armeabi-v7a": {
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a\" dexter",
+      "buildType": "release",
+      "toolchain": "1899858810",
+      "abi": "armeabi-v7a",
+      "artifactName": "dexter",
+      "files": [
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/bytecode_encoder.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/code_ir.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/common.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/control_flow_graph.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/debuginfo_encoder.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/dex_bytecode.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/dex_format.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/dex_ir.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/dex_ir_builder.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/dex_utf8.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/instrumentation.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/reader.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/tryblocks_encoder.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/dexer/writer.cc",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a/libdexter.a"
+    },
+    "jvmti_agent-Release-armeabi-v7a": {
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/armeabi-v7a\" jvmti_agent",
+      "buildType": "release",
+      "toolchain": "1899858810",
+      "abi": "armeabi-v7a",
+      "artifactName": "jvmti_agent",
+      "files": [
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/agent.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/debug.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/argument.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/thread_data.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/stacktraces.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/xml.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/metrics.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/context.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/code_cache.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/splay.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/profiler.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/profiler_support.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/io.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cmake/release/obj/armeabi-v7a/libjvmti_agent.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "1899858810": {
+      "cppCompilerExecutable": "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cc",
+    "cpp"
+  ]
+}

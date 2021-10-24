@@ -1,0 +1,4 @@
+/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/armeabi-v7a/CMakeFiles/jvmti_agent.dir
+/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/armeabi-v7a/CMakeFiles/dexter.dir

@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/x86'
+ninja: no work to do.
