@@ -1,2 +1,3 @@
 ninja: Entering directory `/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a'
-ninja: no work to do.
+[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/io.cpp.o
+[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so

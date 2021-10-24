@@ -65,6 +65,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c
         src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c
         src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event.c
+        src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c
 )
 
 # Searches for a specified prebuilt library and stores the path as a

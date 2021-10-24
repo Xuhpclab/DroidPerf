@@ -124,6 +124,11 @@
           "workingDirectoryOrdinal": 0
         },
         {
+          "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
           "src": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/agent.cpp",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0

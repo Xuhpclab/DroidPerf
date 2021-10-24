@@ -29,8 +29,8 @@ bool OUTPUT::_openFile() {
             break;
         }
     }
-//    int ret = hpcio_outbuf_attach(&_output_buffer, fd, _print_buffer, PRINT_BUFFER_SIZE, HPCIO_OUTBUF_UNLOCKED);
-//    assert(ret == HPCFMT_OK);
+    int ret = hpcio_outbuf_attach(&_output_buffer, fd, _print_buffer, PRINT_BUFFER_SIZE, HPCIO_OUTBUF_UNLOCKED);
+    assert(ret == HPCFMT_OK);
     return true;
 }
 
@@ -45,7 +45,7 @@ OUTPUT::OUTPUT(){
 
 OUTPUT::~OUTPUT(){
     if (_output_buffer.fd >= 0) {
-//        hpcio_outbuf_close(&_output_buffer);
+        hpcio_outbuf_close(&_output_buffer);
     }
 }
 
@@ -88,9 +88,9 @@ int OUTPUT::writeb(const char *buf) {
 
     int data_size = strlen(buf);
     for(int sent_size = 0; sent_size < data_size;) {
-//        int ret_size = hpcio_outbuf_write(&_output_buffer, buf + sent_size, data_size - sent_size);
-//        assert(ret_size >= 0);
-//        sent_size += ret_size;
+        int ret_size = hpcio_outbuf_write(&_output_buffer, buf + sent_size, data_size - sent_size);
+        assert(ret_size >= 0);
+        sent_size += ret_size;
     }
     return data_size;
 }
