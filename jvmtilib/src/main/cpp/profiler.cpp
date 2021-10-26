@@ -73,73 +73,58 @@ thread_local uint64_t storePeriod = 0;
 
 thread_local void *prevIP = (void *)0;
 
+//jvmtiFrameInfo frame_buffer[64];
+
 namespace {
 
     Context *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, Context *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
+        ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
+        Context *last_ctxt = ctxt;
 
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
-        jint max_frame_count = 64;
+        jint max_frame_count = 32;
         jint count_ptr;
+        jboolean isNative = JNI_FALSE;
 
         if ((JVM::jvmti())->GetStackTrace(NULL, start_depth, max_frame_count, frame_buffer,
                                      &count_ptr) != JVMTI_ERROR_NONE) {
             return nullptr;
         }
 
-        ALOGI("constructContext invoked");
-        ALOGI("GetStackTrace count_ptr = %d", count_ptr);
-
         for (int i = 0; i < count_ptr; ++i) {
             char *name_ptr = NULL;
             if ((JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL) ==
                 JVMTI_ERROR_NONE) {
-                jclass declaring_class_ptr;
-                if((JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr) == JVMTI_ERROR_NONE){
-                    jclass klass = declaring_class_ptr;
-                    char* signature_ptr;
-                    char* generic_ptr;
-                    if ((JVM::jvmti())->GetClassSignature(klass, &signature_ptr, &generic_ptr) == JVMTI_ERROR_NONE){
-                        ALOGI("# $%d$, $%s$.$%s$ location=$%d$", i, signature_ptr, name_ptr, frame_buffer[i].location);
+                ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
+                (JVM::jvmti())->IsMethodNative(frame_buffer[i].method, &isNative);
+                if (!isNative) {
+                    int lineNumber = 0;
+                    int lineCount = 0;
+                    jvmtiLineNumberEntry *lineTable = NULL;
+
+                    if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,&lineTable) == JVMTI_ERROR_NONE) {
+                        lineNumber = lineTable[0].line_number;
+                        for (i = 1; i < lineCount; i++) {
+                            if (frame_buffer[i].location < lineTable[i].start_location) {
+                                break;
+                            }
+                            lineNumber = lineTable[i].line_number;
+                        }
                     }
+                    (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
+                    ALOGI("line number: %d", lineNumber);
+
+                    ContextFrame ctxt_frame;
+                    ctxt_frame.bci = lineNumber;
+                    ctxt_frame.method_id = frame_buffer[i].method;
+                    if (last_ctxt == nullptr) last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
+                    else last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
                 }
             }
         }
 
-        //        ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
-//        Context *last_ctxt = ctxt;
-
-//        ASGCT_CallFrame frames[MAX_FRAME_NUM];
-//        ASGCT_CallTrace trace;
-//        trace.frames = frames;
-//        trace.env_id = JVM::jni();
-//        asgct(&trace, MAX_FRAME_NUM, uCtxt);
-
-//
-//        for (int i = trace.num_frames - 1 ; i >= 0; i--) {
-//            // TODO: We need to consider how to include the native method.
-//            ContextFrame ctxt_frame;
-//            if (i == 0) {
-//                //ctxt_frame.binary_addr = ip;
-//                ctxt_frame.numa_node = object_numa_node;
-//            }
-//            ctxt_frame = frames[i]; //set method_id and bci
-//            if (last_ctxt == nullptr) last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
-//            else last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-//        }
-
-        // leaf node
-//        ContextFrame ctxt_frame;
-//        ctxt_frame.binary_addr = ip;
-//        ctxt_frame.method_id = method_id;
-//        ctxt_frame.method_version = method_version;
-//        // It's sort of tricky. Use bci to split a context pair.
-//        if (ctxt == nullptr && last_ctxt != nullptr) ctxt_frame.bci = -65536;
-//        if (last_ctxt != nullptr) last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-//        // else last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
-
-//        return last_ctxt;
-        return nullptr;
+        return last_ctxt;
     }
 
 }
@@ -171,8 +156,14 @@ void Profiler::OnSample(int eventID, perf_sample_data_t *sampleData, void *uCtxt
 }
 
 void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmethodID method_id, uint32_t method_version, uint32_t threshold, int metric_id2) {
-    ALOGI("OnSample GenericAnalysis invoked");
+//    ALOGI("OnSample GenericAnalysis invoked");
     Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
+//
+//    if (ctxt_access != nullptr)
+//        ALOGI("ctxt_access is not null");
+//    else
+//        ALOGI("ctxt_access is null");
+
 //    if (ctxt_access != nullptr && sampleData->ip != 0) {
 //        metrics::ContextMetrics *metrics = ctxt_access->getMetrics();
 //        if (metrics == nullptr) {
@@ -182,6 +173,7 @@ void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmet
 //        metrics::metric_val_t metric_val;
 //        metric_val.i = threshold;
 //        assert(metrics->increment(metric_id2, metric_val));
+
         totalGenericCounter += threshold;
 //    }
 }
@@ -263,7 +255,7 @@ void Profiler::threadStart() {
         assert(output_stream);
         output_stream->setFileName(name_buffer);
         output_stream->writef("%s\n", XML_FILE_HEADER);
-//        TD_GET(output_state) = reinterpret_cast<void *> (output_stream);
+        TD_GET(output_state) = reinterpret_cast<void *> (output_stream);
 #endif
 //#ifdef PRINT_PMU_INS
 //        std::ofstream *pmu_ins_output_stream = new(std::nothrow) std::ofstream();
@@ -282,7 +274,7 @@ void Profiler::threadStart() {
 //        assert(false);
     }
 
-//    PopulateBlackListAddresses();
+    PopulateBlackListAddresses();
     PerfManager::setupEvents();
 }
 
@@ -296,7 +288,7 @@ void Profiler::threadEnd() {
     }
     ContextTree *ctxt_tree = reinterpret_cast<ContextTree *>(TD_GET(context_state));
 
-#ifdef COUNT_OVERHEAD
+#ifndef COUNT_OVERHEAD
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     std::unordered_set<Context *> dump_ctxt = {};
 

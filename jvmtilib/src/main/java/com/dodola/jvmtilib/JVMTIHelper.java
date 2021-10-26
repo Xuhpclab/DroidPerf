@@ -42,9 +42,9 @@ public class JVMTIHelper {
                 Log.d("Jvmti", agentLibSo.getAbsolutePath() + "," + context.getPackageCodePath());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    // CmdUtils cmd = new com.dodola.jvmti.CmdUtils();
-//                    CmdUtils.execRootCmd("cmd activity attach-agent " + android.os.Process.myPid() + " " + agentLibSo.getAbsolutePath() + "=Generic::CYCLES:precise=2@100000");
-                    Debug.attachJvmtiAgent(agentLibSo.getAbsolutePath(), "Generic::CYCLES:precise=2@100000000", classLoader);
+                    CmdUtils cmd = new com.dodola.jvmtilib.CmdUtils();
+                    CmdUtils.execRootCmd("cmd activity attach-agent " + android.os.Process.myPid() + " " + agentLibSo.getAbsolutePath() + "=Generic::CYCLES:precise=2@100000");
+//                    Debug.attachJvmtiAgent(agentLibSo.getAbsolutePath(), "Generic::CYCLES:precise=2@100000000", classLoader);
                 } else {
                     try {
 //                        Class vmDebugClazz = Class.forName("dalvik.system.VMDebug");
