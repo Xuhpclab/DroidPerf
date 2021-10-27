@@ -73,8 +73,6 @@ thread_local uint64_t storePeriod = 0;
 
 thread_local void *prevIP = (void *)0;
 
-//jvmtiFrameInfo frame_buffer[64];
-
 namespace {
 
     Context *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, Context *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {

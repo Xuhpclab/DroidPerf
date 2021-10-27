@@ -517,10 +517,10 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM* jvm, char* options, void* reserved) 
 JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM *jvm, char *options, void *reserved) {
     BLOCK_SAMPLE;
     ALOGI("Agent_OnAttach start");
-//    std::ofstream outfile ("/data/user/0/skynet.cputhrottlingtest/dota1.txt");
-    std::ofstream outfile ("/data/user/0/com.dodola.jvmti/dota1.txt");
-    outfile << "my text here!" << std::endl;
-    outfile.close();
+//    std::ofstream outfile ("/data/user/0/skynet.cputhrottlingtest/test.txt");
+//    std::ofstream outfile ("/data/user/0/com.dodola.jvmti/test.txt");
+//    outfile << "my text here!" << std::endl;
+//    outfile.close();
     JVM::init(jvm, options, true);
 
 #if 0
