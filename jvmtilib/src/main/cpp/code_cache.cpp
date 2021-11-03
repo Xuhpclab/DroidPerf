@@ -279,15 +279,14 @@ CompiledMethodGroup::~CompiledMethodGroup() {
 }
 
 CompiledMethod *CompiledMethodGroup::addMethod(jint code_size, const void *code_addr, jint map_length, const jvmtiAddrLocationMap* map, LockScope<SpinLock> &lock_scope) {
+    uint32_t version = ++_recent_version;
+    uint64_t start_addr = (uint64_t) code_addr;
+    // assert(_address_method_map.find(start_addr) == _address_method_map.end()); // check whether it has been added
 
-uint32_t version = ++_recent_version;
-uint64_t start_addr = (uint64_t) code_addr;
-// assert(_address_method_map.find(start_addr) == _address_method_map.end()); // check whether it has been added
-
-lock_scope.unsetLock();
-CompiledMethod * new_method = new(std::nothrow) CompiledMethod(_method_id, version, code_size, code_addr);
-assert(new_method);
-new_method->loadAddrLocationMap(map, map_length);
+    lock_scope.unsetLock();
+    CompiledMethod * new_method = new(std::nothrow) CompiledMethod(_method_id, version, code_size, code_addr);
+    assert(new_method);
+    new_method->loadAddrLocationMap(map, map_length);
 
 #ifdef PRINT_METHOD_INS
 std::ofstream inst_file;
@@ -301,9 +300,9 @@ std::ofstream inst_file;
   inst_file.close();
 #endif
 
-lock_scope.setLock();
-_address_method_map[start_addr] = new_method;
-return new_method;
+    lock_scope.setLock();
+    _address_method_map[start_addr] = new_method;
+    return new_method;
 }
 
 void CompiledMethodGroup::removeMethodByAddr(const void *code_addr) {
@@ -411,29 +410,32 @@ return new_method;
 
 
 CompiledMethod *CodeCacheManager::addMethodAndRemoveFromUncompiledSet(jmethodID method_id, jint code_size, const void* code_addr, jint map_length, const jvmtiAddrLocationMap* map) {
-LockScope<SpinLock> lock_scope(&_lock);
-Profiler::getProfiler().getUnCompiledMethodCache().removeMethod(method_id);
-auto it = _method_id_map.find(method_id);
-CompiledMethodGroup * method_group;
-if (it == _method_id_map.end()){ //not found
-method_group = new(std::nothrow) CompiledMethodGroup(method_id);
-assert(method_group);
-_method_id_map[method_id] = method_group;
-}
-else{
-method_group = it->second;
-}
+    LockScope<SpinLock> lock_scope(&_lock);
+    Profiler::getProfiler().getUnCompiledMethodCache().removeMethod(method_id);
+    auto it = _method_id_map.find(method_id);
+    CompiledMethodGroup * method_group;
+    if (it == _method_id_map.end()){ //not found
+        method_group = new(std::nothrow) CompiledMethodGroup(method_id);
+        assert(method_group);
+        _method_id_map[method_id] = method_group;
+    }
+    else{
+        method_group = it->second;
+    }
+
+#if 0
 // lock_scope.unsetLock();
 //NOTE: When adding a method, some jvmti functions are called in order to retrieve the method information.
 // However, those functions may only be executed when each thread reaches the safe point.
 // If a thread is currently in signal_handler and needs to query the codecache information.
 // A deadlock can happen. Thus we need to release the lock when adding new methods.
-CompiledMethod * new_method = method_group->addMethod(code_size, code_addr, map_length, map, lock_scope);
-
+    CompiledMethod * new_method = method_group->addMethod(code_size, code_addr, map_length, map, lock_scope);
 // lock_scope.setLock();
 //NOTE: inserting a new range may result in overlapping with other symbols. Let's just assume it won't happen for the moment
-assert(_method_range_set.insert((uint64_t)code_addr, (uint64_t)code_addr + code_size - 1, new_method));
-return new_method;
+    assert(_method_range_set.insert((uint64_t)code_addr, (uint64_t)code_addr + code_size - 1, new_method));
+    return new_method;
+#endif
+    return nullptr;
 }
 
 void CodeCacheManager::removeMethod(jmethodID method_id, const void* code_addr) {

@@ -95,6 +95,10 @@ namespace {
             if ((JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL) ==
                 JVMTI_ERROR_NONE) {
                 ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
+
+                CompiledMethod *m = Profiler::getProfiler().getCodeCacheManager().addMethodAndRemoveFromUncompiledSet(frame_buffer[i].method, 10, nullptr, 10,
+                                                                                                                      nullptr);
+
                 (JVM::jvmti())->IsMethodNative(frame_buffer[i].method, &isNative);
                 if (!isNative) {
                     int lineNumber = 0;
@@ -156,24 +160,24 @@ void Profiler::OnSample(int eventID, perf_sample_data_t *sampleData, void *uCtxt
 void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmethodID method_id, uint32_t method_version, uint32_t threshold, int metric_id2) {
 //    ALOGI("OnSample GenericAnalysis invoked");
     Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
-//
-//    if (ctxt_access != nullptr)
-//        ALOGI("ctxt_access is not null");
-//    else
-//        ALOGI("ctxt_access is null");
 
-//    if (ctxt_access != nullptr && sampleData->ip != 0) {
-//        metrics::ContextMetrics *metrics = ctxt_access->getMetrics();
-//        if (metrics == nullptr) {
-//            metrics = new metrics::ContextMetrics();
-//            ctxt_access->setMetrics(metrics);
-//        }
-//        metrics::metric_val_t metric_val;
-//        metric_val.i = threshold;
-//        assert(metrics->increment(metric_id2, metric_val));
+    if (ctxt_access != nullptr)
+        ALOGI("ctxt_access is not null");
+    else
+        ALOGI("ctxt_access is null");
+
+    if (ctxt_access != nullptr && sampleData->ip != 0) {
+        metrics::ContextMetrics *metrics = ctxt_access->getMetrics();
+        if (metrics == nullptr) {
+            metrics = new metrics::ContextMetrics();
+            ctxt_access->setMetrics(metrics);
+        }
+        metrics::metric_val_t metric_val;
+        metric_val.i = threshold;
+        assert(metrics->increment(metric_id2, metric_val));
 
         totalGenericCounter += threshold;
-//    }
+    }
 }
 
 Profiler::Profiler() {
