@@ -20,6 +20,7 @@ typedef struct thread_data_t {
     void *context_state;
 #ifndef COUNT_OVERHEAD
     void *output_state;
+    void *output_state_trace;
 #endif
     void *ctxt_sample_state[4]; // only have 4 debug registers
 #ifdef PRINT_PMU_INS

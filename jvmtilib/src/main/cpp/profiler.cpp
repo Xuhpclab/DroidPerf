@@ -73,6 +73,11 @@ thread_local uint64_t storePeriod = 0;
 
 thread_local void *prevIP = (void *)0;
 
+//static std::unordered_map<uint64_t, OUTPUT*> map_method = {};
+//static std::unordered_map<uint64_t, OUTPUT*> map_trace = {};
+thread_local std::unordered_set<std::string> method_name_list;
+
+
 namespace {
 
     Context *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, Context *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
@@ -92,15 +97,34 @@ namespace {
 
         for (int i = 0; i < count_ptr; ++i) {
             char *name_ptr = NULL;
+            int threshold = 100000000;
+            OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
+            output_stream_trace->writef("[\n");
             if ((JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL) ==
                 JVMTI_ERROR_NONE) {
                 ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
+                jmethodID method_id = frame_buffer[i].method;
 
-                CompiledMethod *m = Profiler::getProfiler().getCodeCacheManager().addMethodAndRemoveFromUncompiledSet(frame_buffer[i].method, 10, nullptr, 10,
-                                                                                                                      nullptr);
+                jclass declaring_class_ptr;
+                if((JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr) == JVMTI_ERROR_NONE){
+                    jclass klass = declaring_class_ptr;
+                    char* source_name_ptr = NULL;
+                    if((JVM::jvmti())->GetSourceFileName(klass, &source_name_ptr) == JVMTI_ERROR_NONE) {
 
-                (JVM::jvmti())->IsMethodNative(frame_buffer[i].method, &isNative);
-                if (!isNative) {
+                        std::string str(name_ptr);
+                        if(method_name_list.find(str) == method_name_list.end()) {
+                            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(
+                                    output_state));
+                            output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr,
+                                                  source_name_ptr);
+                            method_name_list.insert(str);
+                        }
+
+                    }
+                }
+
+//                (JVM::jvmti())->IsMethodNative(frame_buffer[i].method, &isNative);
+//                if (!isNative) {
                     int lineNumber = 0;
                     int lineCount = 0;
                     jvmtiLineNumberEntry *lineTable = NULL;
@@ -115,15 +139,19 @@ namespace {
                         }
                     }
                     (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
-                    ALOGI("line number: %d", lineNumber);
+                    ALOGI("line number: %d method id: %d", lineNumber, method_id);
+
+//                    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
+                    output_stream_trace->writef("<%d:%d>\n", lineNumber, method_id);
 
                     ContextFrame ctxt_frame;
                     ctxt_frame.bci = lineNumber;
                     ctxt_frame.method_id = frame_buffer[i].method;
                     if (last_ctxt == nullptr) last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
                     else last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-                }
+//                }
             }
+            output_stream_trace->writef("%d\n]\n", threshold);
         }
 
         return last_ctxt;
@@ -191,12 +219,12 @@ Profiler::Profiler() {
 void Profiler::init() {
     ALOGI("Profiler::init invoked");
 #ifndef COUNT_OVERHEAD
-    _method_file.open("/data/user/0/skynet.cputhrottlingtest/agent-trace-method.run");
+//    _method_file.open("/data/user/0/skynet.cputhrottlingtest/agent-trace-method.run");
 //    _method_file.open("/data/user/0/com.dodola.jvmti/agent-trace-method.run");
-    _method_file << XML_FILE_HEADER << std::endl;
+//    _method_file << XML_FILE_HEADER << std::endl;
 #endif
 //    _rdx_file.open("rdx.run");
-    _statistics_file.open("/data/user/0/skynet.cputhrottlingtest/agent-statistics.run");
+//    _statistics_file.open("/data/user/0/skynet.cputhrottlingtest/agent-statistics.run");
 //    _statistics_file.open("/data/user/0/com.dodola.jvmti/agent-statistics.run");
     ThreadData::thread_data_init();
 
@@ -248,9 +276,31 @@ void Profiler::threadStart() {
     assert(ct_tree);
     TD_GET(context_state) = reinterpret_cast<void *>(ct_tree);
 
+
+    char name_buffer[128];
+    snprintf(name_buffer, 128,
+             "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
+             TD_GET(tid));
+    OUTPUT *output_stream = new(std::nothrow) OUTPUT();
+    assert(output_stream);
+    output_stream->setFileName(name_buffer);
+    TD_GET(output_state) = reinterpret_cast<void *> (output_stream);
+
+
+    char name_buffer_trace[128];
+    snprintf(name_buffer_trace, 128,
+             "/data/user/0/skynet.cputhrottlingtest/trace-thread-%u.run",
+             TD_GET(tid));
+    OUTPUT *output_stream_trace = new(std::nothrow) OUTPUT();
+    assert(output_stream_trace);
+    output_stream_trace->setFileName(name_buffer_trace);
+    TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
+
+
     // settup the output
     {
-#ifndef COUNT_OVERHEAD
+#if 0
+#ifdef COUNT_OVERHEAD
         char name_buffer[128];
         snprintf(name_buffer, 128, "/data/user/0/skynet.cputhrottlingtest/agent-trace-%u.run", TD_GET(tid));
         OUTPUT *output_stream = new(std::nothrow) OUTPUT();
@@ -258,6 +308,7 @@ void Profiler::threadStart() {
         output_stream->setFileName(name_buffer);
         output_stream->writef("%s\n", XML_FILE_HEADER);
         TD_GET(output_state) = reinterpret_cast<void *> (output_stream);
+#endif
 #endif
 //#ifdef PRINT_PMU_INS
 //        std::ofstream *pmu_ins_output_stream = new(std::nothrow) std::ofstream();
@@ -290,7 +341,7 @@ void Profiler::threadEnd() {
     }
     ContextTree *ctxt_tree = reinterpret_cast<ContextTree *>(TD_GET(context_state));
 
-#ifndef COUNT_OVERHEAD
+#ifdef COUNT_OVERHEAD
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     std::unordered_set<Context *> dump_ctxt = {};
 
@@ -329,6 +380,15 @@ void Profiler::threadEnd() {
     delete output_stream;
     TD_GET(output_state) = nullptr;
 #endif
+
+    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
+    delete output_stream;
+    TD_GET(output_state) = nullptr;
+
+    OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
+    delete output_stream_trace;
+    TD_GET(output_state_trace) = nullptr;
+
 
     //clean up the context state
     delete ctxt_tree;
@@ -386,6 +446,14 @@ void Profiler::threadEnd() {
         output_statistics();
         output_lock.unlock();
     }
+
+//    for (auto it : map_method) {
+//        delete it.second;
+//    }
+//
+//    for (auto it : map_trace) {
+//        delete it.second;
+//    }
 
 }
 

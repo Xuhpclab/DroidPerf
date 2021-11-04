@@ -1,14 +1,14 @@
 {
   "stringTable": {
     "0": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a",
-    "1": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djvmti_agent_EXPORTS -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info -fPIC",
-    "2": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djvmti_agent_EXPORTS -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC",
-    "3": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info -fPIC"
+    "1": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djvmti_agent_EXPORTS -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info -fPIC",
+    "2": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djvmti_agent_EXPORTS -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC",
+    "3": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -I../../../../src/main/cpp -I../../../../src/main/cpp/thirdparty/include -I../../../../src/main/cpp/util -I../../../../src/main/cpp/external/hpctoolkit/include -I../../../../src/main/cpp/external/hpctoolkit/lib/prof-lean -I../../../../src/main/cpp/dexer -I../../../../src/main/cpp/libpfm-4.10.1/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info -fPIC"
   },
   "buildFiles": [
     "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/CMakeLists.txt",
-    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
-    "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+    "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
   ],
   "cleanCommands": [
     "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a\" clean"
@@ -18,7 +18,7 @@
     "jvmti_agent-Debug-arm64-v8a": {
       "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a\" jvmti_agent",
       "buildType": "debug",
-      "toolchain": "2023222272",
+      "toolchain": "2222259136",
       "abi": "arm64-v8a",
       "artifactName": "jvmti_agent",
       "files": [
@@ -135,7 +135,7 @@
     "dexter-Debug-arm64-v8a": {
       "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a\" dexter",
       "buildType": "debug",
-      "toolchain": "2023222272",
+      "toolchain": "2222259136",
       "abi": "arm64-v8a",
       "artifactName": "dexter",
       "files": [
@@ -215,9 +215,9 @@
     }
   },
   "toolchains": {
-    "2023222272": {
-      "cCompilerExecutable": "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
-      "cppCompilerExecutable": "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    "2222259136": {
+      "cCompilerExecutable": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+      "cppCompilerExecutable": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
     }
   },
   "cFileExtensions": [
