@@ -1,15 +1,3 @@
 ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-[1/14] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c.o
-[2/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_utf8.cc.o
-[3/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_bytecode.cc.o
-[4/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_format.cc.o
-[5/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/control_flow_graph.cc.o
-[6/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/debuginfo_encoder.cc.o
-[7/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/tryblocks_encoder.cc.o
-[8/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/instrumentation.cc.o
-[9/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_ir.cc.o
-[10/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/writer.cc.o
-[11/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_ir_builder.cc.o
-[12/14] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/reader.cc.o
-[13/14] Linking CXX static library libdexter.a
-[14/14] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so
+[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o
+[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so

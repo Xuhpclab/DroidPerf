@@ -1,12 +1,12 @@
 # cputhrottlingtest
 # prepare
-cd /Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
 adb push libjvmti_agent.so /sdcard/Download
 adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/skynet.cputhrottlingtest
 adb shell ./data/user/0/skynet.cputhrottlingtest/clean.sh
 
 # run
-adb shell cmd activity attach-agent 800 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+adb shell cmd activity attach-agent 10725 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 

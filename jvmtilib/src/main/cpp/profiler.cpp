@@ -98,11 +98,12 @@ namespace {
         for (int i = 0; i < count_ptr; ++i) {
             char *name_ptr = NULL;
             int threshold = 100000000;
+            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             output_stream_trace->writef("[\n");
             if ((JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL) ==
                 JVMTI_ERROR_NONE) {
-                ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
+//                ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
                 jmethodID method_id = frame_buffer[i].method;
 
                 jclass declaring_class_ptr;
@@ -113,8 +114,8 @@ namespace {
 
                         std::string str(name_ptr);
                         if(method_name_list.find(str) == method_name_list.end()) {
-                            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(
-                                    output_state));
+//                            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(
+//                                    output_state));
                             output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr,
                                                   source_name_ptr);
                             method_name_list.insert(str);
@@ -139,9 +140,8 @@ namespace {
                         }
                     }
                     (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
-                    ALOGI("line number: %d method id: %d", lineNumber, method_id);
+//                    ALOGI("line number: %d method id: %d", lineNumber, method_id);
 
-//                    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
                     output_stream_trace->writef("<%d:%d>\n", lineNumber, method_id);
 
                     ContextFrame ctxt_frame;
@@ -189,23 +189,23 @@ void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmet
 //    ALOGI("OnSample GenericAnalysis invoked");
     Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
 
-    if (ctxt_access != nullptr)
-        ALOGI("ctxt_access is not null");
-    else
-        ALOGI("ctxt_access is null");
-
-    if (ctxt_access != nullptr && sampleData->ip != 0) {
-        metrics::ContextMetrics *metrics = ctxt_access->getMetrics();
-        if (metrics == nullptr) {
-            metrics = new metrics::ContextMetrics();
-            ctxt_access->setMetrics(metrics);
-        }
-        metrics::metric_val_t metric_val;
-        metric_val.i = threshold;
-        assert(metrics->increment(metric_id2, metric_val));
-
-        totalGenericCounter += threshold;
-    }
+//    if (ctxt_access != nullptr)
+//        ALOGI("ctxt_access is not null");
+//    else
+//        ALOGI("ctxt_access is null");
+//
+//    if (ctxt_access != nullptr && sampleData->ip != 0) {
+//        metrics::ContextMetrics *metrics = ctxt_access->getMetrics();
+//        if (metrics == nullptr) {
+//            metrics = new metrics::ContextMetrics();
+//            ctxt_access->setMetrics(metrics);
+//        }
+//        metrics::metric_val_t metric_val;
+//        metric_val.i = threshold;
+//        assert(metrics->increment(metric_id2, metric_val));
+//
+//        totalGenericCounter += threshold;
+//    }
 }
 
 Profiler::Profiler() {
@@ -270,6 +270,7 @@ void Profiler::threadStart() {
     totalL1Cachemiss = 0;
     totalGenericCounter = 0;
     totalPMUCounter = 0;
+    method_name_list.empty();
 
     ThreadData::thread_data_alloc();
     ContextTree *ct_tree = new(std::nothrow) ContextTree();

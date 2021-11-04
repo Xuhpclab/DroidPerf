@@ -36,3 +36,17 @@
 3462	6076	1636065471	CMakeFiles/dexter.dir/src/main/cpp/dexer/reader.cc.o	993d96ac422539d2
 6076	6647	1636065471	libdexter.a	a8865d7042bac002
 6647	6988	1636065472	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+3	1317	1636066421	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1317	1668	1636066422	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+5	1319	1636067098	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1319	1670	1636067099	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+12	1437	1636067283	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1437	1841	1636067283	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+4	1328	1636067447	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1328	1680	1636067447	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+5	1716	1636067565	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1717	2171	1636067566	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+4	1359	1636067754	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1360	1724	1636067754	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
+3	1398	1636067999	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1398	1759	1636067999	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	84d46a6db0e8e103
