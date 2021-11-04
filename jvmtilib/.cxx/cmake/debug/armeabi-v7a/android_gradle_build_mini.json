@@ -1,26 +1,26 @@
 {
   "buildFiles": [
-    "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/CMakeLists.txt",
+    "/Users/bolunli/Desktop/android-jxperf/jvmtilib/CMakeLists.txt",
     "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
     "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
   ],
   "cleanCommands": [
-    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" clean"
+    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" clean"
   ],
-  "buildTargetsCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "dexter-Debug-armeabi-v7a": {
       "artifactName": "dexter",
-      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" dexter",
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" dexter",
       "abi": "armeabi-v7a",
-      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a/libdexter.a",
+      "output": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/libdexter.a",
       "runtimeFiles": []
     },
     "jvmti_agent-Debug-armeabi-v7a": {
       "artifactName": "jvmti_agent",
-      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" jvmti_agent",
+      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a\" jvmti_agent",
       "abi": "armeabi-v7a",
-      "output": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so",
+      "output": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so",
       "runtimeFiles": []
     }
   }

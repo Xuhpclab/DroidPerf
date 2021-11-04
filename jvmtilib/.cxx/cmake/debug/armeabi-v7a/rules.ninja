@@ -71,7 +71,7 @@ rule CXX_STATIC_LIBRARY_LINKER__dexter
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake -H/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib -B/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/armeabi-v7a
+  command = /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake -H/Users/bolunli/Desktop/android-jxperf/jvmtilib -B/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a
   description = Re-running CMake...
   generator = 1
 

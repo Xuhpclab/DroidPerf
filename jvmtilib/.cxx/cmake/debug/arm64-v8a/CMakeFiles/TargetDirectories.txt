@@ -1,4 +1,4 @@
-/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
-/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/jvmti_agent.dir
-/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/dexter.dir
+/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/jvmti_agent.dir
+/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/dexter.dir

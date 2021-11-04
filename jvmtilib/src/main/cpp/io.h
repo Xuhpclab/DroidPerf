@@ -2,7 +2,7 @@
 #define _IO_H
 
 //#include "external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
-#include "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
+#include "/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
 #include "lock.h"
 class INPUT {
 private:

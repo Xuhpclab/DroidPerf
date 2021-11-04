@@ -1,4 +1,4 @@
-# Install script for directory: /Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib
+# Install script for directory: /Users/bolunli/Desktop/android-jxperf/jvmtilib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/debug/x86/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
