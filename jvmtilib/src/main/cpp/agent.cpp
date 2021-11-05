@@ -152,7 +152,7 @@ static void JNICALL callbackVMDeath(jvmtiEnv *jvmti_env, JNIEnv* jni_env) {
 */
 void JNICALL callbackThreadStart(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread) {
     BLOCK_SAMPLE;
-    ALOGI("callbackThreadStart invoked, tid: %d", TD_GET(tid));
+//    ALOGI("callbackThreadStart invoked, tid: %d", TD_GET(tid));
     Profiler::getProfiler().threadStart();
     UNBLOCK_SAMPLE;
 }
@@ -162,20 +162,20 @@ void JNICALL callbackThreadStart(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread threa
 */
 static void JNICALL callbackThreadEnd(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread) {
     BLOCK_SAMPLE;
-    ALOGI("callbackThreadEnd invoked, tid : %d", TD_GET(tid));
+//    ALOGI("callbackThreadEnd invoked, tid : %d", TD_GET(tid));
     Profiler::getProfiler().threadEnd();
     UNBLOCK_SAMPLE;
 }
 
 void callbackGCStart(jvmtiEnv *jvmti) {
     BLOCK_SAMPLE;
-    ALOGI("callbackGCStart invoked");
+//    ALOGI("callbackGCStart invoked");
     UNBLOCK_SAMPLE;
 }
 
 void JNICALL callbackGCEnd(jvmtiEnv *jvmti) {
     BLOCK_SAMPLE;
-    ALOGI("callbackGCEnd invoked");
+//    ALOGI("callbackGCEnd invoked");
 //    Profiler::getProfiler().IncrementGCCouter();
     UNBLOCK_SAMPLE;
 }
@@ -347,7 +347,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
     UNBLOCK_SAMPLE;
 }
 
-#if 0
+#if 1
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
     char *name = NULL;
     char *signature = NULL;
@@ -407,7 +407,7 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_get_source_file_name = 1;
     capa.can_get_line_numbers = 1;
 
-//    capa.can_generate_method_entry_events = 1; // This one must be enabled in order to get the stack trace
+    capa.can_generate_method_entry_events = 1; // This one must be enabled in order to get the stack trace
 //    capa.can_generate_compiled_method_load_events = 1;
 
     capa.can_retransform_classes = 1;
@@ -433,7 +433,7 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     callbacks.ClassPrepare = &callbackClassPrepare;
 //    callbacks.CompiledMethodLoad = &callbackCompiledMethodLoad;
 //    callbacks.CompiledMethodUnload = &callbackCompiledMethodUnload;
-//    callbacks.MethodEntry = &MethoddEntry;
+    callbacks.MethodEntry = &MethoddEntry;
 
     error = _jvmti->SetEventCallbacks(&callbacks, (jint)sizeof(callbacks));
     check_jvmti_error(error, "Cannot set jvmti callbacks");

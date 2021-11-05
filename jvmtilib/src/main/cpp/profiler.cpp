@@ -84,6 +84,7 @@ namespace {
         ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
         Context *last_ctxt = ctxt;
 
+#if 0
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
         jint max_frame_count = 32;
@@ -153,6 +154,7 @@ namespace {
             }
             output_stream_trace->writef("%d\n]\n", threshold);
         }
+#endif
 
         return last_ctxt;
     }
@@ -187,7 +189,7 @@ void Profiler::OnSample(int eventID, perf_sample_data_t *sampleData, void *uCtxt
 
 void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmethodID method_id, uint32_t method_version, uint32_t threshold, int metric_id2) {
 //    ALOGI("OnSample GenericAnalysis invoked");
-    Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
+//    Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
 
 //    if (ctxt_access != nullptr)
 //        ALOGI("ctxt_access is not null");
@@ -256,7 +258,7 @@ void Profiler::IncrementGCCouter() {
 }
 
 void Profiler::threadStart() {
-    ALOGI("Profiler::threadStart invoked");
+//    ALOGI("Profiler::threadStart invoked");
     totalWrittenBytes = 0;
     totalLoadedBytes = 0;
     totalUsedBytes = 0;
@@ -278,6 +280,7 @@ void Profiler::threadStart() {
     TD_GET(context_state) = reinterpret_cast<void *>(ct_tree);
 
 
+#if 0
     char name_buffer[128];
     snprintf(name_buffer, 128,
              "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
@@ -296,6 +299,7 @@ void Profiler::threadStart() {
     assert(output_stream_trace);
     output_stream_trace->setFileName(name_buffer_trace);
     TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
+#endif
 
 
     // settup the output
@@ -333,7 +337,7 @@ void Profiler::threadStart() {
 }
 
 void Profiler::threadEnd() {
-    ALOGI("Profiler::threadEnd invoked");
+//    ALOGI("Profiler::threadEnd invoked");
     if (clientName.compare(GENERIC) != 0 && clientName.compare(HEAP) != 0 && clientName.compare(ALLOCATION_TIMES) != 0) {
 //        PerfManager::closeEvents();
     }
@@ -382,6 +386,7 @@ void Profiler::threadEnd() {
     TD_GET(output_state) = nullptr;
 #endif
 
+#if 0
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     delete output_stream;
     TD_GET(output_state) = nullptr;
@@ -389,6 +394,7 @@ void Profiler::threadEnd() {
     OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
     delete output_stream_trace;
     TD_GET(output_state_trace) = nullptr;
+#endif
 
 
     //clean up the context state
@@ -428,7 +434,7 @@ void Profiler::threadEnd() {
         __sync_fetch_and_add(&grandTotGenericCounter, totalGenericCounter);
         __sync_fetch_and_add(&grandTotPMUCounter, totalPMUCounter);
     } else {    //attach mode
-        ALOGI("Profiler::threadEnd invoked attach mode");
+//        ALOGI("Profiler::threadEnd invoked attach mode");
         output_lock.lock();
         grandTotWrittenBytes += totalWrittenBytes;
         grandTotLoadedBytes += totalLoadedBytes;
