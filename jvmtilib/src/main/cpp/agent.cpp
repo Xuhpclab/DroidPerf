@@ -39,6 +39,7 @@ bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
+extern thread_local std::unordered_set<std::string> method_name_list;
 
 namespace {
     Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
@@ -347,7 +348,6 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
     UNBLOCK_SAMPLE;
 }
 
-#if 1
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
     char *name = NULL;
     char *signature = NULL;
@@ -360,8 +360,16 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
     jvmti_env->GetMethodName(method, &name, &signature, &generic);
 //    ALOGI("==========触发 MethoddEntry  方法名%s %s=======", name, signature);
+
+    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
+    if (output_stream) {
+        std::string str(name);
+        if(method_name_list.find(str) == method_name_list.end()) {
+            output_stream->writef("%d %s\n", method, name);
+            method_name_list.insert(str);
+        }
+    }
 }
-#endif
 
 /////////////
 // METHODS //
@@ -431,9 +439,9 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     callbacks.GarbageCollectionFinish = &callbackGCEnd;
     callbacks.ClassLoad = &callbackClassLoad;
     callbacks.ClassPrepare = &callbackClassPrepare;
+    callbacks.MethodEntry = &MethoddEntry;
 //    callbacks.CompiledMethodLoad = &callbackCompiledMethodLoad;
 //    callbacks.CompiledMethodUnload = &callbackCompiledMethodUnload;
-    callbacks.MethodEntry = &MethoddEntry;
 
     error = _jvmti->SetEventCallbacks(&callbacks, (jint)sizeof(callbacks));
     check_jvmti_error(error, "Cannot set jvmti callbacks");

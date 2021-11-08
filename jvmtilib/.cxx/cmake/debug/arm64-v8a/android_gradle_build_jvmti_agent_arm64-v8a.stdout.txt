@@ -1,7 +1,2 @@
 ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a'
-[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
-../../../../src/main/cpp/agent.cpp:44:14: warning: unused function 'heap_analysis_constructContext' [-Wunused-function]
-    Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
-             ^
-1 warning generated.
-[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so
+ninja: no work to do.

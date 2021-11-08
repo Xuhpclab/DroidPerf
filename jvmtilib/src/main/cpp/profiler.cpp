@@ -84,7 +84,7 @@ namespace {
         ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
         Context *last_ctxt = ctxt;
 
-#if 0
+#if 1
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
         jint max_frame_count = 32;
@@ -280,7 +280,7 @@ void Profiler::threadStart() {
     TD_GET(context_state) = reinterpret_cast<void *>(ct_tree);
 
 
-#if 0
+#if 1
     char name_buffer[128];
     snprintf(name_buffer, 128,
              "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
@@ -386,7 +386,7 @@ void Profiler::threadEnd() {
     TD_GET(output_state) = nullptr;
 #endif
 
-#if 0
+#if 1
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     delete output_stream;
     TD_GET(output_state) = nullptr;

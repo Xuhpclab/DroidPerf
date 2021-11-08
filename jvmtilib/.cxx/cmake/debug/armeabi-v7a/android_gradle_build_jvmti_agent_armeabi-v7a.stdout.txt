@@ -1,11 +1,2 @@
 ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
-../../../../src/main/cpp/agent.cpp:41:27: warning: implicit conversion of NULL constant to 'jlong' (aka 'long long') [-Wnull-conversion]
-static jlong address123 = NULL;
-             ~~~~~~~~~~   ^~~~
-                          0
-../../../../src/main/cpp/agent.cpp:44:14: warning: unused function 'heap_analysis_constructContext' [-Wunused-function]
-    Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
-             ^
-2 warnings generated.
-[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so
+ninja: no work to do.
