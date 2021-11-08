@@ -363,11 +363,24 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
+
+        jclass declaring_class_ptr;
+        JvmtiScopedPtr<char> declaringClassName;
+        (JVM::jvmti())->GetMethodDeclaringClass(method, &declaring_class_ptr);
+        (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
+
         std::string str(name);
+        std::string _class_name;
+        _class_name = declaringClassName.get();
+        _class_name = _class_name.substr(1, _class_name.length() - 2);
+        std::replace(_class_name.begin(), _class_name.end(), '/', '.');
+        _class_name.append(".java");
+
         if(method_name_list.find(str) == method_name_list.end()) {
-            output_stream->writef("%d %s\n", method, name);
+            output_stream->writef("%d %s %s\n", method, name, _class_name.c_str());
             method_name_list.insert(str);
         }
+
     }
 }
 

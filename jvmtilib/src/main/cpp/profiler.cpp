@@ -84,7 +84,7 @@ namespace {
         ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
         Context *last_ctxt = ctxt;
 
-#if 1
+#if 0
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
         jint max_frame_count = 32;
