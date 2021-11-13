@@ -39,7 +39,8 @@ bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
-extern thread_local std::unordered_set<std::string> method_name_list;
+extern thread_local std::unordered_set<jmethodID> method_id_list;
+extern thread_local std::vector<jmethodID> method_vec;
 
 namespace {
     Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
@@ -354,6 +355,10 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
     char *generic = NULL;
     jvmtiError result;
 
+    int lineNumber = 0;
+    int lineCount = 0;
+    jvmtiLineNumberEntry *lineTable = NULL;
+
     jvmtiThreadInfo tinfo;
     jvmti_env->GetThreadInfo(thread, &tinfo);
 //    ALOGI("==========触发 MethoddEntry  线程名%s=======", tinfo.name);
@@ -376,11 +381,46 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
         std::replace(_class_name.begin(), _class_name.end(), '/', '.');
         _class_name.append(".java");
 
-        if(method_name_list.find(str) == method_name_list.end()) {
-            output_stream->writef("%d %s %s\n", method, name, _class_name.c_str());
-            method_name_list.insert(str);
+        jlocation start_location, end_location;
+        (JVM::jvmti())->GetMethodLocation(method, &start_location,&end_location);
+
+        if ((JVM::jvmti())->GetLineNumberTable(method, &lineCount,&lineTable) == JVMTI_ERROR_NONE) {
+
+            lineNumber = lineTable[0].line_number;
+            for (int i = 1; i < lineCount; i++) {
+                if (start_location < lineTable[i].start_location) {
+                    break;
+                }
+                lineNumber = lineTable[i].line_number;
+            }
+
         }
 
+
+        method_vec.push_back(method);
+
+//        if(method_id_list.find(method) == method_id_list.end()) {
+            output_stream->writef("%d %s %s %d %d %d %d\n", method, name, _class_name.c_str(), lineCount, start_location, end_location, lineNumber);
+            method_id_list.insert(method);
+//        }
+
+        NewContext *last_ctxt = nullptr;
+        NewContextFrame ctxt_frame;
+        ctxt_frame.method_id = method;
+        ctxt_frame.method_name = str;
+        ctxt_frame.source_file = _class_name;
+        ctxt_frame.src_lineno = lineNumber;
+
+    }
+}
+
+void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
+    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
+    if (output_stream) {
+        if(method_id_list.find(method) != method_id_list.end() && !method_vec.empty()) {
+            output_stream->writef("exit: %d\n", method);
+            method_vec.pop_back();
+        }
     }
 }
 
@@ -429,6 +469,7 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_get_line_numbers = 1;
 
     capa.can_generate_method_entry_events = 1; // This one must be enabled in order to get the stack trace
+    capa.can_generate_method_exit_events = 1;
 //    capa.can_generate_compiled_method_load_events = 1;
 
     capa.can_retransform_classes = 1;
@@ -453,6 +494,7 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     callbacks.ClassLoad = &callbackClassLoad;
     callbacks.ClassPrepare = &callbackClassPrepare;
     callbacks.MethodEntry = &MethoddEntry;
+    callbacks.MethodExit = &MethoddExit;
 //    callbacks.CompiledMethodLoad = &callbackCompiledMethodLoad;
 //    callbacks.CompiledMethodUnload = &callbackCompiledMethodUnload;
 
@@ -485,6 +527,8 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_CLASS_PREPARE, (jthread)NULL);
     check_jvmti_error(error, "Cannot set event notification");
     error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_METHOD_ENTRY, (jthread)NULL);
+    check_jvmti_error(error, "Cannot set event notification");
+    error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_METHOD_EXIT, (jthread)NULL);
     check_jvmti_error(error, "Cannot set event notification");
 
 #if 0

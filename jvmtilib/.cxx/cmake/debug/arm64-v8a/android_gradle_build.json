@@ -88,6 +88,11 @@
           "workingDirectoryOrdinal": 0
         },
         {
+          "src": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/new_context.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
           "src": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/code_cache.cpp",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0

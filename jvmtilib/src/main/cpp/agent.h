@@ -18,6 +18,7 @@
 #include "ucontext.h"
 #include "debug.h"
 #include "argument.h"
+#include "new_context.h"
 
 class JVM {
   public:

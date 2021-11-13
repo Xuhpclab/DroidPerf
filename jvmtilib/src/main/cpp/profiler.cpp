@@ -75,7 +75,9 @@ thread_local void *prevIP = (void *)0;
 
 //static std::unordered_map<uint64_t, OUTPUT*> map_method = {};
 //static std::unordered_map<uint64_t, OUTPUT*> map_trace = {};
-thread_local std::unordered_set<std::string> method_name_list;
+
+thread_local std::unordered_set<jmethodID> method_id_list;
+thread_local std::vector<jmethodID> method_vec;
 
 
 namespace {
@@ -272,7 +274,9 @@ void Profiler::threadStart() {
     totalL1Cachemiss = 0;
     totalGenericCounter = 0;
     totalPMUCounter = 0;
-    method_name_list.empty();
+    method_id_list.clear();
+    method_vec.clear();
+
 
     ThreadData::thread_data_alloc();
     ContextTree *ct_tree = new(std::nothrow) ContextTree();

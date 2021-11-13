@@ -53,6 +53,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/xml.cpp
         src/main/cpp/metrics.cpp
         src/main/cpp/context.cpp
+        src/main/cpp/new_context.cpp
         src/main/cpp/code_cache.cpp
         src/main/cpp/splay.cpp
         src/main/cpp/profiler.cpp
