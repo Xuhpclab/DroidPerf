@@ -40,7 +40,9 @@ bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
-extern thread_local std::vector<jmethodID> method_vec;
+//extern thread_local std::vector<jmethodID> method_vec;
+extern thread_local std::stack<NewContext *> ctxt_stack;
+thread_local NewContext *last_level_ctxt = nullptr;
 
 namespace {
     Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
@@ -355,10 +357,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
     char *generic = NULL;
     jvmtiError result;
 
-    int lineNumber = 0;
-    int lineCount = 0;
-    jvmtiLineNumberEntry *lineTable = NULL;
-
     jvmtiThreadInfo tinfo;
     jvmti_env->GetThreadInfo(thread, &tinfo);
 //    ALOGI("==========触发 MethoddEntry  线程名%s=======", tinfo.name);
@@ -381,35 +379,28 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
         std::replace(_class_name.begin(), _class_name.end(), '/', '.');
         _class_name.append(".java");
 
-        jlocation start_location, end_location;
-        (JVM::jvmti())->GetMethodLocation(method, &start_location,&end_location);
-
-        if ((JVM::jvmti())->GetLineNumberTable(method, &lineCount,&lineTable) == JVMTI_ERROR_NONE) {
-
-            lineNumber = lineTable[0].line_number;
-            for (int i = 1; i < lineCount; i++) {
-                if (start_location < lineTable[i].start_location) {
-                    break;
-                }
-                lineNumber = lineTable[i].line_number;
-            }
-
+        if(method_id_list.find(method) == method_id_list.end()) {
+            output_stream->writef("%d %s %s\n", method, name, _class_name.c_str());
+            method_id_list.insert(method);
         }
 
-
-        method_vec.push_back(method);
-
-//        if(method_id_list.find(method) == method_id_list.end()) {
-            output_stream->writef("%d %s %s %d %d %d %d\n", method, name, _class_name.c_str(), lineCount, start_location, end_location, lineNumber);
-            method_id_list.insert(method);
-//        }
-
-        NewContext *last_ctxt = nullptr;
         NewContextFrame ctxt_frame;
         ctxt_frame.method_id = method;
         ctxt_frame.method_name = str;
         ctxt_frame.source_file = _class_name;
-        ctxt_frame.src_lineno = lineNumber;
+//        ctxt_frame.src_lineno = lineNumber;
+
+        NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
+        if (ctxt_tree) {
+            if (ctxt_stack.empty()) {
+                last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
+                                                        ctxt_frame);
+            } else {
+                last_level_ctxt = ctxt_stack.top();
+                last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
+            }
+            ctxt_stack.push(last_level_ctxt);
+        }
 
     }
 }
@@ -417,9 +408,9 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
-        if(method_id_list.find(method) != method_id_list.end() && !method_vec.empty()) {
-            output_stream->writef("exit: %d\n", method);
-            method_vec.pop_back();
+        if(method_id_list.find(method) != method_id_list.end() && !ctxt_stack.empty()) {
+//            output_stream->writef("exit: %d\n", method);
+            ctxt_stack.pop();
         }
     }
 }
@@ -481,7 +472,10 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_generate_vm_object_alloc_events = 1;
 
     error = _jvmti->AddCapabilities(&capa);
-    check_jvmti_error(error, "Unable to get necessary JVMTI capabilities.");
+//    if (error != 0) {
+//        ALOGI("something not support here, error code is %d", error);
+//    }
+// check_jvmti_error(error, "Unable to get necessary JVMTI capabilities.");
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.VMObjectAlloc = &ObjectAllocCallback;

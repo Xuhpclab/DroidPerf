@@ -3,10 +3,10 @@
 cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
 adb push libjvmti_agent.so /sdcard/Download
 adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/skynet.cputhrottlingtest
-adb shell ./data/user/0/skynet.cputhrottlingtest/clean.sh
+adb shell rm -f ./data/user/0/skynet.cputhrottlingtest/*.run*
 
 # run
-adb shell cmd activity attach-agent 32365 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+adb shell cmd activity attach-agent 32765 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 

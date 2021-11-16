@@ -77,14 +77,14 @@ thread_local void *prevIP = (void *)0;
 //static std::unordered_map<uint64_t, OUTPUT*> map_trace = {};
 
 thread_local std::unordered_set<jmethodID> method_id_list;
-thread_local std::vector<jmethodID> method_vec;
-
+//thread_local std::vector<jmethodID> method_vec;
+thread_local std::stack<NewContext *> ctxt_stack;
 
 namespace {
 
-    Context *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, Context *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
-        ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
-        Context *last_ctxt = ctxt;
+    NewContext *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, NewContext *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
+        NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
+        NewContext *last_ctxt = ctxt;
 
 #if 0
         jint start_depth = 0;
@@ -191,7 +191,7 @@ void Profiler::OnSample(int eventID, perf_sample_data_t *sampleData, void *uCtxt
 
 void Profiler::GenericAnalysis(perf_sample_data_t *sampleData, void *uCtxt, jmethodID method_id, uint32_t method_version, uint32_t threshold, int metric_id2) {
 //    ALOGI("OnSample GenericAnalysis invoked");
-//    Context *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
+    NewContext *ctxt_access = constructContext(_asgct, uCtxt, sampleData->ip, nullptr, method_id, method_version, 10);
 
 //    if (ctxt_access != nullptr)
 //        ALOGI("ctxt_access is not null");
@@ -275,11 +275,13 @@ void Profiler::threadStart() {
     totalGenericCounter = 0;
     totalPMUCounter = 0;
     method_id_list.clear();
-    method_vec.clear();
+//    method_vec.clear();
+    while(!ctxt_stack.empty())
+        ctxt_stack.pop();
 
 
     ThreadData::thread_data_alloc();
-    ContextTree *ct_tree = new(std::nothrow) ContextTree();
+    NewContextTree *ct_tree = new(std::nothrow) NewContextTree();
     assert(ct_tree);
     TD_GET(context_state) = reinterpret_cast<void *>(ct_tree);
 
@@ -348,9 +350,9 @@ void Profiler::threadEnd() {
     if (clientName.compare(DATA_CENTRIC_CLIENT_NAME) != 0 && clientName.compare(NUMANODE_CLIENT_NAME) != 0 && clientName.compare(GENERIC) != 0 && clientName.compare(HEAP) != 0 && clientName.compare(ALLOCATION_TIMES) != 0 && jni_flag == false) {
 //        WP_ThreadTerminate();
     }
-    ContextTree *ctxt_tree = reinterpret_cast<ContextTree *>(TD_GET(context_state));
+    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *>(TD_GET(context_state));
 
-#ifdef COUNT_OVERHEAD
+#if 0
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     std::unordered_set<Context *> dump_ctxt = {};
 
@@ -399,7 +401,6 @@ void Profiler::threadEnd() {
     delete output_stream_trace;
     TD_GET(output_state_trace) = nullptr;
 #endif
-
 
     //clean up the context state
     delete ctxt_tree;
