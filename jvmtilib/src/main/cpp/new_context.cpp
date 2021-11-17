@@ -1,5 +1,9 @@
 #include <assert.h>
 #include "new_context.h"
+#include <android/log.h>
+
+#define LOG_TAG "jvmti"
+#define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
 
 NewContextFrame &NewContextFrame::operator=(const ASGCT_CallFrame &asgct_frame) {
@@ -122,6 +126,7 @@ NewContext *NewContextTree::addContext(NewContext *parent, const NewContextFrame
     NewContext *find_child = parent->findChild(new_ctxt);
     // the parent already has this child context, no further action
     if (find_child) {
+//        ALOGI("already find this child");
         delete new_ctxt;
         new_ctxt = nullptr;
         return find_child;

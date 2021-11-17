@@ -43,6 +43,7 @@ extern thread_local std::unordered_set<jmethodID> method_id_list;
 //extern thread_local std::vector<jmethodID> method_vec;
 extern thread_local std::stack<NewContext *> ctxt_stack;
 thread_local NewContext *last_level_ctxt = nullptr;
+thread_local jmethodID current_method_id;
 
 namespace {
     Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
@@ -392,6 +393,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
         NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
         if (ctxt_tree) {
+            current_method_id = ctxt_frame.method_id;
             if (ctxt_stack.empty()) {
                 last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
                                                         ctxt_frame);
