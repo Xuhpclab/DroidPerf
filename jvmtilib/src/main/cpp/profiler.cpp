@@ -84,6 +84,7 @@ extern thread_local jmethodID current_method_id;
 namespace {
 
     NewContext *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, NewContext *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
+#if 0
         NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
 //        NewContext *last_ctxt = ctxt;
 
@@ -96,7 +97,7 @@ namespace {
                 jmethodID method_id = ctxt_ptr->getFrame().method_id;
                 if (method_id == current_method_id) {
                     ctxt = ctxt_ptr;
-                    output_stream_trace->writef("%d\n", method_id); //leaf
+                    output_stream_trace->writef("%d %d\n", method_id, ctxt_ptr->getFrame().src_lineno); //leaf
                     break;
                 }
             }
@@ -106,12 +107,12 @@ namespace {
 
                 jmethodID method_id = ctxt->getFrame().method_id;
                 if (method_id != 0)
-                    output_stream_trace->writef("%d\n", method_id);
+                    output_stream_trace->writef("%d %d\n", method_id, ctxt->getFrame().src_lineno);
 
                 ctxt = ctxt->getParent();
             }
         }
-
+#endif
 
 
 #if 0
