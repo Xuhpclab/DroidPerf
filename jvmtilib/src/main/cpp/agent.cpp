@@ -39,7 +39,8 @@ bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
-extern thread_local std::unordered_set<jmethodID> method_id_list;
+extern thread_local std::unordered_map<jmethodID, int> method_id_list;
+extern thread_local std::unordered_set<jmethodID> method_id_list2;
 //extern thread_local std::vector<jmethodID> method_vec;
 extern thread_local std::stack<NewContext *> ctxt_stack;
 thread_local NewContext *last_level_ctxt = nullptr;
@@ -354,30 +355,23 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
 }
 
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
-//    char *name = NULL;
-//    char *signature = NULL;
-//    char *generic = NULL;
-//    jvmtiError result;
-
-//    jvmtiThreadInfo tinfo;
-//    jvmti_env->GetThreadInfo(thread, &tinfo);
-//    ALOGI("==========触发 MethoddEntry  线程名%s=======", tinfo.name);
-
-//    jvmti_env->GetMethodName(method, &name, &signature, &generic);
-//    ALOGI("==========触发 MethoddEntry  方法名%s %s=======", name, signature);
-
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
-
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
         jint max_frame_count = 32;
         jint count_ptr;
-        jboolean isNative = JNI_FALSE;
         last_level_ctxt = nullptr;
 
         if ((JVM::jvmti())->GetStackTrace(NULL, start_depth, max_frame_count, frame_buffer,
                                           &count_ptr) == JVMTI_ERROR_NONE) {
+
+            /*
+             for (int i = 0; i < count_ptr - 1; ++i) 不处理leaf
+                这里面，只要遇到以前没处理过的method，就get line number，反之就不做
+            最后leaf单拿出来，不求linenumber（不放入method_id_list2）
+             */
+
             for (int i = 0; i < count_ptr; ++i) {
                 int lineNumber = 0;
                 int lineCount = 0;
@@ -389,8 +383,16 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr);
                 (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
 
-                if (method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
-                    method_id_list.insert(frame_buffer[i].method);
+                std::string str(name_ptr);
+                std::string _class_name;
+                _class_name = declaringClassName.get();
+                _class_name = _class_name.substr(1, _class_name.length() - 2);
+                std::replace(_class_name.begin(), _class_name.end(), '/', '.');
+                _class_name.append(".java");
+
+                if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != count_ptr - 1) { // not find this method id && not leaf
+                    method_id_list2.insert(frame_buffer[i].method);
+                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -401,83 +403,42 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[i].line_number;
                         }
                     }
-                }
-//                (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
+                    NewContextFrame ctxt_frame;
+                    ctxt_frame.method_id = frame_buffer[i].method;
+                    ctxt_frame.method_name = str;
+                    ctxt_frame.source_file = _class_name;
+                    ctxt_frame.src_lineno = lineNumber;
 
-                std::string str(name_ptr);
-                std::string _class_name;
-                _class_name = declaringClassName.get();
-                _class_name = _class_name.substr(1, _class_name.length() - 2);
-                std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-                _class_name.append(".java");
-
-                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
-                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
-                    method_id_list.insert(frame_buffer[i].method);
-                }
-
-                NewContextFrame ctxt_frame;
-                ctxt_frame.method_id = frame_buffer[i].method;
-                ctxt_frame.method_name = str;
-                ctxt_frame.source_file = _class_name;
-                ctxt_frame.src_lineno = lineNumber;
-
-                NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
-                if (ctxt_tree) {
-                    current_method_id = ctxt_frame.method_id;
-                    if (last_level_ctxt == nullptr) {
-                        last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
-                                                                ctxt_frame);
-                    } else {
-                        last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
+                    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
+                    if (ctxt_tree) {
+                        current_method_id = method;
+                        if (last_level_ctxt == nullptr) {
+                            last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
+                                                                    ctxt_frame);
+                        } else {
+                            last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
+                        }
                     }
                 }
 
+                if (i == count_ptr - 1) { // leaf
+                    NewContextFrame ctxt_frame;
+                    ctxt_frame.method_id = method;
+                    ctxt_frame.method_name = str;
+                    ctxt_frame.source_file = _class_name;
+                    ctxt_frame.src_lineno = -10;
+
+                    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
+                    if (ctxt_tree) {
+                        current_method_id = method;
+                        last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
+                    }
+                    return;
+                }
+
             } // for
-        }
-
-
-
-
-#if 0
-        jclass declaring_class_ptr;
-        JvmtiScopedPtr<char> declaringClassName;
-        (JVM::jvmti())->GetMethodDeclaringClass(method, &declaring_class_ptr);
-        (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
-
-        std::string str(name);
-        std::string _class_name;
-        _class_name = declaringClassName.get();
-        _class_name = _class_name.substr(1, _class_name.length() - 2);
-        std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-        _class_name.append(".java");
-
-        if(method_id_list.find(method) == method_id_list.end()) {
-            output_stream->writef("%d %s %s\n", method, name, _class_name.c_str());
-            method_id_list.insert(method);
-        }
-
-        NewContextFrame ctxt_frame;
-        ctxt_frame.method_id = method;
-        ctxt_frame.method_name = str;
-        ctxt_frame.source_file = _class_name;
-//        ctxt_frame.src_lineno = lineNumber;
-
-        NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
-        if (ctxt_tree) {
-            current_method_id = ctxt_frame.method_id;
-            if (ctxt_stack.empty()) {
-                last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
-                                                        ctxt_frame);
-            } else {
-                last_level_ctxt = ctxt_stack.top();
-                last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
-            }
-            ctxt_stack.push(last_level_ctxt);
-        }
-#endif
-
-    }
+        } // GetStackTrace
+    } // output_stream
 }
 
 void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
