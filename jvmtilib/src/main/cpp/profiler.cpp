@@ -76,8 +76,8 @@ thread_local void *prevIP = (void *)0;
 //static std::unordered_map<uint64_t, OUTPUT*> map_method = {};
 //static std::unordered_map<uint64_t, OUTPUT*> map_trace = {};
 
-thread_local std::unordered_map<jmethodID, int> method_id_list;
-thread_local std::unordered_set<jmethodID> method_id_list2;
+thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
+thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether get line number
 //thread_local std::vector<jmethodID> method_vec;
 thread_local std::stack<NewContext *> ctxt_stack;
 extern thread_local jmethodID current_method_id;
@@ -108,6 +108,7 @@ namespace {
 
                 ctxt = ctxt->getParent();
                 while (ctxt != nullptr) {
+//                    ALOGI("Line Number2: %d", ctxt->getFrame().src_lineno);
                     jmethodID method_id = ctxt->getFrame().method_id;
                     if (method_id != 0)
                         output_stream_trace->writef("%d %d\n", method_id,

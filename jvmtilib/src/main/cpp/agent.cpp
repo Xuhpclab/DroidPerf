@@ -39,7 +39,7 @@ bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
-extern thread_local std::unordered_map<jmethodID, int> method_id_list;
+extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_set<jmethodID> method_id_list2;
 //extern thread_local std::vector<jmethodID> method_vec;
 extern thread_local std::stack<NewContext *> ctxt_stack;
@@ -373,6 +373,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
              */
 
             for (int i = 0; i < count_ptr; ++i) {
+                current_method_id = method;
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;
@@ -392,7 +393,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
                 if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != count_ptr - 1) { // not find this method id && not leaf
                     method_id_list2.insert(frame_buffer[i].method);
-                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -411,7 +411,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
-                        current_method_id = method;
                         if (last_level_ctxt == nullptr) {
                             last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID,
                                                                     ctxt_frame);
@@ -430,10 +429,13 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
-                        current_method_id = method;
                         last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
                     }
-                    return;
+                }
+
+                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
+                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
+                    method_id_list.insert(frame_buffer[i].method);
                 }
 
             } // for
