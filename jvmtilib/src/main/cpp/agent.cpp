@@ -42,7 +42,7 @@ static jlong address123 = NULL;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_set<jmethodID> method_id_list2;
 //extern thread_local std::vector<jmethodID> method_vec;
-extern thread_local std::stack<NewContext *> ctxt_stack;
+//extern thread_local std::stack<NewContext *> ctxt_stack;
 thread_local NewContext *last_level_ctxt = nullptr;
 thread_local jmethodID current_method_id;
 thread_local int fg = 0;
@@ -425,7 +425,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                     ctxt_frame.method_id = method;
                     ctxt_frame.method_name = str;
                     ctxt_frame.source_file = _class_name;
-                    ctxt_frame.src_lineno = -10;
+                    ctxt_frame.src_lineno = 1;
 
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {

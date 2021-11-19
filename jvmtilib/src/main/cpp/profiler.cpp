@@ -78,7 +78,6 @@ thread_local void *prevIP = (void *)0;
 
 thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
 thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether get line number
-//thread_local std::vector<jmethodID> method_vec;
 thread_local std::stack<NewContext *> ctxt_stack;
 extern thread_local jmethodID current_method_id;
 
@@ -87,37 +86,34 @@ namespace {
     NewContext *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, NewContext *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
 #if 1
         NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
-//        NewContext *last_ctxt = ctxt;
-
         if (ctxt_tree != nullptr) {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
-
             if (output_stream_trace) {
-
+//                std::stack<NewContext *> ctxt_stack;
+//                std::vector<NewContext *> ctxt_vec;
                 NewContext *ctxt;
+                int threshold = 100000000;
                 for (auto elem : (*ctxt_tree)) {
                     NewContext *ctxt_ptr = elem;
                     jmethodID method_id = ctxt_ptr->getFrame().method_id;
                     if (method_id == current_method_id) {
                         ctxt = ctxt_ptr;
-                        output_stream_trace->writef("%d %d\n", method_id,
-                                                    ctxt_ptr->getFrame().src_lineno); //leaf
+                        output_stream_trace->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
                         break;
                     }
                 }
 
                 ctxt = ctxt->getParent();
                 while (ctxt != nullptr) {
-//                    ALOGI("Line Number2: %d", ctxt->getFrame().src_lineno);
                     jmethodID method_id = ctxt->getFrame().method_id;
                     if (method_id != 0)
-                        output_stream_trace->writef("%d %d\n", method_id,
-                                                    ctxt->getFrame().src_lineno);
+                        output_stream_trace->writef("%d:%d ", ctxt->getFrame().src_lineno, method_id);
                     ctxt = ctxt->getParent();
                 }
 
+                output_stream_trace->writef("|%d\n", threshold);
 
-            }
+            } // output_stream_trace
 
         } // ctxt_tree != nullptr
 #endif
@@ -314,7 +310,6 @@ void Profiler::threadStart() {
     method_id_list.clear();
     method_id_list2.clear();
     current_method_id = 0;
-//    method_vec.clear();
     while(!ctxt_stack.empty())
         ctxt_stack.pop();
 
