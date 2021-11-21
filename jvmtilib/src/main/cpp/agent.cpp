@@ -351,6 +351,32 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
 
     uint64_t address = reinterpret_cast<uint64_t>(std::addressof(object));
 //    ALOGI("ObjectAllocCallback invoked, class name %s <size: %d address: %ld>", className, size, address);
+
+    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
+    if (ctxt_tree != nullptr) {
+        OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
+        if (output_stream_alloc) {
+            NewContext *ctxt;
+            for (auto elem : (*ctxt_tree)) {
+                NewContext *ctxt_ptr = elem;
+                jmethodID method_id = ctxt_ptr->getFrame().method_id;
+                if (method_id == current_method_id) {
+                    ctxt = ctxt_ptr;
+                    output_stream_alloc->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
+                    break;
+                }
+            }
+            ctxt = ctxt->getParent();
+            while (ctxt != nullptr) {
+                jmethodID method_id = ctxt->getFrame().method_id;
+                if (method_id != 0)
+                    output_stream_alloc->writef("%d:%d ", ctxt->getFrame().src_lineno, method_id);
+                ctxt = ctxt->getParent();
+            }
+            output_stream_alloc->writef("\n");
+        }
+    }
+
     UNBLOCK_SAMPLE;
 }
 
@@ -367,9 +393,9 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                                           &count_ptr) == JVMTI_ERROR_NONE) {
 
             /*
-             for (int i = 0; i < count_ptr - 1; ++i) 不处理leaf
-                这里面，只要遇到以前没处理过的method，就get line number，反之就不做
-            最后leaf单拿出来，不求linenumber（不放入method_id_list2）
+             for (int i = 0; i < count_ptr - 1; ++i)
+                非leaf: 只要遇到以前没处理过的method，就get line number，反之就不做
+                leaf: 最后leaf单拿出来，不求linenumber（不放入method_id_list2）
              */
 
             for (int i = 0; i < count_ptr; ++i) {

@@ -339,6 +339,15 @@ void Profiler::threadStart() {
     assert(output_stream_trace);
     output_stream_trace->setFileName(name_buffer_trace);
     TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
+
+    char name_buffer_alloc[128];
+    snprintf(name_buffer_alloc, 128,
+             "/data/user/0/skynet.cputhrottlingtest/alloc-thread-%u.run",
+             TD_GET(tid));
+    OUTPUT *output_stream_alloc = new(std::nothrow) OUTPUT();
+    assert(output_stream_alloc);
+    output_stream_alloc->setFileName(name_buffer_alloc);
+    TD_GET(output_state_alloc) = reinterpret_cast<void *> (output_stream_alloc);
 #endif
 
 
@@ -434,6 +443,10 @@ void Profiler::threadEnd() {
     OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
     delete output_stream_trace;
     TD_GET(output_state_trace) = nullptr;
+
+    OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
+    delete output_stream_alloc;
+    TD_GET(output_state_alloc) = nullptr;
 #endif
 
     //clean up the context state
