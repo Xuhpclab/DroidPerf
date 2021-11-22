@@ -41,6 +41,7 @@ int flaggg = 0;
 static jlong address123 = NULL;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_set<jmethodID> method_id_list2;
+extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
 //extern thread_local std::vector<jmethodID> method_vec;
 //extern thread_local std::stack<NewContext *> ctxt_stack;
 thread_local NewContext *last_level_ctxt = nullptr;
@@ -343,6 +344,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
         jclass klass, jlong size) {
     BLOCK_SAMPLE;
+    object_alloc_counter[object] += 1;
     jclass cls = jni->FindClass("java/lang/Class");
     jmethodID mid_getName = jni->GetMethodID(cls, "getName", "()Ljava/lang/String;");
     jstring name = static_cast<jstring>(jni->CallObjectMethod(klass, mid_getName));
@@ -373,7 +375,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                     output_stream_alloc->writef("%d:%d ", ctxt->getFrame().src_lineno, method_id);
                 ctxt = ctxt->getParent();
             }
-            output_stream_alloc->writef("\n");
+            output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
         }
     }
 
@@ -381,7 +383,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
 }
 
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
-    BLOCK_SAMPLE;
+    current_method_id = method;
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
         jint start_depth = 0;
@@ -400,7 +402,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
              */
 
             for (int i = 0; i < count_ptr; ++i) {
-                current_method_id = method;
+//                current_method_id = method;
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;
@@ -420,6 +422,8 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
                 if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != count_ptr - 1) { // not find this method id && not leaf
                     method_id_list2.insert(frame_buffer[i].method);
+
+                    BLOCK_SAMPLE;
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -430,12 +434,15 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[i].line_number;
                         }
                     }
+                    UNBLOCK_SAMPLE;
+
                     NewContextFrame ctxt_frame;
                     ctxt_frame.method_id = frame_buffer[i].method;
                     ctxt_frame.method_name = str;
                     ctxt_frame.source_file = _class_name;
                     ctxt_frame.src_lineno = lineNumber;
 
+                    BLOCK_SAMPLE;
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
                         if (last_level_ctxt == nullptr) {
@@ -445,6 +452,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
                         }
                     }
+                    UNBLOCK_SAMPLE;
                 }
 
                 if (i == count_ptr - 1) { // leaf
@@ -454,10 +462,12 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                     ctxt_frame.source_file = _class_name;
                     ctxt_frame.src_lineno = 1;
 
+                    BLOCK_SAMPLE;
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
                         last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
                     }
+                    UNBLOCK_SAMPLE;
                 }
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
@@ -468,7 +478,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
             } // for
         } // GetStackTrace
     } // output_stream
-    UNBLOCK_SAMPLE;
 }
 
 void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {

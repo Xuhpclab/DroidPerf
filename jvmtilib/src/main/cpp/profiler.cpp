@@ -78,6 +78,7 @@ thread_local void *prevIP = (void *)0;
 
 thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
 thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether get line number
+thread_local std::unordered_map<jobject, int> object_alloc_counter; // determine whether get line number
 thread_local std::stack<NewContext *> ctxt_stack;
 extern thread_local jmethodID current_method_id;
 
@@ -309,6 +310,7 @@ void Profiler::threadStart() {
     totalPMUCounter = 0;
     method_id_list.clear();
     method_id_list2.clear();
+    object_alloc_counter.clear();
     current_method_id = 0;
     while(!ctxt_stack.empty())
         ctxt_stack.pop();

@@ -4,7 +4,7 @@ ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/c
 static jlong address123 = NULL;
              ~~~~~~~~~~   ^~~~
                           0
-../../../../src/main/cpp/agent.cpp:51:14: warning: unused function 'heap_analysis_constructContext' [-Wunused-function]
+../../../../src/main/cpp/agent.cpp:52:14: warning: unused function 'heap_analysis_constructContext' [-Wunused-function]
     Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
              ^
 2 warnings generated.
