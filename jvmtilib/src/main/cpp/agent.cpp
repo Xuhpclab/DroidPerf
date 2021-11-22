@@ -298,24 +298,24 @@ static void JNICALL callbackGCRelocationReclaim(jvmtiEnv *jvmti_env, const char*
 // This has to be here, or the VM turns off class loading events.
 // And AsyncGetCallTrace needs class loading events to be turned on!
 static void JNICALL callbackClassLoad(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread, jclass klass) {
-    // BLOCK_SAMPLE;
+     BLOCK_SAMPLE;
     ALOGI("callbackClassLoad invoked");
     IMPLICITLY_USE(jvmti);
     IMPLICITLY_USE(jni_env);
     IMPLICITLY_USE(thread);
     IMPLICITLY_USE(klass);
-    // UNBLOCK_SAMPLE;
+     UNBLOCK_SAMPLE;
 }
 
 // Call GetClassMethods on a given class to force the creation of jmethodIDs of it.
 // Otherwise, some method IDs are missing.
 static void JNICALL callbackClassPrepare(jvmtiEnv* jvmti, JNIEnv* jni, jthread thread, jclass klass) {
-    // BLOCK_SAMPLE;
+    BLOCK_SAMPLE;
 //    ALOGI("callbackClassPrepare invoked");
     IMPLICITLY_USE(jni);
     IMPLICITLY_USE(thread);
     createJMethodIDsForClass(jvmti, klass);
-    // UNBLOCK_SAMPLE;
+    UNBLOCK_SAMPLE;
 }
 
 void JVM::loadMethodIDs(jvmtiEnv* jvmti, jclass klass) {
@@ -381,6 +381,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
 }
 
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
+    BLOCK_SAMPLE;
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
         jint start_depth = 0;
@@ -467,6 +468,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
             } // for
         } // GetStackTrace
     } // output_stream
+    UNBLOCK_SAMPLE;
 }
 
 void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
