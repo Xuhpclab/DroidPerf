@@ -365,20 +365,29 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                 if (method_id == current_method_id) {
                     ctxt = ctxt_ptr;
                     output_stream_alloc->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
+                    fg = 1;
                     break;
                 }
             }
-            ctxt = ctxt->getParent();
-            while (ctxt != nullptr) {
-                jmethodID method_id = ctxt->getFrame().method_id;
-                if (method_id != 0)
-                    output_stream_alloc->writef("%d:%d ", ctxt->getFrame().src_lineno, method_id);
+
+            if (fg == 1) {
+                fg = 0;
                 ctxt = ctxt->getParent();
+                while (ctxt != nullptr) {
+                    jmethodID method_id = ctxt->getFrame().method_id;
+                    if (method_id != 0)
+                        output_stream_alloc->writef("%d:%d ", ctxt->getFrame().src_lineno,
+                                                    method_id);
+                    ctxt = ctxt->getParent();
+                }
             }
-            output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
+
+            if (fg == 1) {
+                fg = 0;
+                output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
+            }
         }
     }
-
     UNBLOCK_SAMPLE;
 }
 
@@ -423,7 +432,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != count_ptr - 1) { // not find this method id && not leaf
                     method_id_list2.insert(frame_buffer[i].method);
 
-//                    BLOCK_SAMPLE;
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -434,7 +442,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[i].line_number;
                         }
                     }
-//                    UNBLOCK_SAMPLE;
 
                     NewContextFrame ctxt_frame;
                     ctxt_frame.method_id = frame_buffer[i].method;
@@ -455,7 +462,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
                 if (i == count_ptr - 1) { // leaf
                     NewContextFrame ctxt_frame;
-                    ctxt_frame.method_id = method;
+                    ctxt_frame.method_id = frame_buffer[i].method;
                     ctxt_frame.method_name = str;
                     ctxt_frame.source_file = _class_name;
                     ctxt_frame.src_lineno = 1;
