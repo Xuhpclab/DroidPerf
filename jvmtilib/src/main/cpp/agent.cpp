@@ -299,13 +299,13 @@ static void JNICALL callbackGCRelocationReclaim(jvmtiEnv *jvmti_env, const char*
 // This has to be here, or the VM turns off class loading events.
 // And AsyncGetCallTrace needs class loading events to be turned on!
 static void JNICALL callbackClassLoad(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread, jclass klass) {
-     BLOCK_SAMPLE;
+    BLOCK_SAMPLE;
     ALOGI("callbackClassLoad invoked");
     IMPLICITLY_USE(jvmti);
     IMPLICITLY_USE(jni_env);
     IMPLICITLY_USE(thread);
     IMPLICITLY_USE(klass);
-     UNBLOCK_SAMPLE;
+    UNBLOCK_SAMPLE;
 }
 
 // Call GetClassMethods on a given class to force the creation of jmethodIDs of it.
@@ -342,7 +342,7 @@ void JVM::loadAllMethodIDs(jvmtiEnv* jvmti) {
 
 void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
-        jclass klass, jlong size) {
+                         jclass klass, jlong size) {
     BLOCK_SAMPLE;
     object_alloc_counter[object] += 1;
     jclass cls = jni->FindClass("java/lang/Class");
@@ -423,7 +423,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != count_ptr - 1) { // not find this method id && not leaf
                     method_id_list2.insert(frame_buffer[i].method);
 
-                    BLOCK_SAMPLE;
+//                    BLOCK_SAMPLE;
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -434,7 +434,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[i].line_number;
                         }
                     }
-                    UNBLOCK_SAMPLE;
+//                    UNBLOCK_SAMPLE;
 
                     NewContextFrame ctxt_frame;
                     ctxt_frame.method_id = frame_buffer[i].method;
@@ -442,7 +442,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                     ctxt_frame.source_file = _class_name;
                     ctxt_frame.src_lineno = lineNumber;
 
-                    BLOCK_SAMPLE;
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
                         if (last_level_ctxt == nullptr) {
@@ -452,7 +451,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
                         }
                     }
-                    UNBLOCK_SAMPLE;
                 }
 
                 if (i == count_ptr - 1) { // leaf
@@ -462,12 +460,10 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                     ctxt_frame.source_file = _class_name;
                     ctxt_frame.src_lineno = 1;
 
-                    BLOCK_SAMPLE;
                     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
                     if (ctxt_tree) {
                         last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
                     }
-                    UNBLOCK_SAMPLE;
                 }
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {

@@ -81,6 +81,7 @@ thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether
 thread_local std::unordered_map<jobject, int> object_alloc_counter; // determine whether get line number
 thread_local std::stack<NewContext *> ctxt_stack;
 extern thread_local jmethodID current_method_id;
+thread_local int fff = 0;
 
 namespace {
 
@@ -100,19 +101,28 @@ namespace {
                     if (method_id == current_method_id) {
                         ctxt = ctxt_ptr;
                         output_stream_trace->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
+                        fff = 1;
                         break;
                     }
                 }
 
-                ctxt = ctxt->getParent();
-                while (ctxt != nullptr) {
-                    jmethodID method_id = ctxt->getFrame().method_id;
-                    if (method_id != 0)
-                        output_stream_trace->writef("%d:%d ", ctxt->getFrame().src_lineno, method_id);
+                if (fff == 1) {
+                    fff = 0;
                     ctxt = ctxt->getParent();
+                    while (ctxt != nullptr) {
+                        jmethodID method_id = ctxt->getFrame().method_id;
+                        if (method_id != 0)
+                            output_stream_trace->writef("%d:%d ", ctxt->getFrame().src_lineno,
+                                                        method_id);
+                        ctxt = ctxt->getParent();
+                    }
+                    output_stream_trace->writef("|%d\n", threshold);
                 }
 
-                output_stream_trace->writef("|%d\n", threshold);
+                if (fff == 1) {
+                    fff = 0;
+                    output_stream_trace->writef("|%d\n", threshold);
+                }
 
             } // output_stream_trace
 
@@ -312,6 +322,7 @@ void Profiler::threadStart() {
     method_id_list2.clear();
     object_alloc_counter.clear();
     current_method_id = 0;
+    fff = 0;
     while(!ctxt_stack.empty())
         ctxt_stack.pop();
 
@@ -356,7 +367,7 @@ void Profiler::threadStart() {
     // settup the output
     {
 #if 0
-#ifdef COUNT_OVERHEAD
+        #ifdef COUNT_OVERHEAD
         char name_buffer[128];
         snprintf(name_buffer, 128, "/data/user/0/skynet.cputhrottlingtest/agent-trace-%u.run", TD_GET(tid));
         OUTPUT *output_stream = new(std::nothrow) OUTPUT();
