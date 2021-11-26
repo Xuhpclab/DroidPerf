@@ -380,6 +380,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                                     method_id);
                     ctxt = ctxt->getParent();
                 }
+                output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
             }
 
             if (fg == 1) {
@@ -411,7 +412,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
              */
 
             for (int i = 0; i < count_ptr; ++i) {
-//                current_method_id = method;
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;

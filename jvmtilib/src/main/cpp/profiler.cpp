@@ -91,8 +91,6 @@ namespace {
         if (ctxt_tree != nullptr) {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             if (output_stream_trace) {
-//                std::stack<NewContext *> ctxt_stack;
-//                std::vector<NewContext *> ctxt_vec;
                 NewContext *ctxt;
                 int threshold = 100000000;
                 for (auto elem : (*ctxt_tree)) {
@@ -125,83 +123,8 @@ namespace {
                 }
 
             } // output_stream_trace
-
         } // ctxt_tree != nullptr
 #endif
-
-
-#if 0
-        jint start_depth = 0;
-        jvmtiFrameInfo frame_buffer[64];
-        jint max_frame_count = 32;
-        jint count_ptr;
-        jboolean isNative = JNI_FALSE;
-
-        if ((JVM::jvmti())->GetStackTrace(NULL, start_depth, max_frame_count, frame_buffer,
-                                     &count_ptr) != JVMTI_ERROR_NONE) {
-            return nullptr;
-        }
-
-        for (int i = 0; i < count_ptr; ++i) {
-            char *name_ptr = NULL;
-            int threshold = 100000000;
-            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
-            OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
-            output_stream_trace->writef("[\n");
-            if ((JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL) ==
-                JVMTI_ERROR_NONE) {
-//                ALOGI("Method id(jmethodID): %d Method name: %s", frame_buffer[i].method, name_ptr);
-                jmethodID method_id = frame_buffer[i].method;
-
-                jclass declaring_class_ptr;
-                if((JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr) == JVMTI_ERROR_NONE){
-                    jclass klass = declaring_class_ptr;
-                    char* source_name_ptr = NULL;
-                    if((JVM::jvmti())->GetSourceFileName(klass, &source_name_ptr) == JVMTI_ERROR_NONE) {
-
-                        std::string str(name_ptr);
-                        if(method_name_list.find(str) == method_name_list.end()) {
-//                            OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(
-//                                    output_state));
-                            output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr,
-                                                  source_name_ptr);
-                            method_name_list.insert(str);
-                        }
-
-                    }
-                }
-
-//                (JVM::jvmti())->IsMethodNative(frame_buffer[i].method, &isNative);
-//                if (!isNative) {
-                    int lineNumber = 0;
-                    int lineCount = 0;
-                    jvmtiLineNumberEntry *lineTable = NULL;
-
-                    if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,&lineTable) == JVMTI_ERROR_NONE) {
-                        lineNumber = lineTable[0].line_number;
-                        for (i = 1; i < lineCount; i++) {
-                            if (frame_buffer[i].location < lineTable[i].start_location) {
-                                break;
-                            }
-                            lineNumber = lineTable[i].line_number;
-                        }
-                    }
-                    (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
-//                    ALOGI("line number: %d method id: %d", lineNumber, method_id);
-
-                    output_stream_trace->writef("<%d:%d>\n", lineNumber, method_id);
-
-                    ContextFrame ctxt_frame;
-                    ctxt_frame.bci = lineNumber;
-                    ctxt_frame.method_id = frame_buffer[i].method;
-                    if (last_ctxt == nullptr) last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
-                    else last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-//                }
-            }
-            output_stream_trace->writef("%d\n]\n", threshold);
-        }
-#endif
-
         return nullptr;
     }
 
@@ -335,8 +258,11 @@ void Profiler::threadStart() {
 
 #if 1
     char name_buffer[128];
+//    snprintf(name_buffer, 128,
+//             "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
+//             TD_GET(tid));
     snprintf(name_buffer, 128,
-             "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
+             "/sdcard/Documents/method-thread-%u.run",
              TD_GET(tid));
     OUTPUT *output_stream = new(std::nothrow) OUTPUT();
     assert(output_stream);
@@ -345,8 +271,11 @@ void Profiler::threadStart() {
 
 
     char name_buffer_trace[128];
+//    snprintf(name_buffer_trace, 128,
+//             "/data/user/0/skynet.cputhrottlingtest/trace-thread-%u.run",
+//             TD_GET(tid));
     snprintf(name_buffer_trace, 128,
-             "/data/user/0/skynet.cputhrottlingtest/trace-thread-%u.run",
+             "/sdcard/Documents/trace-thread-%u.run",
              TD_GET(tid));
     OUTPUT *output_stream_trace = new(std::nothrow) OUTPUT();
     assert(output_stream_trace);
@@ -354,8 +283,11 @@ void Profiler::threadStart() {
     TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
 
     char name_buffer_alloc[128];
+//    snprintf(name_buffer_alloc, 128,
+//             "/data/user/0/skynet.cputhrottlingtest/alloc-thread-%u.run",
+//             TD_GET(tid));
     snprintf(name_buffer_alloc, 128,
-             "/data/user/0/skynet.cputhrottlingtest/alloc-thread-%u.run",
+             "/sdcard/Documents/alloc-thread-%u.run",
              TD_GET(tid));
     OUTPUT *output_stream_alloc = new(std::nothrow) OUTPUT();
     assert(output_stream_alloc);

@@ -115,7 +115,7 @@ if __name__ == "__main__":
         trace_map = []
         for line in tf:
             trace = {}
-            temp = line.split("|")
+            temp = line.split(" |")
             trace['t'] = []
             trace['m'] = int(temp[1])
             temp_trace = temp[0].split(" ")
