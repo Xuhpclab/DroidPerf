@@ -1,1 +1,1 @@
-adb pull /sdcard/Documents .
+adb pull /sdcard/Documents ./drcctprof-databuilder-master

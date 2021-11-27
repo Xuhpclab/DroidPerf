@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     # init_sourcefile_map(output_root)
 
-    dirname = "data"
+    dirname = "Documents"
 
     dirname_full_path = os.path.abspath(dirname)
     builder = ddb.Builder()
@@ -92,11 +92,19 @@ if __name__ == "__main__":
         if temp[2] not in threadProfileMap:
             threadProfileMap[temp[2]] = {};
         threadProfileMap[temp[2]][temp[0]] = f;
-    print(threadProfileMap)
+    # print(threadProfileMap)
 
     for key in threadProfileMap.keys():
+        i = 0
+        for content in threadProfileMap[key]:
+          i = i + 1
+        print("i = " + str(i))
+        if i < 2:
+          continue;
         method_file = threadProfileMap[key]["method"]
-        trace_file = threadProfileMap[key]["trace"]
+        # trace_file = threadProfileMap[key]["trace"]
+        trace_file = threadProfileMap[key]["alloc"]
+
         mf = open(dirname_full_path+"/"+method_file);
         method_map = {-1:{
             "name": "ROOT",
@@ -115,7 +123,7 @@ if __name__ == "__main__":
         trace_map = []
         for line in tf:
             trace = {}
-            temp = line.split(" |")
+            temp = line.split("|")
             trace['t'] = []
             trace['m'] = int(temp[1])
             temp_trace = temp[0].split(" ")
@@ -128,9 +136,9 @@ if __name__ == "__main__":
             for i in range(len(trace['t'])):
                 ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
                 ctxt = context_array[ctxt_id]
-                print(ctxt_id)
+                # print(ctxt_id)
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
-            print(len(contextMsgList))
+            # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList)
     builder.generateProfile("test.drcctprof")
             

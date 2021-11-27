@@ -101,3 +101,7 @@
 1361	1765	1637721076	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	6964cb82d0273b54
 6	2168	1637866499	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
 2168	2585	1637866499	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	6964cb82d0273b54
+4	1381	1637973394	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	60f4a885e8c20623
+1381	1793	1637973394	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	6964cb82d0273b54
+4	1272	1638044191	CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o	dbe6ec7b360d72d7
+1272	1688	1638044192	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so	6964cb82d0273b54

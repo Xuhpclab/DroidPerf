@@ -380,12 +380,12 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                                     method_id);
                     ctxt = ctxt->getParent();
                 }
-                output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
+                output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }
 
             if (fg == 1) {
                 fg = 0;
-                output_stream_alloc->writef("%d\n", object_alloc_counter[object]);
+                output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }
         }
     }
