@@ -148,7 +148,7 @@ if __name__ == "__main__":
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList)
-    builder.generateProfile("test.drcctprof")  
+    builder.generateProfile("access.drcctprof")  
 
     builder2 = ddb.Builder()
     builder2.addMetricType(1, "cpu cycle", "cpu cycle")
@@ -182,7 +182,6 @@ if __name__ == "__main__":
             trace = {}
             temp = line.split(" |")
             trace['t'] = []
-            print(temp)
             trace['m'] = int(temp[1])
             temp_trace = temp[0].split(" ")
             for frame in temp_trace:
@@ -199,7 +198,7 @@ if __name__ == "__main__":
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             builder2.addSample(contextMsgList, metricMsgList)
-    builder2.generateProfile("test1.drcctprof")  
+    builder2.generateProfile("alloc.drcctprof")  
 
      
 
