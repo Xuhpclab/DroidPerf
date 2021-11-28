@@ -72,7 +72,7 @@ def getContextId(parent, frames):
     if len(frames) == 1:
         return curContext["id"]
     else:
-        return getContextId(curContext, frame[1: -1])
+        return getContextId(curContext, frames[1:])
 
 if __name__ == "__main__":
 
@@ -94,15 +94,72 @@ if __name__ == "__main__":
         threadProfileMap[temp[2]][temp[0]] = f;
     # print(threadProfileMap)
 
+    trace_thread = []
+    alloc_thread = []
     for key in threadProfileMap.keys():
+        for content in threadProfileMap[key]:
+          if content == "trace":
+            trace_thread.append(key)
+          if content == "alloc":
+            alloc_thread.append(key)
+
+    for key in trace_thread:
         i = 0
         for content in threadProfileMap[key]:
           i = i + 1
-        print("i = " + str(i))
         if i < 2:
           continue;
         method_file = threadProfileMap[key]["method"]
-        # trace_file = threadProfileMap[key]["trace"]
+        trace_file = threadProfileMap[key]["trace"]
+
+        mf = open(dirname_full_path+"/"+method_file);
+        method_map = {-1:{
+            "name": "ROOT",
+            "file_path": " "
+        }, 0:{
+            "name": "<NULL>",
+            "file_path": " "
+        } }
+        for line in mf:
+            temp = line.split(" ")
+            method_map[int(temp[0])] = {
+                "name": temp[1],
+                "file_path": get_file_path(temp[2], "")
+            }
+        tf = open(dirname_full_path+"/"+trace_file);
+        trace_map = []
+        for line in tf:
+            trace = {}
+            temp = line.split(" |")
+            trace['t'] = []
+            trace['m'] = int(temp[1])
+            temp_trace = temp[0].split(" ")
+            for frame in temp_trace:
+                trace['t'].append([frame.split(":")[1], frame.split(":")[0]])
+            
+            metricMsgList = [ddb.MetricMsg(0, trace['m'], "")]
+            contextMsgList = []
+            # contextMsgList.append(ddb.ContextMsg(1, "", "ROOT", "ROOT", 0, 0))
+            for i in range(len(trace['t'])):
+                # print(trace['t'][0:i+1])
+                ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
+                ctxt = context_array[ctxt_id]
+                # print(ctxt_id)
+                contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
+            # print(len(contextMsgList))
+            builder.addSample(contextMsgList, metricMsgList)
+    builder.generateProfile("test.drcctprof")  
+
+    builder2 = ddb.Builder()
+    builder2.addMetricType(1, "cpu cycle", "cpu cycle")
+
+    for key in alloc_thread:
+        i = 0
+        for content in threadProfileMap[key]:
+          i = i + 1
+        if i < 2:
+          continue;
+        method_file = threadProfileMap[key]["method"]
         trace_file = threadProfileMap[key]["alloc"]
 
         mf = open(dirname_full_path+"/"+method_file);
@@ -123,8 +180,9 @@ if __name__ == "__main__":
         trace_map = []
         for line in tf:
             trace = {}
-            temp = line.split("|")
+            temp = line.split(" |")
             trace['t'] = []
+            print(temp)
             trace['m'] = int(temp[1])
             temp_trace = temp[0].split(" ")
             for frame in temp_trace:
@@ -134,15 +192,16 @@ if __name__ == "__main__":
             contextMsgList = []
             # contextMsgList.append(ddb.ContextMsg(1, "", "ROOT", "ROOT", 0, 0))
             for i in range(len(trace['t'])):
+                # print(trace['t'][0:i+1])
                 ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
                 ctxt = context_array[ctxt_id]
                 # print(ctxt_id)
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
-            builder.addSample(contextMsgList, metricMsgList)
-    builder.generateProfile("test.drcctprof")
-            
-            
+            builder2.addSample(contextMsgList, metricMsgList)
+    builder2.generateProfile("test1.drcctprof")  
+
+     
 
     
     # gf = ht.GraphFrame.from_hpctoolkit(dirname)
