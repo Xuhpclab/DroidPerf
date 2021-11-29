@@ -48,51 +48,6 @@ thread_local NewContext *last_level_ctxt = nullptr;
 thread_local jmethodID current_method_id;
 thread_local int fg = 0;
 
-namespace {
-    Context *heap_analysis_constructContext(ASGCT_FN asgct, void *context, std::string client_name, int64_t obj_size){
-        ASGCT_CallTrace trace;
-        ASGCT_CallFrame frames[MAX_FRAME_NUM];
-
-        trace.frames = frames;
-        trace.env_id = JVM::jni();
-
-        asgct(&trace, MAX_FRAME_NUM, context);
-
-        ContextTree *ctxt_tree = reinterpret_cast<ContextTree *> (TD_GET(context_state));
-        if(ctxt_tree == nullptr) return nullptr;
-
-        Context *last_ctxt = nullptr;
-
-        for(int i=trace.num_frames - 1 ; i >= 0; i--) {
-            ContextFrame ctxt_frame;
-            ctxt_frame = frames[i]; // set method_id and bci
-
-            if (last_ctxt == nullptr) last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
-            else last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-        }
-
-        ContextFrame ctxt_frame;
-        ctxt_frame.bci = -65536;
-        if (last_ctxt == nullptr)
-            last_ctxt = ctxt_tree->addContext((uint32_t)CONTEXT_TREE_ROOT_ID, ctxt_frame);
-        else
-            last_ctxt = ctxt_tree->addContext(last_ctxt, ctxt_frame);
-
-        if (client_name.compare(HEAP) == 0) {
-            metrics::ContextMetrics *metrics = last_ctxt->getMetrics();
-            if (metrics == nullptr) {
-                metrics = new metrics::ContextMetrics();
-                last_ctxt->setMetrics(metrics);
-            }
-            metrics::metric_val_t metric_val;
-            metric_val.i = obj_size;
-            assert(metrics->increment(1, metric_val));
-        }
-
-        return last_ctxt;
-    }
-}
-
 void JVM::parseArgs(const char *arg) {
     _argument = new(std::nothrow) Argument(arg);
     assert(_argument);
@@ -300,7 +255,7 @@ static void JNICALL callbackGCRelocationReclaim(jvmtiEnv *jvmti_env, const char*
 // And AsyncGetCallTrace needs class loading events to be turned on!
 static void JNICALL callbackClassLoad(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread, jclass klass) {
     BLOCK_SAMPLE;
-    ALOGI("callbackClassLoad invoked");
+//    ALOGI("callbackClassLoad invoked");
     IMPLICITLY_USE(jvmti);
     IMPLICITLY_USE(jni_env);
     IMPLICITLY_USE(thread);
@@ -345,26 +300,44 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jclass klass, jlong size) {
     BLOCK_SAMPLE;
     object_alloc_counter[object] += 1;
-    jclass cls = jni->FindClass("java/lang/Class");
-    jmethodID mid_getName = jni->GetMethodID(cls, "getName", "()Ljava/lang/String;");
-    jstring name = static_cast<jstring>(jni->CallObjectMethod(klass, mid_getName));
-    const char* className=jni->GetStringUTFChars(name,JNI_FALSE);
-    jni->ReleaseStringUTFChars(name,className);
-
-    uint64_t address = reinterpret_cast<uint64_t>(std::addressof(object));
-//    ALOGI("ObjectAllocCallback invoked, class name %s <size: %d address: %ld>", className, size, address);
-
+    jint start_depth = 0;
+    jvmtiFrameInfo frame_buffer[10];
+    jint max_frame_count = 10;
+    jint count_ptr;
     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
     if (ctxt_tree != nullptr) {
         OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
         if (output_stream_alloc) {
+#if 1
+            jclass cls = jni->FindClass("java/lang/Class");
+            jmethodID mid_getName = jni->GetMethodID(cls, "getName", "()Ljava/lang/String;");
+            jstring name = static_cast<jstring>(jni->CallObjectMethod(klass, mid_getName));
+#endif
+            int lineNumber = 0;
+            int lineCount = 0;
+            jvmtiLineNumberEntry *lineTable = NULL;
+
+            if ((JVM::jvmti())->GetStackTrace(thread, start_depth, max_frame_count, frame_buffer,
+                                              &count_ptr) == JVMTI_ERROR_NONE) {
+                if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[count_ptr - 1].method,
+                                                       &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
+                    lineNumber = lineTable[0].line_number;
+                    for (int j = 1; j < lineCount; j++) {
+                        if (frame_buffer[count_ptr - 1].location < lineTable[j].start_location) {
+                            break;
+                        }
+                        lineNumber = lineTable[j].line_number;
+                    }
+                }
+            }// GetStackTrace
+
             NewContext *ctxt;
             for (auto elem : (*ctxt_tree)) {
                 NewContext *ctxt_ptr = elem;
                 jmethodID method_id = ctxt_ptr->getFrame().method_id;
                 if (method_id == current_method_id) {
                     ctxt = ctxt_ptr;
-                    output_stream_alloc->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
+                    output_stream_alloc->writef("%d:%d ", lineNumber, method_id); //leaf
                     fg = 1;
                     break;
                 }
@@ -387,8 +360,11 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                 fg = 0;
                 output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }
-        }
-    }
+
+//            jni->ReleaseStringUTFChars(name, className);
+        }// output_stream_alloc
+    } // ctxt_tree
+
     UNBLOCK_SAMPLE;
 }
 
@@ -435,11 +411,11 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
-                        for (i = 1; i < lineCount; i++) {
-                            if (frame_buffer[i].location < lineTable[i].start_location) {
+                        for (int j = 1; j < lineCount; j++) {
+                            if (frame_buffer[i].location < lineTable[j].start_location) {
                                 break;
                             }
-                            lineNumber = lineTable[i].line_number;
+                            lineNumber = lineTable[j].line_number;
                         }
                     }
 
