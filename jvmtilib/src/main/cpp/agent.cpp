@@ -319,49 +319,53 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
 
             if ((JVM::jvmti())->GetStackTrace(thread, start_depth, max_frame_count, frame_buffer,
                                               &count_ptr) == JVMTI_ERROR_NONE) {
-                if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[count_ptr - 1].method,
-                                                       &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
-                    lineNumber = lineTable[0].line_number;
-                    for (int j = 1; j < lineCount; j++) {
-                        if (frame_buffer[count_ptr - 1].location < lineTable[j].start_location) {
-                            break;
+
+//                ALOGI("frame_buffer[count_ptr - 1].method: %d  mid_getName: %d\n", frame_buffer[count_ptr - 1].method, mid_getName);
+                //从count_ptr-1开始反向遍历，当第一个出现frame_buffer[count_ptr - 1].method 不等于 mid_getName时，获得line number，这个line number是进入getName之前的最后一个位置，也就是真正allocation的地方
+
+                int k;
+                for (k = count_ptr-1; k >= 0; k--) {
+                    if (frame_buffer[k].method == mid_getName)
+                        continue;
+                    else {
+                        if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[k].method, &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
+                            lineNumber = lineTable[0].line_number;
+                            for (int j = 1; j < lineCount; j++) {
+                                if (frame_buffer[k].location < lineTable[j].start_location) {
+                                    break;
+                                }
+                                lineNumber = lineTable[j].line_number;
+                            }
                         }
-                        lineNumber = lineTable[j].line_number;
+                        break;
                     }
                 }
+
+                int inside = 0;
+                for (int i = 0; i <= k; ++i) {
+                    inside = 1;
+                    char *name_ptr = NULL;
+                    jclass declaring_class_ptr;
+                    JvmtiScopedPtr<char> declaringClassName;
+                    (JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL);
+                    (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr);
+                    (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
+
+                    std::string str(name_ptr);
+                    std::string _class_name;
+                    _class_name = declaringClassName.get();
+                    _class_name = _class_name.substr(1, _class_name.length() - 2);
+                    std::replace(_class_name.begin(), _class_name.end(), '/', '.');
+                    _class_name.append(".java");
+
+                    if (i != k)
+                        output_stream_alloc->writef("-1:%d ", frame_buffer[i].method);
+                    else
+                        output_stream_alloc->writef("%d:%d ", lineNumber, frame_buffer[i].method);
+                }
+                if (inside == 1)
+                    output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }// GetStackTrace
-
-            NewContext *ctxt;
-            for (auto elem : (*ctxt_tree)) {
-                NewContext *ctxt_ptr = elem;
-                jmethodID method_id = ctxt_ptr->getFrame().method_id;
-                if (method_id == current_method_id) {
-                    ctxt = ctxt_ptr;
-                    output_stream_alloc->writef("%d:%d ", lineNumber, method_id); //leaf
-                    fg = 1;
-                    break;
-                }
-            }
-
-            if (fg == 1) {
-                fg = 0;
-                ctxt = ctxt->getParent();
-                while (ctxt != nullptr) {
-                    jmethodID method_id = ctxt->getFrame().method_id;
-                    if (method_id != 0)
-                        output_stream_alloc->writef("%d:%d ", ctxt->getFrame().src_lineno,
-                                                    method_id);
-                    ctxt = ctxt->getParent();
-                }
-                output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
-            }
-
-            if (fg == 1) {
-                fg = 0;
-                output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
-            }
-
-//            jni->ReleaseStringUTFChars(name, className);
         }// output_stream_alloc
     } // ctxt_tree
 
