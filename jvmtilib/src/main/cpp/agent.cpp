@@ -334,15 +334,15 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                 if (frame_buffer[k].location < lineTable[j].start_location) {
                                     break;
                                 }
-                                lineNumber = lineTable[j].line_number;
+                                lineNumber = lineTable[j].line_number; //line number of leaf
                             }
                         }
-                        break;
+                        break; //already got leaf's line number, exit for loop
                     }
                 }
 
                 int inside = 0;
-                for (int i = 0; i <= k; ++i) {
+                for (int i = 0; i <= k; ++i) { // k is the leaf node
                     inside = 1;
                     char *name_ptr = NULL;
                     jclass declaring_class_ptr;
@@ -361,7 +361,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                     if (i != k)
                         output_stream_alloc->writef("-1:%d ", frame_buffer[i].method);
                     else
-                        output_stream_alloc->writef("%d:%d ", lineNumber, frame_buffer[i].method);
+                        output_stream_alloc->writef("%d:%d ", lineNumber, frame_buffer[i].method); // only show line number for leaf node
                 }
                 if (inside == 1)
                     output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
