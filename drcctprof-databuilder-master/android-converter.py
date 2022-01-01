@@ -123,7 +123,7 @@ if __name__ == "__main__":
         for line in mf:
             temp = line.split(" ")
             method_map[int(temp[0])] = {
-                "name": temp[1],
+                "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
                 "file_path": get_file_path(temp[2], "")
             }
         tf = open(dirname_full_path+"/"+trace_file);
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         for line in mf:
             temp = line.split(" ")
             method_map[int(temp[0])] = {
-                "name": temp[1],
+                "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
                 "file_path": get_file_path(temp[2], "")
             }
         tf = open(dirname_full_path+"/"+trace_file);
