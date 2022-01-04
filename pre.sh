@@ -6,4 +6,4 @@ adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/skynet.cputhrottlin
 adb shell rm -f ./sdcard/Documents/*.run*
 
 # run
-adb shell cmd activity attach-agent 14024 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+adb shell cmd activity attach-agent 26628 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000

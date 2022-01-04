@@ -1,8 +1,3 @@
 ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
-../../../../src/main/cpp/agent.cpp:41:27: warning: implicit conversion of NULL constant to 'jlong' (aka 'long long') [-Wnull-conversion]
-static jlong address123 = NULL;
-             ~~~~~~~~~~   ^~~~
-                          0
-1 warning generated.
+[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_interface.cpp.o
 [2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so

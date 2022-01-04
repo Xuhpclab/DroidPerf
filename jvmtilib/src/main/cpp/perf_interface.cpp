@@ -47,7 +47,7 @@ typedef struct {
 
 typedef struct {
     int id;
-    int fd;
+    int fd[8];
     perf_mmap_t *mmap_buf;
     perf_event_info_t *event;
 } perf_event_thread_t;
@@ -166,17 +166,21 @@ namespace {
     }
 
     bool restart_perf_event(perf_event_thread_t &event_thread) {
-        if( event_thread.fd < 0){
-            ERROR("Unable to start the event %s: fd is not valid.", event_thread.event->name.c_str());
-            return false;
-        }
-        if (ioctl(event_thread.fd, PERF_EVENT_IOC_RESET, 0) < 0){
-            ERROR("Error fd %d in PERF_EVENT_IOC_RESET: %s", event_thread.fd, strerror(errno));
-            return false;
-        }
-        if (ioctl(event_thread.fd, PERF_EVENT_IOC_REFRESH, 1) < 0){
-            ERROR("Error fd %d in PERF_EVENT_IOC_REFRESH: %s", event_thread.fd, strerror(errno));
-            return false;
+        for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+            if (event_thread.fd[cpu_index] < 0) { ERROR("Unable to start the event %s: fd is not valid.",
+                                             event_thread.event->name.c_str());
+                return false;
+            }
+            if (ioctl(event_thread.fd[cpu_index], PERF_EVENT_IOC_RESET, 0) < 0) { ERROR(
+                        "Error fd %d in PERF_EVENT_IOC_RESET: %s", event_thread.fd[cpu_index],
+                        strerror(errno));
+                return false;
+            }
+            if (ioctl(event_thread.fd[cpu_index], PERF_EVENT_IOC_REFRESH, 1) < 0) { ERROR(
+                        "Error fd %d in PERF_EVENT_IOC_REFRESH: %s", event_thread.fd[cpu_index],
+                        strerror(errno));
+                return false;
+            }
         }
         return true;
     }
@@ -199,11 +203,14 @@ namespace {
 
     bool perf_start_all(std::vector<perf_event_thread_t> &event_thread_list ){
         for(auto &event_thread: event_thread_list) {
-            int fd = event_thread.fd;
-            if (fd < 0) continue;
-            if (ioctl(fd, PERF_EVENT_IOC_ENABLE, 0) < 0) {
-                ERROR("Enable the event %s failed: %s", event_thread.event->name.c_str(), strerror(errno));
-                return false;
+            for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+                int fd = event_thread.fd[cpu_index];
+                if (fd < 0) continue;
+                if (ioctl(fd, PERF_EVENT_IOC_ENABLE, 0) < 0) { ERROR(
+                            "Enable the event %s failed: %s", event_thread.event->name.c_str(),
+                            strerror(errno));
+                    return false;
+                }
             }
         }
         return true;
@@ -211,11 +218,14 @@ namespace {
 
     bool perf_stop_all(std::vector<perf_event_thread_t> &event_thread_list){
         for(auto &event_thread: event_thread_list) {
-            int fd = event_thread.fd;
-            if (fd < 0) continue;
-            if (ioctl(fd, PERF_EVENT_IOC_DISABLE, 0) < 0) {
-                ERROR("Disable the event %s failed: %s", event_thread.event->name.c_str(), strerror(errno));
-                return false;
+            for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+                int fd = event_thread.fd[cpu_index];
+                if (fd < 0) continue;
+                if (ioctl(fd, PERF_EVENT_IOC_DISABLE, 0) < 0) { ERROR(
+                            "Disable the event %s failed: %s", event_thread.event->name.c_str(),
+                            strerror(errno));
+                    return false;
+                }
             }
         }
         return true;
@@ -275,9 +285,11 @@ namespace {
         //------------------------------------------------------------
         perf_event_thread_t *current = nullptr;
         for( auto &event_thread : (*event_thread_list)){
-            if(event_thread.fd == siginfo->si_fd) {
-                current = &(event_thread);
-                break;
+            for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+                if (event_thread.fd[cpu_index] == siginfo->si_fd) {
+                    current = &(event_thread);
+                    break;
+                }
             }
         }
         if (current == nullptr) {
@@ -364,42 +376,48 @@ bool PerfManager::setupEvents(){
     for(uint32_t i = 0; i < num_events; i++) {
         perf_event_thread_t event_thread;
         event_thread.id = i;
-        event_thread.fd = perf_event_open(&(event_info[i].attr), tid, -1, -1, 0);
-        if (event_thread.fd <= -1){
-            ALOGI("perf_event_open() failed, cannot open event");
-            return false;
-        }
-        ioctl(event_thread.fd,PERF_EVENT_IOC_RESET,0);
+        // event_thread.fd = perf_event_open(&(event_info[i].attr), tid, -1, -1, 0); // ori
+        for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+            event_thread.fd[cpu_index] = perf_event_open(&(event_info[i].attr), -1, cpu_index, -1, 0); // system-wide
+            if (event_thread.fd[cpu_index] <= -1) {
+                ALOGI("perf_event_open() failed, cannot open event");
+                return false;
+            }
+            ioctl(event_thread.fd[cpu_index], PERF_EVENT_IOC_RESET, 0);
 
-        int flags = fcntl( event_thread.fd , F_GETFL, 0);
-        if (flags < 0) {
-            ERROR("fcntl(%d, F_GETFL) failed: %s", event_thread.fd, strerror(errno));
-            return false;
-        }
-        if (fcntl(event_thread.fd, F_SETFL, flags| O_ASYNC) < 0) {
-            ERROR("fcntl(%d, F_SETFL, %d | PERF_SIGNAL| O_ASYNC) failed: %s", event_thread.fd, flags, strerror(errno));
-            return false;
-        }
+            int flags = fcntl(event_thread.fd[cpu_index], F_GETFL, 0);
+            if (flags < 0) { ERROR("fcntl(%d, F_GETFL) failed: %s", event_thread.fd[cpu_index],
+                                   strerror(errno));
+                return false;
+            }
+            if (fcntl(event_thread.fd[cpu_index], F_SETFL, flags | O_ASYNC) < 0) { ERROR(
+                        "fcntl(%d, F_SETFL, %d | PERF_SIGNAL| O_ASYNC) failed: %s", event_thread.fd[cpu_index],
+                        flags, strerror(errno));
+                return false;
+            }
 
-        // set the file descriptor owner to this specific thread
-        struct f_owner_ex fown_ex;
-        fown_ex.type = F_OWNER_TID;
-        fown_ex.pid  = tid;
-        if ( fcntl(event_thread.fd, F_SETOWN_EX, (unsigned long)&fown_ex) < 0) {
-            ERROR("fcntl(%d, F_SETOWN_EX, &fown_ex) failed: %s", event_thread.fd, strerror(errno));
-            return false;
+            // set the file descriptor owner to this specific thread
+            struct f_owner_ex fown_ex;
+            fown_ex.type = F_OWNER_TID;
+            fown_ex.pid = tid;
+            if (fcntl(event_thread.fd[cpu_index], F_SETOWN_EX, (unsigned long) &fown_ex) < 0) { ERROR(
+                        "fcntl(%d, F_SETOWN_EX, &fown_ex) failed: %s", event_thread.fd[cpu_index],
+                        strerror(errno));
+                return false;
+            }
+
+            // need to set PERF_SIGNAL to this file descriptor
+            // to avoid POLL_HUP in the signal handler
+            if (fcntl(event_thread.fd[cpu_index], F_SETSIG, PERF_SIGNAL) < 0) { ERROR(
+                        "fcntl(%d, F_SETSIG, PERF_SIGNAL) failed: %s", event_thread.fd[cpu_index],
+                        strerror(errno));
+                return false;
+            }
+
+
+            event_thread.mmap_buf = perf_set_mmap(event_thread.fd[cpu_index]);
+            assert(event_thread.mmap_buf);
         }
-
-        // need to set PERF_SIGNAL to this file descriptor
-        // to avoid POLL_HUP in the signal handler
-        if (fcntl(event_thread.fd, F_SETSIG, PERF_SIGNAL) < 0) {
-            ERROR("fcntl(%d, F_SETSIG, PERF_SIGNAL) failed: %s", event_thread.fd, strerror(errno));
-            return false;
-        }
-
-
-        event_thread.mmap_buf = perf_set_mmap(event_thread.fd);
-        assert(event_thread.mmap_buf);
 
         event_thread.event = &(event_info[i]);
         event_thread_list->push_back(event_thread);
@@ -417,8 +435,10 @@ bool PerfManager::closeEvents(){
     perf_stop_all(*event_thread_list);
     for (uint32_t i = 0; i < num_events; i++) {
         perf_event_thread_t &event_thread = (*event_thread_list)[i];
-        if (event_thread.fd >= 0){
-            close(event_thread.fd);
+        for (int cpu_index = 0; cpu_index < 8; cpu_index++) {
+            if (event_thread.fd[cpu_index] >= 0) {
+                close(event_thread.fd[cpu_index]);
+            }
         }
         perf_unmmap(event_thread.mmap_buf);
     }
@@ -434,5 +454,5 @@ bool PerfManager::readCounter(int event_idx, uint64_t *val){
         return false;
     }
     perf_event_thread_t &current = (*event_thread_list)[event_idx];
-    return perf_read_event_counter(current.fd, val);
+    return perf_read_event_counter(current.fd[0], val);
 }
