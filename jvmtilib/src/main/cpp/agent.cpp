@@ -313,56 +313,52 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
             jmethodID mid_getName = jni->GetMethodID(cls, "getName", "()Ljava/lang/String;");
             jstring name = static_cast<jstring>(jni->CallObjectMethod(klass, mid_getName));
 #endif
-            int lineNumber = 0;
-            int lineCount = 0;
-            jvmtiLineNumberEntry *lineTable = NULL;
+
 
             if ((JVM::jvmti())->GetStackTrace(thread, start_depth, max_frame_count, frame_buffer,
                                               &count_ptr) == JVMTI_ERROR_NONE) {
 
 //                ALOGI("frame_buffer[count_ptr - 1].method: %d  mid_getName: %d\n", frame_buffer[count_ptr - 1].method, mid_getName);
-                //从count_ptr-1开始反向遍历，当第一个出现frame_buffer[count_ptr - 1].method 不等于 mid_getName时，获得line number，这个line number是进入getName之前的最后一个位置，也就是真正allocation的地方
+//                从count_ptr-1开始反向遍历，当第一个出现frame_buffer[count_ptr - 1].method 不等于 mid_getName时，获得line number，这个line number是进入getName之前的最后一个位置，也就是真正allocation的地方
 
+                int inside = 0;
                 int k;
                 for (k = count_ptr-1; k >= 0; k--) {
                     if (frame_buffer[k].method == mid_getName)
                         continue;
                     else {
+                        int lineNumber = 0;
+                        int lineCount = 0;
+                        jvmtiLineNumberEntry *lineTable = NULL;
                         if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[k].method, &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
                             lineNumber = lineTable[0].line_number;
                             for (int j = 1; j < lineCount; j++) {
                                 if (frame_buffer[k].location < lineTable[j].start_location) {
                                     break;
                                 }
-                                lineNumber = lineTable[j].line_number; //line number of leaf
+                                lineNumber = lineTable[j].line_number; //line number of every node from root k
                             }
                         }
-                        break; //already got leaf's line number, exit for loop
-                    }
-                }
 
-                int inside = 0;
-                for (int i = 0; i <= k; ++i) { // k is the leaf node
-                    inside = 1;
-                    char *name_ptr = NULL;
-                    jclass declaring_class_ptr;
-                    JvmtiScopedPtr<char> declaringClassName;
-                    (JVM::jvmti())->GetMethodName(frame_buffer[i].method, &name_ptr, NULL, NULL);
-                    (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr);
-                    (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
+//                        for (int i = 0; i <= k; ++i) { // k is the leaf node; 1/9: wrong, k is root, 0 is leaf
+                        inside = 1;
+                        char *name_ptr = NULL;
+                        jclass declaring_class_ptr;
+                        JvmtiScopedPtr<char> declaringClassName;
+                        (JVM::jvmti())->GetMethodName(frame_buffer[k].method, &name_ptr, NULL, NULL);
+                        (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[k].method, &declaring_class_ptr);
+                        (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
 
-                    std::string str(name_ptr);
-                    std::string _class_name;
-                    _class_name = declaringClassName.get();
-                    _class_name = _class_name.substr(1, _class_name.length() - 2);
-                    std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-                    _class_name.append(".java");
+                        std::string str(name_ptr);
+                        std::string _class_name;
+                        _class_name = declaringClassName.get();
+                        _class_name = _class_name.substr(1, _class_name.length() - 2);
+                        std::replace(_class_name.begin(), _class_name.end(), '/', '.');
+                        _class_name.append(".java");
+                        output_stream_alloc->writef("%d:%d ", lineNumber, frame_buffer[k].method); // only show line number for leaf node
+                    } // else
+                } // for loop
 
-                    if (i != k)
-                        output_stream_alloc->writef("-1:%d ", frame_buffer[i].method);
-                    else
-                        output_stream_alloc->writef("%d:%d ", lineNumber, frame_buffer[i].method); // only show line number for leaf node
-                }
                 if (inside == 1)
                     output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }// GetStackTrace
