@@ -92,7 +92,6 @@ namespace {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             if (output_stream_trace) {
                 int threshold = 100000000;
-                jmethodID temp = 0;
                 for (int i = 0; i < ctxt_stack.size(); i++) {
                     if (i == 0) {
                         output_stream_trace->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id

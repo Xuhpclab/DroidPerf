@@ -299,6 +299,21 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
                          jclass klass, jlong size) {
     BLOCK_SAMPLE;
+    object_alloc_counter[object] += 1;
+    OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
+    if (output_stream_alloc) {
+        for (int i = 0; i < ctxt_stack.size(); i++) {
+            if (i == 0) {
+                output_stream_alloc->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
+            } else {
+                if (ctxt_stack[i] != ctxt_stack[i-1])
+                    output_stream_alloc->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
+            }
+        }
+        if (ctxt_stack.size() >= 1)
+            output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
+    }
+
 #if 0
     object_alloc_counter[object] += 1;
     jint start_depth = 0;
