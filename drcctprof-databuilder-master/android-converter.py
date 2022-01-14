@@ -150,7 +150,7 @@ if __name__ == "__main__":
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList)
-    builder.generateProfile("./Documents/access.drcctprof")  
+    builder.generateProfile("./access.drcctprof")  
 
     builder2 = ddb.Builder()
     builder2.addMetricType(1, "cpu cycle", "cpu cycle")
@@ -207,7 +207,7 @@ if __name__ == "__main__":
             # print(len(contextMsgList))
             if key_not_exist == 0:
               builder2.addSample(contextMsgList, metricMsgList)
-    builder2.generateProfile("./Documents/alloc.drcctprof")  
+    builder2.generateProfile("./alloc.drcctprof")  
 
      
 
