@@ -79,7 +79,8 @@ thread_local void *prevIP = (void *)0;
 thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
 thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether get line number
 thread_local std::unordered_map<jobject, int> object_alloc_counter;
-thread_local std::vector<jmethodID> ctxt_stack;
+//thread_local std::vector<jmethodID> ctxt_stack;
+thread_local std::unordered_map<jmethodID, int> ctxt_stack;
 extern thread_local jmethodID current_method_id;
 thread_local int fff = 0;
 
@@ -92,7 +93,25 @@ namespace {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             if (output_stream_trace) {
                 int threshold = 100000000;
-                for (int i = 0; i < ctxt_stack.size(); i++) {
+                std::unordered_map<jmethodID , int>::iterator it = ctxt_stack.begin();
+                std::unordered_map<jmethodID , int>::iterator it_temp;
+                while (it != ctxt_stack.end()) {
+                    if (it == ctxt_stack.begin()) {
+                        output_stream_trace->writef("%d:%d ", it->second, it->first); //line number:method id
+                        it_temp = it;
+                    } else {
+                        if (it->first != it_temp->first) {
+                            output_stream_trace->writef("%d:%d ", it->second, it->first); //line number:method id
+                            it_temp = it;
+                        }
+                    }
+                    it++;
+                }
+                if (ctxt_stack.size() >= 1)
+                    output_stream_trace->writef("|%d\n", threshold);
+
+#if 0
+                for (auto i : ctxt_stack) {
                     if (i == 0) {
                         output_stream_trace->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
                     } else {
@@ -102,6 +121,7 @@ namespace {
                 }
                 if (ctxt_stack.size() >= 1)
                     output_stream_trace->writef("|%d\n", threshold);
+#endif
 
 #if 0
                 NewContext *ctxt;

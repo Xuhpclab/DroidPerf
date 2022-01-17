@@ -43,7 +43,8 @@ extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_set<jmethodID> method_id_list2;
 extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
 //extern thread_local std::vector<jmethodID> method_vec;
-extern thread_local std::vector<jmethodID> ctxt_stack;
+//extern thread_local std::vector<jmethodID> ctxt_stack;
+extern thread_local std::unordered_map<jmethodID, int> ctxt_stack;
 thread_local NewContext *last_level_ctxt = nullptr;
 thread_local jmethodID current_method_id;
 thread_local int fg = 0;
@@ -298,6 +299,7 @@ void JVM::loadAllMethodIDs(jvmtiEnv* jvmti) {
 void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
                          jclass klass, jlong size) {
+#if 0
     BLOCK_SAMPLE;
     object_alloc_counter[object] += 1;
     OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
@@ -385,12 +387,14 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
     } // ctxt_tree
 #endif
     UNBLOCK_SAMPLE;
+#endif
 }
 
 void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
+    BLOCK_SAMPLE;
     current_method_id = method;
+    ctxt_stack.clear();
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
-#if 1
     if (output_stream) {
         jint start_depth = 0;
         jvmtiFrameInfo frame_buffer[64];
@@ -398,31 +402,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
         jint count_ptr;
         last_level_ctxt = nullptr;
 
-        char *name_ptr = NULL;
-        jclass declaring_class_ptr;
-        JvmtiScopedPtr<char> declaringClassName;
-        (JVM::jvmti())->GetMethodName(method, &name_ptr, NULL, NULL);
-        (JVM::jvmti())->GetMethodDeclaringClass(method, &declaring_class_ptr);
-        (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
-
-        std::string str(name_ptr);
-        std::string _class_name;
-        _class_name = declaringClassName.get();
-        _class_name = _class_name.substr(1, _class_name.length() - 2);
-        std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-        _class_name.append(".java");
-
-//        ALOGI("method name: %s", str.c_str());
-        ctxt_stack.push_back(method);
-
-        if(method_id_list.find(method) == method_id_list.end()) {
-//            ctxt_stack.push_back(method);
-            output_stream->writef("%d %s %s\n", method, name_ptr, _class_name.c_str());
-            method_id_list.insert(method);
-        }
-
-
-#if 0
         if ((JVM::jvmti())->GetStackTrace(NULL, start_depth, max_frame_count, frame_buffer,
                                           &count_ptr) == JVMTI_ERROR_NONE) {
 
@@ -432,8 +411,6 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 leaf: 最后leaf单拿出来，不求linenumber（不放入method_id_list2）
              */
 
-//            for (int i = 0; i < count_ptr; ++i) {
-            int i;
             for (int i = count_ptr - 1; i >= 0; i--) {
                 int lineNumber = 0;
                 int lineCount = 0;
@@ -452,12 +429,10 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 std::replace(_class_name.begin(), _class_name.end(), '/', '.');
                 _class_name.append(".java");
 
-                ALOGI("i: %d, method name: %s", i, str.c_str());
-
 //                if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != 0) { // not find this method id && not leaf
+                if (i == count_ptr - 1) { // not find this method id && not leaf
 //                    method_id_list2.insert(frame_buffer[i].method);
 
-#if 0
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -468,38 +443,15 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[j].line_number;
                         }
                     }
-#endif
 
-                    NewContextFrame ctxt_frame;
-                    ctxt_frame.method_id = frame_buffer[i].method;
-                    ctxt_frame.method_name = str;
-                    ctxt_frame.source_file = _class_name;
-                    ctxt_frame.src_lineno = lineNumber;
-
-                    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
-                    if (ctxt_tree) {
-                        if (last_level_ctxt == nullptr) {
-                            last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
-                        } else {
-                            last_level_ctxt = ctxt_tree->addContext(last_level_ctxt, ctxt_frame);
-                        }
-                    }
-//                } // if
-
-#if 0
-                if (i == 0) { // leaf
-                    NewContextFrame ctxt_frame;
-                    ctxt_frame.method_id = frame_buffer[i].method;
-                    ctxt_frame.method_name = str;
-                    ctxt_frame.source_file = _class_name;
-                    ctxt_frame.src_lineno = 1;
-
-                    NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
-                    if (ctxt_tree) {
-                        last_level_ctxt = ctxt_tree->addContext((uint32_t) CONTEXT_TREE_ROOT_ID, ctxt_frame);
-                    }
+//                    ctxt_stack.push_back(frame_buffer[i].method);
                 }
-#endif
+
+//                if (i == 0) { // leaf
+//                    ctxt_stack.push_back(frame_buffer[i].method);
+//                }
+
+                ctxt_stack[frame_buffer[i].method] = lineNumber;
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
                     output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
@@ -508,12 +460,13 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
             } // for
         } // GetStackTrace
-#endif
     } // output_stream
-#endif
+    UNBLOCK_SAMPLE;
 }
 
 void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
+#if 0
+    BLOCK_SAMPLE;
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
 //        if(method_id_list.find(method) != method_id_list.end() && !ctxt_stack.empty()) {
@@ -523,6 +476,8 @@ void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
 //            ALOGI("ctxt_stack.pop_back");
         }
     }
+    UNBLOCK_SAMPLE;
+#endif
 }
 
 /////////////
