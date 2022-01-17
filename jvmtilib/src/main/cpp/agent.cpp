@@ -40,7 +40,7 @@ bool onload_flag = false;
 int flaggg = 0;
 static jlong address123 = NULL;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
-extern thread_local std::unordered_set<jmethodID> method_id_list2;
+//extern thread_local std::unordered_set<jmethodID> method_id_list2;
 extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
 //extern thread_local std::vector<jmethodID> method_vec;
 //extern thread_local std::vector<jmethodID> ctxt_stack;
@@ -427,14 +427,9 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 _class_name = declaringClassName.get();
                 _class_name = _class_name.substr(1, _class_name.length() - 2);
                 std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-                _class_name.append(".JA");
+                _class_name.append(".java");
 
-//                if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end()) { // not find this method id && not leaf
-//                if ( (i >= count_ptr-3) && (i <= count_ptr-1) && _class_name.find("java.") == std::string::npos) { // leaf
-                if (i == 0) {
-//                if (_class_name.find("java.") == std::string::npos) {
-//                    method_id_list2.insert(frame_buffer[i].method);
-
+                if (i != 0) { //get line number for call stack, except leaf
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineNumber = lineTable[0].line_number;
@@ -445,13 +440,9 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                             lineNumber = lineTable[j].line_number;
                         }
                     }
-
-//                    ctxt_stack.push_back(frame_buffer[i].method);
                 }
 
-//                if (i == 0) { // leaf
-//                    ctxt_stack.push_back(frame_buffer[i].method);
-//                }
+                (JVM::jvmti())->Deallocate((unsigned char*)lineTable); // important, solve oom
 
                 ctxt_stack[frame_buffer[i].method] = lineNumber;
 

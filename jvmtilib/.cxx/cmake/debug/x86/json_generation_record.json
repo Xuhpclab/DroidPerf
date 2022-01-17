@@ -25,12 +25,6 @@
   },
   {
     "level": "INFO",
-    "message": "CMake \u00273.18.1\u0027 found in SDK did not match requested version \u00273.10.2\u0027.",
-    "file": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/CMakeLists.txt",
-    "tag": "debug|x86"
-  },
-  {
-    "level": "INFO",
     "message": "JSON \u0027/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/android_gradle_build.json\u0027 was up-to-date",
     "file": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/CMakeLists.txt",
     "tag": "debug|x86"
