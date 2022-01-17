@@ -411,7 +411,7 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 leaf: 最后leaf单拿出来，不求linenumber（不放入method_id_list2）
              */
 
-            for (int i = count_ptr - 1; i >= 0; i--) {
+            for (int i = 0; i < count_ptr; i++) { //i:0 leaf
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;
@@ -427,10 +427,12 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 _class_name = declaringClassName.get();
                 _class_name = _class_name.substr(1, _class_name.length() - 2);
                 std::replace(_class_name.begin(), _class_name.end(), '/', '.');
-                _class_name.append(".java");
+                _class_name.append(".JA");
 
-//                if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end() && i != 0) { // not find this method id && not leaf
-                if (i == count_ptr - 1) { // not find this method id && not leaf
+//                if (method_id_list2.find(frame_buffer[i].method) == method_id_list2.end()) { // not find this method id && not leaf
+//                if ( (i >= count_ptr-3) && (i <= count_ptr-1) && _class_name.find("java.") == std::string::npos) { // leaf
+                if (i == 0) {
+//                if (_class_name.find("java.") == std::string::npos) {
 //                    method_id_list2.insert(frame_buffer[i].method);
 
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,

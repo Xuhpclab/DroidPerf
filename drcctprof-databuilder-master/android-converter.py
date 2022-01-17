@@ -141,7 +141,7 @@ if __name__ == "__main__":
             temp_trace = temp[0].split(" ")
             for frame in temp_trace:
                 # if frame.split(":")[1] not in method_id_list:
-                    # print(frame.split(":")[1])
+                    # print(frame.split(":")[1]) 
                 trace['t'].append([frame.split(":")[1], frame.split(":")[0]])
             # print(trace['t'])
             
@@ -153,7 +153,9 @@ if __name__ == "__main__":
                 ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
                 ctxt = context_array[ctxt_id]
                 # print(ctxt_id)
-                contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
+                # print(ctxt["mid"])
+                if ctxt["mid"] in method_map:
+                    contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList)
     # builder.generateProfile("./Documents/access.drcctprof")  
