@@ -37,6 +37,10 @@ extern bool jni_flag;
 extern bool onload_flag;
 static SpinLock output_lock;
 
+thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
+thread_local std::unordered_map<jobject, int> object_alloc_counter;
+thread_local std::vector<std::pair<jmethodID, int>> callpath_vec;
+
 uint64_t GCCounter = 0;
 thread_local uint64_t localGCCounter = 0;
 uint64_t grandTotWrittenBytes = 0;
@@ -73,96 +77,30 @@ thread_local uint64_t storePeriod = 0;
 
 thread_local void *prevIP = (void *)0;
 
-//static std::unordered_map<uint64_t, OUTPUT*> map_method = {};
-//static std::unordered_map<uint64_t, OUTPUT*> map_trace = {};
-
-thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
-//thread_local std::unordered_set<jmethodID> method_id_list2; // determine whether get line number
-thread_local std::unordered_map<jobject, int> object_alloc_counter;
-//thread_local std::vector<jmethodID> ctxt_stack;
-thread_local std::unordered_map<jmethodID, int> ctxt_stack;
-extern thread_local jmethodID current_method_id;
-thread_local int fff = 0;
-
 namespace {
 
     NewContext *constructContext(ASGCT_FN asgct, void *uCtxt, uint64_t ip, NewContext *ctxt, jmethodID method_id, uint32_t method_version, int object_numa_node) {
-#if 1
         NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
         if (ctxt_tree != nullptr) {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             if (output_stream_trace) {
                 int threshold = 100000000;
-                std::unordered_map<jmethodID , int>::iterator it = ctxt_stack.begin();
-                std::unordered_map<jmethodID , int>::iterator it_temp;
-                while (it != ctxt_stack.end()) {
-                    if (it == ctxt_stack.begin()) {
-                        output_stream_trace->writef("%d:%d ", it->second, it->first); //line number:method id
-                        it_temp = it;
-                    } else {
-                        if (it->first != it_temp->first) {
-                            output_stream_trace->writef("%d:%d ", it->second, it->first); //line number:method id
-                            it_temp = it;
-                        }
-                    }
-                    it++;
-                }
-                if (ctxt_stack.size() >= 1)
-                    output_stream_trace->writef("|%d\n", threshold);
-
-#if 0
-                for (auto i : ctxt_stack) {
+                for (int i = 0; i < callpath_vec.size(); i++) {
                     if (i == 0) {
-                        output_stream_trace->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
+                        output_stream_trace->writef("%d:%d ", callpath_vec[i].second, callpath_vec[i].first); //line number:method id
                     } else {
-                        if (ctxt_stack[i] != ctxt_stack[i-1])
-                            output_stream_trace->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
+                        if (callpath_vec[i].first != callpath_vec[i-1].first)
+                            output_stream_trace->writef("%d:%d ", callpath_vec[i].second, callpath_vec[i].first); //line number:method id
                     }
                 }
-                if (ctxt_stack.size() >= 1)
+                if (callpath_vec.size() >= 1)
                     output_stream_trace->writef("|%d\n", threshold);
-#endif
-
-#if 0
-                NewContext *ctxt;
-                int threshold = 100000000;
-                for (auto elem : (*ctxt_tree)) {
-                    NewContext *ctxt_ptr = elem;
-                    jmethodID method_id = ctxt_ptr->getFrame().method_id;
-                    if (method_id == current_method_id) {
-                        ctxt = ctxt_ptr;
-                        output_stream_trace->writef("%d:%d ", ctxt_ptr->getFrame().src_lineno, method_id); //leaf
-//                        ALOGI("Write access leaf node");
-                        fff = 1;
-                        break;
-                    }
-                }
-
-                if (fff == 1) {
-                    fff = 0;
-                    ctxt = ctxt->getParent();
-                    while (ctxt != nullptr) {
-                        jmethodID method_id = ctxt->getFrame().method_id;
-                        if (method_id != 0) {
-                            output_stream_trace->writef("%d:%d ", ctxt->getFrame().src_lineno,
-                                                        method_id);
-                        }
-                        ctxt = ctxt->getParent();
-                    }
-                    output_stream_trace->writef("|%d\n", threshold);
-                }
-
-                if (fff == 1) {
-                    fff = 0;
-                    output_stream_trace->writef("|%d\n", threshold);
-                }
-#endif
+                
             } // output_stream_trace
-        } // ctxt_tree != nullptr
-#endif
+        } // ctxt_tree
         return nullptr;
     }
-
+    
 }
 
 void Profiler::OnSample(int eventID, perf_sample_data_t *sampleData, void *uCtxt, int metric_id1, int metric_id2, int metric_id3) {
@@ -277,11 +215,8 @@ void Profiler::threadStart() {
     totalGenericCounter = 0;
     totalPMUCounter = 0;
     method_id_list.clear();
-//    method_id_list2.clear();
     object_alloc_counter.clear();
-    current_method_id = 0;
-    fff = 0;
-    ctxt_stack.clear();
+    callpath_vec.clear();
 
 
     ThreadData::thread_data_alloc();

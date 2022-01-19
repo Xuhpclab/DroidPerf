@@ -38,16 +38,10 @@ extern interval_tree_node *splay_tree_root;
 bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
-static jlong address123 = NULL;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
-//extern thread_local std::unordered_set<jmethodID> method_id_list2;
 extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
-//extern thread_local std::vector<jmethodID> method_vec;
-//extern thread_local std::vector<jmethodID> ctxt_stack;
-extern thread_local std::unordered_map<jmethodID, int> ctxt_stack;
+extern thread_local std::vector<std::pair<jmethodID, int>> callpath_vec;
 thread_local NewContext *last_level_ctxt = nullptr;
-thread_local jmethodID current_method_id;
-thread_local int fg = 0;
 
 void JVM::parseArgs(const char *arg) {
     _argument = new(std::nothrow) Argument(arg);
@@ -299,24 +293,7 @@ void JVM::loadAllMethodIDs(jvmtiEnv* jvmti) {
 void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
                          jclass klass, jlong size) {
-#if 0
     BLOCK_SAMPLE;
-    object_alloc_counter[object] += 1;
-    OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
-    if (output_stream_alloc) {
-        for (int i = 0; i < ctxt_stack.size(); i++) {
-            if (i == 0) {
-                output_stream_alloc->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
-            } else {
-                if (ctxt_stack[i] != ctxt_stack[i-1])
-                    output_stream_alloc->writef("%d:%d ", 0, ctxt_stack[i]); //line number:method id
-            }
-        }
-        if (ctxt_stack.size() >= 1)
-            output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
-    }
-
-#if 0
     object_alloc_counter[object] += 1;
     jint start_depth = 0;
     jvmtiFrameInfo frame_buffer[10];
@@ -332,7 +309,6 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
             jstring name = static_cast<jstring>(jni->CallObjectMethod(klass, mid_getName));
 #endif
 
-#if 1
             if ((JVM::jvmti())->GetStackTrace(thread, start_depth, max_frame_count, frame_buffer,
                                               &count_ptr) == JVMTI_ERROR_NONE) {
 
@@ -348,7 +324,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                         int lineNumber = 0;
                         int lineCount = 0;
                         jvmtiLineNumberEntry *lineTable = NULL;
-#if 0
+
                         if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[k].method, &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
                             lineNumber = lineTable[0].line_number;
                             for (int j = 1; j < lineCount; j++) {
@@ -358,9 +334,8 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                 lineNumber = lineTable[j].line_number; //line number of every node from root k
                             }
                         }
-#endif
+                        (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
 
-//                        for (int i = 0; i <= k; ++i) { // k is the leaf node; 1/9: wrong, k is root, 0 is leaf
                         inside = 1;
                         char *name_ptr = NULL;
                         jclass declaring_class_ptr;
@@ -382,18 +357,14 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                 if (inside == 1)
                     output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
             }// GetStackTrace
-#endif
         }// output_stream_alloc
     } // ctxt_tree
-#endif
     UNBLOCK_SAMPLE;
-#endif
 }
 
-void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
+void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
     BLOCK_SAMPLE;
-    current_method_id = method;
-    ctxt_stack.clear();
+    callpath_vec.clear();
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
         jint start_depth = 0;
@@ -404,14 +375,8 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
 
         if ((JVM::jvmti())->GetStackTrace(NULL, start_depth, max_frame_count, frame_buffer,
                                           &count_ptr) == JVMTI_ERROR_NONE) {
-
-            /*
-             for (int i = 0; i < count_ptr - 1; ++i)
-                非leaf: 只要遇到以前没处理过的method，就get line number，反之就不做
-                leaf: 最后leaf单拿出来，不求linenumber（不放入method_id_list2）
-             */
-
-            for (int i = 0; i < count_ptr; i++) { //i:0 leaf
+            
+            for (int i = count_ptr-1; i >= 0; i--) { //i:0 leaf
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;
@@ -443,8 +408,8 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
                 }
 
                 (JVM::jvmti())->Deallocate((unsigned char*)lineTable); // important, solve oom
-
-                ctxt_stack[frame_buffer[i].method] = lineNumber;
+                
+                callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber));
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
                     output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
@@ -457,16 +422,16 @@ void MethoddEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodI
     UNBLOCK_SAMPLE;
 }
 
-void MethoddExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
+void MethodExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
 #if 0
     BLOCK_SAMPLE;
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
-//        if(method_id_list.find(method) != method_id_list.end() && !ctxt_stack.empty()) {
-            if(method_id_list.find(method) != method_id_list.end() && method == ctxt_stack.back()) {
+//        if(method_id_list.find(method) != method_id_list.end() && !callpath_vec.empty()) {
+            if(method_id_list.find(method) != method_id_list.end() && method == callpath_vec.back()) {
 //            output_stream->writef("exit: %d\n", method);
-            ctxt_stack.pop_back();
-//            ALOGI("ctxt_stack.pop_back");
+            callpath_vec.pop_back();
+//            ALOGI("callpath_vec.pop_back");
         }
     }
     UNBLOCK_SAMPLE;
@@ -518,7 +483,7 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_get_line_numbers = 1;
 
     capa.can_generate_method_entry_events = 1; // This one must be enabled in order to get the stack trace
-    capa.can_generate_method_exit_events = 1;
+    capa.can_generate_method_exit_events = 0;
 //    capa.can_generate_compiled_method_load_events = 1;
 
     capa.can_retransform_classes = 1;
@@ -545,8 +510,8 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     callbacks.GarbageCollectionFinish = &callbackGCEnd;
     callbacks.ClassLoad = &callbackClassLoad;
     callbacks.ClassPrepare = &callbackClassPrepare;
-    callbacks.MethodEntry = &MethoddEntry;
-    callbacks.MethodExit = &MethoddExit;
+    callbacks.MethodEntry = &MethodEntry;
+    callbacks.MethodExit = &MethodExit;
 //    callbacks.CompiledMethodLoad = &callbackCompiledMethodLoad;
 //    callbacks.CompiledMethodUnload = &callbackCompiledMethodUnload;
 
