@@ -138,114 +138,6 @@ void JNICALL callbackGCEnd(jvmtiEnv *jvmti) {
     UNBLOCK_SAMPLE;
 }
 
-# if 0
-static void JNICALL callbackMethodEntry(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread, jmethodID method) {
-}
-
-static void JNICALL callbackException(jvmtiEnv *jvmti_env, JNIEnv* jni_env, jthread thread, jmethodID method, jlocation location, jobject exception, jmethodID catch_method, jlocation catch_location) {
-}
-
-static void JNICALL callbackNativeMethodBind(jvmtiEnv *jvmti_env, JNIEnv* jni_env, jthread thread, jmethodID method, void* address, void** new_address_ptr) {
-    BLOCK_SAMPLE;
-    JvmtiScopedPtr<char> methodName;
-    (JVM::jvmti())->GetMethodName( method, methodName.getRef(), NULL, NULL);
-    INFO("callbackNativeMethodBind %s\n", methodName.get());
-    UNBLOCK_SAMPLE;
-}
-#endif
-
-#if 0
-void JNICALL callbackCompiledMethodLoad(jvmtiEnv *jvmti_env, jmethodID method, jint code_size, const void* code_addr, jint map_length, const jvmtiAddrLocationMap* map, const void* compile_info) {
-//    BLOCK_SAMPLE;
-    ALOGI("callbackCompiledMethodLoad invoked");
-    //The Loaded method can be native
-    // JvmtiScopedPtr<char> methodName;
-    // jvmtiError err = (JVM::jvmti())->GetMethodName( method, methodName.getRef(), NULL, NULL);
-    // INFO("CompiledMethodLoad %d MethodID %lx, MethodName %s, start %lx\n", TD_GET(tid),(uint64_t)method, methodName.get(), (uint64_t) code_addr);
-
-#if 0 // examine inline information
-    const jvmtiCompiledMethodLoadRecordHeader *header;
-  uint64_t first_pc = UINT64_MAX;
-  for (header = (jvmtiCompiledMethodLoadRecordHeader *) compile_info; header != NULL; header = header->next) {
-    if (header->kind == JVMTI_CMLR_INLINE_INFO){
-        first_pc = map_length > 0 ? (uint64_t)map[0].start_address : 0;
-        decode_method(code_addr, (void *)((uint64_t)code_addr + code_size -1), (const void *)first_pc);
-        for (int i = 0; i < map_length; ++i) {
-            fflush(stdout);
-        }
-        const jvmtiCompiledMethodLoadInlineRecord *record = (jvmtiCompiledMethodLoadInlineRecord *) header;
-        for(int i=0; i < record->numpcs; i++){
-	        PCStackInfo* pcinfo = &(record->pcinfo[i]);
-	        if (first_pc > (uint64_t)pcinfo->pc)
-                first_pc = (uint64_t)pcinfo->pc;
-            // for(int j=0; j < pcinfo->numstackframes;j++){
-            // }
-        }
-        */
-    }
-  }
-#endif
-
-#if 0
-    CompiledMethod *m = Profiler::getProfiler().getCodeCacheManager().addMethodAndRemoveFromUncompiledSet(method, code_size, code_addr, map_length, map);
-    // CompiledMethod *m = Profiler::getProfiler().getCodeCacheManager().addMethod(method, code_size, code_addr, map_length, map);
-    // Profiler::getProfiler().getUnCompiledMethodCache().removeMethod(method);
-    xml::XMLObj *obj = xml::createXMLObj(m);
-#ifndef COUNT_OVERHEAD
-    Profiler::getProfiler().output_method(obj->getXMLStr().c_str());
-#endif
-    delete obj;
-    obj = nullptr;
-    INFO("CompiledMethodLoad finish\n");
-    UNBLOCK_SAMPLE;
-#endif
-}
-
-static void JNICALL callbackCompiledMethodUnload(jvmtiEnv *jvmti_env, jmethodID method, const void* code_addr) {
-    BLOCK_SAMPLE;
-    ALOGI("callbackCompiledMethodUnload invoked");
-    Profiler::getProfiler().getCodeCacheManager().removeMethod(method, code_addr);
-    UNBLOCK_SAMPLE;
-}
-#endif
-
-# if 0
-static void JNICALL callbackGCRelocationReclaim(jvmtiEnv *jvmti_env, const char* new_addr, const void* old_addr, jint length) {
-    if (splay_tree_root != NULL) {
-        void* startaddress;
-        interval_tree_node *del_tree;
-        int flag = length;
-        // handle GC relocation
-        if (flag != 0) {
-            void* new_startingAddr = (void*)new_addr;
-            void* old_startingAddr = (void*)old_addr;
-            uint64_t size = length;
-            uint64_t endingAddr = (uint64_t)new_startingAddr + size;
-
-            tree_lock.lock();
-            interval_tree_node *p = SplayTree::interval_tree_lookup(&splay_tree_root, old_startingAddr, &startaddress);
-            if (p != NULL) {
-                Context *ctxt = p->node_ctxt;
-                SplayTree::interval_tree_delete(&splay_tree_root, &del_tree, p);
-                interval_tree_node *node = SplayTree::node_make(new_startingAddr, (void*)endingAddr, ctxt);
-                SplayTree::interval_tree_insert(&splay_tree_root, node);
-            }
-            tree_lock.unlock();
-        }
-            // handle GC reclaim
-        else {
-            void* old_startingAddr = (void*)old_addr;
-            tree_lock.lock();
-            interval_tree_node *p = SplayTree::interval_tree_lookup(&splay_tree_root, old_startingAddr, &startaddress);
-            if (p != NULL) {
-                SplayTree::interval_tree_delete(&splay_tree_root, &del_tree, p);
-            }
-            tree_lock.unlock();
-        }
-    }
-}
-#endif
-
 // This has to be here, or the VM turns off class loading events.
 // And AsyncGetCallTrace needs class loading events to be turned on!
 static void JNICALL callbackClassLoad(jvmtiEnv *jvmti, JNIEnv* jni_env, jthread thread, jclass klass) {
@@ -423,19 +315,6 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
 }
 
 void MethodExit(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method, jboolean was_popped_by_exception, jvalue return_value) {
-#if 0
-    BLOCK_SAMPLE;
-    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
-    if (output_stream) {
-//        if(method_id_list.find(method) != method_id_list.end() && !callpath_vec.empty()) {
-            if(method_id_list.find(method) != method_id_list.end() && method == callpath_vec.back()) {
-//            output_stream->writef("exit: %d\n", method);
-            callpath_vec.pop_back();
-//            ALOGI("callpath_vec.pop_back");
-        }
-    }
-    UNBLOCK_SAMPLE;
-#endif
 }
 
 /////////////
@@ -484,7 +363,6 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
 
     capa.can_generate_method_entry_events = 1; // This one must be enabled in order to get the stack trace
     capa.can_generate_method_exit_events = 0;
-//    capa.can_generate_compiled_method_load_events = 1;
 
     capa.can_retransform_classes = 1;
     capa.can_retransform_any_class = 1;
@@ -495,10 +373,6 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_generate_vm_object_alloc_events = 1;
 
     error = _jvmti->AddCapabilities(&capa);
-//    if (error != 0) {
-//        ALOGI("something not support here, error code is %d", error);
-//    }
-// check_jvmti_error(error, "Unable to get necessary JVMTI capabilities.");
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.VMObjectAlloc = &ObjectAllocCallback;
@@ -512,8 +386,6 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     callbacks.ClassPrepare = &callbackClassPrepare;
     callbacks.MethodEntry = &MethodEntry;
     callbacks.MethodExit = &MethodExit;
-//    callbacks.CompiledMethodLoad = &callbackCompiledMethodLoad;
-//    callbacks.CompiledMethodUnload = &callbackCompiledMethodUnload;
 
     error = _jvmti->SetEventCallbacks(&callbacks, (jint)sizeof(callbacks));
     check_jvmti_error(error, "Cannot set jvmti callbacks");
@@ -573,22 +445,6 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM* jvm, char* options, void* reserved) 
     BLOCK_SAMPLE;
     ALOGI("Agent_OnLoad start");
     JVM::init(jvm, options, true);
-
-#if 0
-    onload_flag = false;
-    jni_flag = true;
-    if(options[strlen(options)-1] == 's') {
-        printf("profiler start\n");
-        ALOGI("profiler start");
-        options[strlen(options)-1] = '\0';
-        // JVM::init(jvm, options, true);
-    }
-    else {
-        printf("profiler end\n");
-        JVM::shutdown();
-    }
-#endif
-
     UNBLOCK_SAMPLE;
     return JNI_OK;
 }
@@ -599,27 +455,7 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM* jvm, char* options, void* reserved) 
 JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM *jvm, char *options, void *reserved) {
     BLOCK_SAMPLE;
     ALOGI("Agent_OnAttach start");
-//    std::ofstream outfile ("/data/user/0/skynet.cputhrottlingtest/test.txt");
-//    std::ofstream outfile ("/data/user/0/com.dodola.jvmti/test.txt");
-//    outfile << "my text here!" << std::endl;
-//    outfile.close();
     JVM::init(jvm, options, true);
-
-#if 0
-    onload_flag = false;
-    jni_flag = true;
-    if(options[strlen(options)-1] == 's') {
-        printf("profiler start\n");
-        ALOGI("profiler start");
-        options[strlen(options)-1] = '\0';
-        // JVM::init(jvm, options, true);
-    }
-    else {
-        printf("profiler end\n");
-        JVM::shutdown();
-    }
-#endif
-
     UNBLOCK_SAMPLE;
     return 0;
 }

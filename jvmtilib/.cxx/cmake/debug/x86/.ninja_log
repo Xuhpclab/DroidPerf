@@ -93,3 +93,5 @@
 1418	1640	1642559177	../../../../build/intermediates/cmake/debug/obj/x86/libjvmti_agent.so	7d56c0d41d0b22d3
 4	1559	1642559208	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	ad085f42eb77ea11
 1559	1794	1642559208	../../../../build/intermediates/cmake/debug/obj/x86/libjvmti_agent.so	7d56c0d41d0b22d3
+4	1214	1642606351	CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o	20a33cd83272e375
+1214	1449	1642606352	../../../../build/intermediates/cmake/debug/obj/x86/libjvmti_agent.so	7d56c0d41d0b22d3
