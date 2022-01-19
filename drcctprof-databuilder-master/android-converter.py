@@ -123,6 +123,8 @@ if __name__ == "__main__":
         method_id_list = []
         for line in mf:
             temp = line.split(" ")
+            if len(temp) < 3:
+              continue
             method_map[int(temp[0])] = {
                 "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
                 "file_path": get_file_path(temp[2], "")
@@ -183,6 +185,8 @@ if __name__ == "__main__":
         } }
         for line in mf:
             temp = line.split(" ")
+            if len(temp) < 3:
+              continue
             method_map[int(temp[0])] = {
                 "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
                 "file_path": get_file_path(temp[2], "")
@@ -192,7 +196,7 @@ if __name__ == "__main__":
         for line in tf:
             trace = {}
             if line.find(" |") == -1:
-              continue;
+              continue
             temp = line.split(" |")
             trace['t'] = []
             trace['m'] = int(temp[1])
