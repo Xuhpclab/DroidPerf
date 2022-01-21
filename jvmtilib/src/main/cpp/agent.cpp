@@ -236,7 +236,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                         (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[k].method, &declaring_class_ptr);
                         (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
 
-                        std::string str(name_ptr);
+//                        std::string str(name_ptr);
                         std::string _class_name;
                         _class_name = declaringClassName.get();
                         _class_name = _class_name.substr(1, _class_name.length() - 2);
@@ -272,6 +272,10 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 int lineNumber = 0;
                 int lineCount = 0;
                 jvmtiLineNumberEntry *lineTable = NULL;
+                int lineBegin = 0;
+                int lineEnd = 0;
+                std::string method_line_number_scope = "";
+
                 char *name_ptr = NULL;
                 jclass declaring_class_ptr;
                 JvmtiScopedPtr<char> declaringClassName;
@@ -279,7 +283,6 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[i].method, &declaring_class_ptr);
                 (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
 
-                std::string str(name_ptr);
                 std::string _class_name;
                 _class_name = declaringClassName.get();
                 _class_name = _class_name.substr(1, _class_name.length() - 2);
@@ -289,6 +292,9 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 if (i != 0) { //get line number for call stack, except leaf
                     if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[i].method, &lineCount,
                                                            &lineTable) == JVMTI_ERROR_NONE) {
+                        lineBegin = lineTable[0].line_number;
+                        lineEnd = lineTable[lineCount-1].line_number;
+                        method_line_number_scope = "[" + std::to_string(lineBegin) + ":" + std::to_string(lineEnd) + "]";
                         lineNumber = lineTable[0].line_number;
                         for (int j = 1; j < lineCount; j++) {
                             if (frame_buffer[i].location < lineTable[j].start_location) {
@@ -300,11 +306,13 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 }
 
                 (JVM::jvmti())->Deallocate((unsigned char*)lineTable); // important, solve oom
-                
+
                 callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber));
 
-                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
-                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
+                std::string str(name_ptr);
+                str = str + method_line_number_scope;
+                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end() && method_line_number_scope != "") {
+                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, str.c_str(), _class_name.c_str());
                     method_id_list.insert(frame_buffer[i].method);
                 }
 
