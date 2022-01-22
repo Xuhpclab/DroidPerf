@@ -39,7 +39,7 @@ static SpinLock output_lock;
 
 thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
 thread_local std::unordered_map<jobject, int> object_alloc_counter;
-thread_local std::vector<std::pair<jmethodID, int>> callpath_vec;
+thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 
 uint64_t GCCounter = 0;
 thread_local uint64_t localGCCounter = 0;
@@ -87,10 +87,10 @@ namespace {
                 int threshold = 100000000;
                 for (int i = 0; i < callpath_vec.size(); i++) {
                     if (i == 0) {
-                        output_stream_trace->writef("%d:%d ", callpath_vec[i].second, callpath_vec[i].first); //line number:method id
+                        output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id
                     } else {
                         if (callpath_vec[i].first != callpath_vec[i-1].first)
-                            output_stream_trace->writef("%d:%d ", callpath_vec[i].second, callpath_vec[i].first); //line number:method id
+                            output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id
                     }
                 }
                 if (callpath_vec.size() >= 1)

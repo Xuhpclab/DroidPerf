@@ -40,7 +40,7 @@ bool onload_flag = false;
 int flaggg = 0;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
-extern thread_local std::vector<std::pair<jmethodID, int>> callpath_vec;
+extern thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 thread_local NewContext *last_level_ctxt = nullptr;
 
 void JVM::parseArgs(const char *arg) {
@@ -236,7 +236,6 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                         (JVM::jvmti())->GetMethodDeclaringClass(frame_buffer[k].method, &declaring_class_ptr);
                         (JVM::jvmti())->GetClassSignature(declaring_class_ptr, declaringClassName.getRef(), NULL);
 
-//                        std::string str(name_ptr);
                         std::string _class_name;
                         _class_name = declaringClassName.get();
                         _class_name = _class_name.substr(1, _class_name.length() - 2);
@@ -274,7 +273,7 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 jvmtiLineNumberEntry *lineTable = NULL;
                 int lineBegin = 0;
                 int lineEnd = 0;
-                std::string method_line_number_scope = "";
+                std::string lineNumber_scope = "0";
 
                 char *name_ptr = NULL;
                 jclass declaring_class_ptr;
@@ -294,7 +293,6 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                                                            &lineTable) == JVMTI_ERROR_NONE) {
                         lineBegin = lineTable[0].line_number;
                         lineEnd = lineTable[lineCount-1].line_number;
-                        method_line_number_scope = "[" + std::to_string(lineBegin) + ":" + std::to_string(lineEnd) + "]";
                         lineNumber = lineTable[0].line_number;
                         for (int j = 1; j < lineCount; j++) {
                             if (frame_buffer[i].location < lineTable[j].start_location) {
@@ -302,17 +300,17 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                             }
                             lineNumber = lineTable[j].line_number;
                         }
+                        lineNumber_scope = std::to_string(lineNumber);
+                        lineNumber_scope = lineNumber_scope + "0" + std::to_string(lineBegin) + "0" + std::to_string(lineEnd);
                     }
                 }
 
                 (JVM::jvmti())->Deallocate((unsigned char*)lineTable); // important, solve oom
 
-                callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber));
+                callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber_scope));
 
-                std::string str(name_ptr);
-                str = str + method_line_number_scope;
-                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end() && method_line_number_scope != "") {
-                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, str.c_str(), _class_name.c_str());
+                if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
+                    output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
                     method_id_list.insert(frame_buffer[i].method);
                 }
 
