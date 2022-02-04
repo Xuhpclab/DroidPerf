@@ -161,7 +161,7 @@ if __name__ == "__main__":
             # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList)
     # builder.generateProfile("./Documents/access.drcctprof")  
-    builder.generateProfile("./access.drcctprof")  
+    builder.generateProfile("./results/access.drcctprof")  
 
     builder2 = ddb.Builder()
     builder2.addMetricType(1, "cpu cycle", "cpu cycle")
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             if key_not_exist == 0:
               builder2.addSample(contextMsgList, metricMsgList)
     # builder2.generateProfile("./Documents/alloc.drcctprof")  
-    builder2.generateProfile("./alloc.drcctprof")
+    builder2.generateProfile("./results/alloc.drcctprof")
 
      
 

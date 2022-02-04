@@ -162,20 +162,11 @@ Profiler::Profiler() {
 
 void Profiler::init() {
     ALOGI("Profiler::init invoked");
-#ifndef COUNT_OVERHEAD
-//    _method_file.open("/data/user/0/skynet.cputhrottlingtest/agent-trace-method.run");
-//    _method_file.open("/data/user/0/com.dodola.jvmti/agent-trace-method.run");
-//    _method_file << XML_FILE_HEADER << std::endl;
-#endif
-//    _rdx_file.open("rdx.run");
-//    _statistics_file.open("/data/user/0/skynet.cputhrottlingtest/agent-statistics.run");
-//    _statistics_file.open("/data/user/0/com.dodola.jvmti/agent-statistics.run");
     ThreadData::thread_data_init();
 
     assert(PerfManager::processInit(JVM::getArgument()->getPerfEventList(), Profiler::OnSample));
 //    assert(WP_Init());
     std::string client_name = GetClientName();
-//    ALOGI("client name: %s", client_name.c_str());
     std::transform(client_name.begin(), client_name.end(), std::back_inserter(clientName), ::toupper);
 }
 
@@ -200,7 +191,6 @@ void Profiler::IncrementGCCouter() {
 }
 
 void Profiler::threadStart() {
-//    ALOGI("Profiler::threadStart invoked");
     totalWrittenBytes = 0;
     totalLoadedBytes = 0;
     totalUsedBytes = 0;
@@ -224,8 +214,6 @@ void Profiler::threadStart() {
     assert(ct_tree);
     TD_GET(context_state) = reinterpret_cast<void *>(ct_tree);
 
-
-#if 1
     char name_buffer[128];
 //    snprintf(name_buffer, 128,
 //             "/data/user/0/skynet.cputhrottlingtest/method-thread-%u.run",
@@ -240,9 +228,6 @@ void Profiler::threadStart() {
 
 
     char name_buffer_trace[128];
-//    snprintf(name_buffer_trace, 128,
-//             "/data/user/0/skynet.cputhrottlingtest/trace-thread-%u.run",
-//             TD_GET(tid));
     snprintf(name_buffer_trace, 128,
              "/sdcard/Documents/trace-thread-%u.run",
              TD_GET(tid));
@@ -252,9 +237,6 @@ void Profiler::threadStart() {
     TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
 
     char name_buffer_alloc[128];
-//    snprintf(name_buffer_alloc, 128,
-//             "/data/user/0/skynet.cputhrottlingtest/alloc-thread-%u.run",
-//             TD_GET(tid));
     snprintf(name_buffer_alloc, 128,
              "/sdcard/Documents/alloc-thread-%u.run",
              TD_GET(tid));
@@ -262,45 +244,12 @@ void Profiler::threadStart() {
     assert(output_stream_alloc);
     output_stream_alloc->setFileName(name_buffer_alloc);
     TD_GET(output_state_alloc) = reinterpret_cast<void *> (output_stream_alloc);
-#endif
-
-
-    // settup the output
-    {
-#if 0
-        #ifdef COUNT_OVERHEAD
-        char name_buffer[128];
-        snprintf(name_buffer, 128, "/data/user/0/skynet.cputhrottlingtest/agent-trace-%u.run", TD_GET(tid));
-        OUTPUT *output_stream = new(std::nothrow) OUTPUT();
-        assert(output_stream);
-        output_stream->setFileName(name_buffer);
-        output_stream->writef("%s\n", XML_FILE_HEADER);
-        TD_GET(output_state) = reinterpret_cast<void *> (output_stream);
-#endif
-#endif
-//#ifdef PRINT_PMU_INS
-//        std::ofstream *pmu_ins_output_stream = new(std::nothrow) std::ofstream();
-//        char file_name[128];
-//        snprintf(file_name, 128, "pmu-instruction-%u", TD_GET(tid));
-//        pmu_ins_output_stream->open(file_name, std::ios::app);
-//        TD_GET(pmu_ins_output_stream) = reinterpret_cast<void *>(pmu_ins_output_stream);
-//#endif
-//    }
-//    if (clientName.compare(DEADSTORE_CLIENT_NAME) == 0) assert(WP_ThreadInit(Profiler::OnDeadStoreWatchPoint));
-//    else if (clientName.compare(SILENTSTORE_CLIENT_NAME) == 0) assert(WP_ThreadInit(Profiler::OnRedStoreWatchPoint));
-//    else if (clientName.compare(SILENTLOAD_CLIENT_NAME) == 0) assert(WP_ThreadInit(Profiler::OnRedLoadWatchPoint));
-//    else if (clientName.compare(REUSE_DISTANCE) == 0) assert(WP_ThreadInit(Profiler::OnReuseDistanceWatchPoint));
-//    else if (clientName.compare(DATA_CENTRIC_CLIENT_NAME) != 0 && clientName.compare(NUMANODE_CLIENT_NAME) != 0 && clientName.compare(GENERIC) != 0 && clientName.compare(HEAP) != 0 && clientName.compare(ALLOCATION_TIMES) != 0) {
-//        ERROR("Can't decode client %s", clientName.c_str());
-//        assert(false);
-    }
 
     PopulateBlackListAddresses();
     PerfManager::setupEvents();
 }
 
 void Profiler::threadEnd() {
-//    ALOGI("Profiler::threadEnd invoked");
     if (clientName.compare(GENERIC) != 0 && clientName.compare(HEAP) != 0 && clientName.compare(ALLOCATION_TIMES) != 0) {
 //        PerfManager::closeEvents();
     }
@@ -309,47 +258,6 @@ void Profiler::threadEnd() {
     }
     NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *>(TD_GET(context_state));
 
-#if 0
-    OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
-    std::unordered_set<Context *> dump_ctxt = {};
-
-    if (ctxt_tree != nullptr) {
-        for (auto elem : (*ctxt_tree)) {
-            Context *ctxt_ptr = elem;
-
-            jmethodID method_id = ctxt_ptr->getFrame().method_id;
-            _code_cache_manager.checkAndMoveMethodToUncompiledSet(method_id);
-
-            // if (ctxt_ptr->getMetrics() != nullptr && ((ctxt_ptr->getMetrics())->getMetricVal(0))->i > 10 && dump_ctxt.find(ctxt_ptr) == dump_ctxt.end()) { // leaf node of the redundancy pair
-            if (ctxt_ptr->getMetrics() != nullptr && dump_ctxt.find(ctxt_ptr) == dump_ctxt.end()) { // leaf node of the redundancy pair
-                dump_ctxt.insert(ctxt_ptr);
-                xml::XMLObj *obj;
-                obj = xml::createXMLObj(ctxt_ptr);
-                if (obj != nullptr) {
-                    output_stream->writef("%s", obj->getXMLStr().c_str());
-                    delete obj;
-                } else continue;
-
-                ctxt_ptr = ctxt_ptr->getParent();
-                while (ctxt_ptr != nullptr && dump_ctxt.find(ctxt_ptr) == dump_ctxt.end()) {
-                    dump_ctxt.insert(ctxt_ptr);
-                    obj = xml::createXMLObj(ctxt_ptr);
-                    if (obj != nullptr) {
-                        output_stream->writef("%s", obj->getXMLStr().c_str());
-                        delete obj;
-                    }
-                    ctxt_ptr = ctxt_ptr->getParent();
-                }
-            }
-        }
-    }
-
-    //clean up the output stream
-    delete output_stream;
-    TD_GET(output_state) = nullptr;
-#endif
-
-#if 1
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     delete output_stream;
     TD_GET(output_state) = nullptr;
@@ -361,7 +269,6 @@ void Profiler::threadEnd() {
     OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
     delete output_stream_alloc;
     TD_GET(output_state_alloc) = nullptr;
-#endif
 
     //clean up the context state
     delete ctxt_tree;
@@ -400,7 +307,6 @@ void Profiler::threadEnd() {
         __sync_fetch_and_add(&grandTotGenericCounter, totalGenericCounter);
         __sync_fetch_and_add(&grandTotPMUCounter, totalPMUCounter);
     } else {    //attach mode
-//        ALOGI("Profiler::threadEnd invoked attach mode");
         output_lock.lock();
         grandTotWrittenBytes += totalWrittenBytes;
         grandTotLoadedBytes += totalLoadedBytes;
@@ -419,15 +325,6 @@ void Profiler::threadEnd() {
         output_statistics();
         output_lock.unlock();
     }
-
-//    for (auto it : map_method) {
-//        delete it.second;
-//    }
-//
-//    for (auto it : map_trace) {
-//        delete it.second;
-//    }
-
 }
 
 int Profiler::output_method(const char *buf) {
