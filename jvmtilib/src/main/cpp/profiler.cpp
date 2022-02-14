@@ -38,7 +38,7 @@ extern bool onload_flag;
 static SpinLock output_lock;
 
 thread_local std::unordered_set<jmethodID> method_id_list; // determine whether output to method.run
-thread_local std::unordered_map<jobject, int> object_alloc_counter;
+thread_local std::unordered_map<jobject, uint64_t> object_alloc_counter;
 thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 
 uint64_t GCCounter = 0;

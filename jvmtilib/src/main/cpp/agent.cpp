@@ -39,7 +39,7 @@ bool jni_flag = false;
 bool onload_flag = false;
 int flaggg = 0;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
-extern thread_local std::unordered_map<jobject, int> object_alloc_counter;
+extern thread_local std::unordered_map<jobject, uint64_t> object_alloc_counter;
 extern thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 thread_local NewContext *last_level_ctxt = nullptr;
 
@@ -186,7 +186,10 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
                          jclass klass, jlong size) {
     BLOCK_SAMPLE;
-    object_alloc_counter[object] += 1;
+//    object_alloc_counter[object] += 1;
+    uint64_t obj_size = size;
+    object_alloc_counter[object] += obj_size;
+
     jint start_depth = 0;
     jvmtiFrameInfo frame_buffer[10];
     jint max_frame_count = 10;
@@ -241,7 +244,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                 } // for loop
 
                 if (inside == 1)
-                    output_stream_alloc->writef("|%d\n", object_alloc_counter[object]);
+                    output_stream_alloc->writef("|%ld\n", object_alloc_counter[object]);
             }// GetStackTrace
         }// output_stream_alloc
     } // ctxt_tree
