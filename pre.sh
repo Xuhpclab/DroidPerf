@@ -1,12 +1,12 @@
 # cputhrottlingtest
 # prepare
-cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
-adb push libjvmti_agent.so /sdcard/Download
-adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/skynet.cputhrottlingtest
-adb shell rm -f ./sdcard/Documents/*.run*
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/skynet.cputhrottlingtest
+# adb shell rm -f ./sdcard/Documents/*.run*
 
-# run
-adb shell cmd activity attach-agent 7825 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+# run1
+# adb shell cmd activity attach-agent 11020 /data/user/0/skynet.cputhrottlingtest/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # ContentProvider
@@ -33,8 +33,43 @@ adb shell cmd activity attach-agent 7825 /data/user/0/skynet.cputhrottlingtest/l
 # adb shell cmd activity attach-agent 3380 /data/user/0/org.rajawali3d.examples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
+# MediaPicker
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/net.alhazmy13.mediapickerexample
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 12345 /data/user/0/net.alhazmy13.mediapickerexample/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
+# Leak Canary
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/com.example.leakcanary
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 14514 /data/user/0/com.example.leakcanary/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+
+
+# Stetho
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/com.facebook.stetho.sample
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 28792 /data/user/0/com.facebook.stetho.sample/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+
+
+# Applozic
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/com.mobicomkit.sample
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 9015 /data/user/0/com.mobicomkit.sample/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+
+
+cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+adb push libjvmti_agent.so /sdcard/Download
+adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/io.getstream.chat.ui.sample.debug
+adb shell rm -f ./sdcard/Documents/*.run*
+adb shell cmd activity attach-agent 24984 /data/user/0/io.getstream.chat.ui.sample.debug/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # geekbench5
