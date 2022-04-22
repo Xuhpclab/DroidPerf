@@ -18,11 +18,11 @@
 
 
 # dns66
-# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
-# adb push libjvmti_agent.so /sdcard/Download
-# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/org.jak_linux.dns66
-# adb shell rm -f ./sdcard/Documents/*.run*
-# adb shell cmd activity attach-agent 21530 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+adb push libjvmti_agent.so /sdcard/Download
+adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/org.jak_linux.dns66
+adb shell rm -f ./sdcard/Documents/*.run*
+adb shell cmd activity attach-agent 27846 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # Rajawali
@@ -65,11 +65,28 @@
 # adb shell cmd activity attach-agent 9015 /data/user/0/com.mobicomkit.sample/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
-cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
-adb push libjvmti_agent.so /sdcard/Download
-adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/io.getstream.chat.ui.sample.debug
-adb shell rm -f ./sdcard/Documents/*.run*
-adb shell cmd activity attach-agent 24984 /data/user/0/io.getstream.chat.ui.sample.debug/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+# RxAndroid
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/io.reactivex.rxjava3.android.samples
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 22011 /data/user/0/io.reactivex.rxjava3.android.samples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+
+
+# foxydroid
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/nya.kitsunyan.foxydroid
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 26368 /data/user/0/nya.kitsunyan.foxydroid/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+
+
+# Twire
+# cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+# adb push libjvmti_agent.so /sdcard/Download
+# adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/com.perflyst.twire.debug
+# adb shell rm -f ./sdcard/Documents/*.run*
+# adb shell cmd activity attach-agent 13141 /data/user/0/com.perflyst.twire.debug/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # geekbench5

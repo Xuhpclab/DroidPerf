@@ -41,6 +41,7 @@ int flaggg = 0;
 extern thread_local std::unordered_set<jmethodID> method_id_list;
 extern thread_local std::unordered_map<jobject, uint64_t> object_alloc_counter;
 extern thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
+extern uint64_t active_memory_usage;
 thread_local NewContext *last_level_ctxt = nullptr;
 
 void JVM::parseArgs(const char *arg) {
@@ -182,13 +183,20 @@ void JVM::loadAllMethodIDs(jvmtiEnv* jvmti) {
     }
 }
 
+void ObjectFreeCallback(jvmtiEnv *jvmti_env, jlong tag) {
+    ALOGI("ObjectFreeCallback is working");
+    uint64_t obj_size = tag;
+    __sync_fetch_and_sub(&active_memory_usage, obj_size);
+}
+
 void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                          jthread thread, jobject object,
                          jclass klass, jlong size) {
     BLOCK_SAMPLE;
-//    object_alloc_counter[object] += 1;
+    object_alloc_counter[object] += 1;
     uint64_t obj_size = size;
-    object_alloc_counter[object] += obj_size;
+    __sync_fetch_and_add(&active_memory_usage, obj_size);
+//    object_alloc_counter[object] += obj_size;
 
     jint start_depth = 0;
     jvmtiFrameInfo frame_buffer[10];
@@ -251,9 +259,53 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
     UNBLOCK_SAMPLE;
 }
 
+
+#if 0
+JNICALL jint objectCountingCallback(jlong class_tag, jlong size, jlong* tag_ptr, jint length, void* user_data)
+{
+    int* count = (int*) user_data;
+    *count += 1;
+    return JVMTI_VISIT_OBJECTS;
+}
+
+static jvmtiIterationControl JNICALL accumulateHeap(jlong class_tag, jlong size, jlong* tag_ptr, void* user_data) {
+    jint *total;
+    total = (jint *)user_data;
+    (*total)+=size;
+    return JVMTI_ITERATION_CONTINUE;
+}
+
+jlong getCurrentHeapMemory() {
+    jint totalCount = 0;
+    jint rc;
+    jclass klass;
+    jvmtiHeapCallbacks callbacks;
+    (void)memset(&callbacks, 0, sizeof(callbacks));
+    callbacks.heap_iteration_callback = &objectCountingCallback;
+//    rc = (JVM::jvmti())->IterateOverHeap((jvmtiHeapObjectFilter)0 ,&accumulateHeap,&totalCount);
+    rc = (JVM::jvmti())->IterateThroughHeap(0, klass, &callbacks, &totalCount);
+    if (rc != JVMTI_ERROR_NONE) {
+//        ALOGI("callbackThreadEnd invoked, tid : %d", TD_GET(tid));
+        ALOGI("Iterating over heap objects failed, returning error %d",rc);
+        return 0;
+    } else {
+        ALOGI("Heap memory calculated %d", totalCount);
+    }
+    return totalCount;
+}
+#endif
+
+
+
+
+
+
+
 void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID method) {
     BLOCK_SAMPLE;
     callpath_vec.clear();
+
+//    getCurrentHeapMemory();
     OUTPUT *output_stream = reinterpret_cast<OUTPUT *>(TD_GET(output_state));
     if (output_stream) {
         jint start_depth = 0;
@@ -375,11 +427,13 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     capa.can_generate_monitor_events = 1;
     capa.can_tag_objects = 1;
     capa.can_generate_vm_object_alloc_events = 1;
+    capa.can_generate_object_free_events = 1;
 
     error = _jvmti->AddCapabilities(&capa);
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.VMObjectAlloc = &ObjectAllocCallback;
+    callbacks.ObjectFree = &ObjectFreeCallback;
     callbacks.VMInit = &callbackVMInit;
     callbacks.VMDeath = &callbackVMDeath;
     callbacks.ThreadStart = &callbackThreadStart;
@@ -398,6 +452,8 @@ bool JVM::init(JavaVM *jvm, const char *arg, bool attach) {
     // Init events:
     _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_GARBAGE_COLLECTION_START, (jthread)NULL);
     error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_VM_OBJECT_ALLOC, NULL);
+    check_jvmti_error(error, "Cannot set event notification");
+    error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_OBJECT_FREE, NULL);
     check_jvmti_error(error, "Cannot set event notification");
     error = _jvmti->SetEventNotificationMode(JVMTI_ENABLE, JVMTI_EVENT_VM_INIT, (jthread)NULL);
     check_jvmti_error(error, "Cannot set event notification");
