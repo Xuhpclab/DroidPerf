@@ -84,20 +84,41 @@ namespace {
         NewContextTree *ctxt_tree = reinterpret_cast<NewContextTree *> (TD_GET(context_state));
         if (ctxt_tree != nullptr) {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
+            OUTPUT *output_stream_cachemiss = reinterpret_cast<OUTPUT *>(TD_GET(output_state_cachemiss));
             if (output_stream_trace) {
-//                int threshold = 100000000;
+                int threshold = 100000000;
                 for (int i = 0; i < callpath_vec.size(); i++) {
                     if (i == 0) {
                         output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id
                     } else {
-                        if (callpath_vec[i].first != callpath_vec[i-1].first)
-                            output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id
+                        if (callpath_vec[i].first != callpath_vec[i-1].first) {
+                            output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(),
+                                                        callpath_vec[i].first); //line number:method id
+                        }
                     }
                 }
-                if (callpath_vec.size() >= 1)
+                if (callpath_vec.size() >= 1) {
                     output_stream_trace->writef("|%d\n", active_memory_usage);
-                
+                }
             } // output_stream_trace
+
+            if (output_stream_cachemiss) {
+                int threshold = 100000000;
+                for (int i = 0; i < callpath_vec.size(); i++) {
+                    if (i == 0) {
+                        output_stream_cachemiss->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first);
+                    } else {
+                        if (callpath_vec[i].first != callpath_vec[i-1].first) {
+                            output_stream_cachemiss->writef("%s:%d ", callpath_vec[i].second.c_str(),
+                                                            callpath_vec[i].first);
+                        }
+                    }
+                }
+                if (callpath_vec.size() >= 1) {
+                    output_stream_cachemiss->writef("|%d\n", threshold);
+                }
+            } // output_stream_cachemiss
+
         } // ctxt_tree
         return nullptr;
     }
@@ -237,6 +258,7 @@ void Profiler::threadStart() {
     output_stream_trace->setFileName(name_buffer_trace);
     TD_GET(output_state_trace) = reinterpret_cast<void *> (output_stream_trace);
 
+
     char name_buffer_alloc[128];
     snprintf(name_buffer_alloc, 128,
              "/sdcard/Documents/alloc-thread-%u.run",
@@ -245,6 +267,17 @@ void Profiler::threadStart() {
     assert(output_stream_alloc);
     output_stream_alloc->setFileName(name_buffer_alloc);
     TD_GET(output_state_alloc) = reinterpret_cast<void *> (output_stream_alloc);
+
+
+    char name_buffer_cachemiss[128];
+    snprintf(name_buffer_cachemiss, 128,
+             "/sdcard/Documents/cachemiss-thread-%u.run",
+             TD_GET(tid));
+    OUTPUT *output_stream_cachemiss = new(std::nothrow) OUTPUT();
+    assert(output_stream_cachemiss);
+    output_stream_cachemiss->setFileName(name_buffer_cachemiss);
+    TD_GET(output_state_cachemiss) = reinterpret_cast<void *> (output_stream_cachemiss);
+
 
     PopulateBlackListAddresses();
     PerfManager::setupEvents();
@@ -270,6 +303,10 @@ void Profiler::threadEnd() {
     OUTPUT *output_stream_alloc = reinterpret_cast<OUTPUT *>(TD_GET(output_state_alloc));
     delete output_stream_alloc;
     TD_GET(output_state_alloc) = nullptr;
+
+    OUTPUT *output_stream_cachemiss = reinterpret_cast<OUTPUT *>(TD_GET(output_state_cachemiss));
+    delete output_stream_cachemiss;
+    TD_GET(output_state_cachemiss) = nullptr;
 
     //clean up the context state
     delete ctxt_tree;

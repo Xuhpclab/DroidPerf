@@ -4,6 +4,7 @@ adb pull /sdcard/Documents .
 
 code ./results/access.drcctprof
 code ./results/alloc.drcctprof
+code ./results/cachemiss.drcctprof
 
 # code ./Documents/access.drcctprof
 # code ./Documents/alloc.drcctprofclear

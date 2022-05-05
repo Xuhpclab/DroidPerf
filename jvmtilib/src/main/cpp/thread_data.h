@@ -22,6 +22,7 @@ typedef struct thread_data_t {
     void *output_state;
     void *output_state_trace;
     void *output_state_alloc;
+    void *output_state_cachemiss;
 #endif
     void *ctxt_sample_state[4]; // only have 4 debug registers
 #ifdef PRINT_PMU_INS
