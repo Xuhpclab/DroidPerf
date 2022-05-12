@@ -41,6 +41,9 @@ thread_local std::unordered_set<jmethodID> method_id_list; // determine whether 
 thread_local std::unordered_map<jobject, uint64_t> object_alloc_counter;
 thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 
+std::unordered_set<std::string> object_live_cycle = {};
+SpinLock object_cyc_lock;
+
 uint64_t active_memory_usage = 0;
 uint64_t GCCounter = 0;
 thread_local uint64_t localGCCounter = 0;
@@ -87,6 +90,12 @@ namespace {
             OUTPUT *output_stream_cachemiss = reinterpret_cast<OUTPUT *>(TD_GET(output_state_cachemiss));
             if (output_stream_trace) {
                 int threshold = 100000000;
+
+                std::string obj_info = "";
+                for (auto str = object_live_cycle.begin(); str != object_live_cycle.end(); str++) {
+                    obj_info = obj_info + "|" + (*str);
+                }
+
                 for (int i = 0; i < callpath_vec.size(); i++) {
                     if (i == 0) {
                         output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id

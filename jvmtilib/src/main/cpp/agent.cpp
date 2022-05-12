@@ -44,6 +44,9 @@ extern thread_local std::vector<std::pair<jmethodID, std::string>> callpath_vec;
 extern uint64_t active_memory_usage;
 thread_local NewContext *last_level_ctxt = nullptr;
 
+extern std::unordered_set<std::string> object_live_cycle;
+extern SpinLock object_cyc_lock;
+
 void JVM::parseArgs(const char *arg) {
     _argument = new(std::nothrow) Argument(arg);
     assert(_argument);
@@ -198,6 +201,17 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
     __sync_fetch_and_add(&active_memory_usage, obj_size);
 //    object_alloc_counter[object] += obj_size;
 
+    jlong object_tag;
+    (JVM::jvmti())->GetTag(object, &object_tag);
+    uint64_t obj_tag = object_tag;
+
+    JvmtiScopedPtr<char> declaringClassName;
+    (JVM::jvmti())->GetClassSignature(klass, declaringClassName.getRef(), NULL);
+    std::string _class_name;
+    _class_name = declaringClassName.get();
+    _class_name = _class_name.substr(1, _class_name.length() - 2);
+    std::replace(_class_name.begin(), _class_name.end(), '/', '.');
+
     jint start_depth = 0;
     jvmtiFrameInfo frame_buffer[10];
     jint max_frame_count = 10;
@@ -229,6 +243,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                         jvmtiLineNumberEntry *lineTable = NULL;
                         int lineBegin = 0;
                         int lineEnd = 0;
+                        std::string lineNumber_ = "0";
                         std::string lineNumber_scope = "0";
 
                         if ((JVM::jvmti())->GetLineNumberTable(frame_buffer[k].method, &lineCount, &lineTable) == JVMTI_ERROR_NONE) {  // get leaf line number
@@ -241,8 +256,21 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                 }
                                 lineNumber = lineTable[j].line_number; //line number of every node from root k
                             }
-                            lineNumber_scope = std::to_string(lineNumber);
-                            lineNumber_scope = lineNumber_scope + "0" + std::to_string(lineBegin) + "0" + std::to_string(lineEnd);
+                            lineNumber_ = std::to_string(lineNumber);
+                            lineNumber_scope = lineNumber_ + "0" + std::to_string(lineBegin) + "0" + std::to_string(lineEnd);
+
+                            if (!_class_name.empty() && obj_size > 24 &&
+                                _class_name.find("java.") == std::string::npos &&
+                                _class_name.find("android.") == std::string::npos &&
+                                _class_name.find("dalvik.") == std::string::npos &&
+                                _class_name.find("sun.") == std::string::npos) {
+                                _class_name.append(".java");
+                                ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
+                                std::string obj_identifier = _class_name + ";LN:" + lineNumber_ + ";" + std::to_string(obj_size) + ";" + std::to_string(obj_tag);
+                                object_cyc_lock.lock();
+                                object_live_cycle.insert(obj_identifier);
+                                object_cyc_lock.unlock();
+                            }
                         }
                         (JVM::jvmti())->Deallocate((unsigned char*)lineTable);
 
@@ -360,6 +388,7 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber_scope));
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
+                    _class_name = "[blablabla]" + _class_name;
                     output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
                     method_id_list.insert(frame_buffer[i].method);
                 }
