@@ -81,8 +81,6 @@ if __name__ == "__main__":
     dirname = "Documents"
 
     dirname_full_path = os.path.abspath(dirname)
-    builder = ddb.Builder()
-    builder.addMetricType(1, "cpu cycle", "cpu cycle")
 
     threadProfileMap = {}
     filelist=os.listdir(dirname_full_path)
@@ -106,65 +104,71 @@ if __name__ == "__main__":
           if content == "cachemiss":
             cachemiss_thread.append(key)
 
-    # for key in cachemiss_thread:
-    #     i = 0
-    #     for content in threadProfileMap[key]:
-    #       i = i + 1
-    #     if i < 2:
-    #       continue;
-    #     method_file = threadProfileMap[key]["method"]
-    #     cachemiss_file = threadProfileMap[key]["cachemiss"]
+    builder = ddb.Builder()
+    builder.addMetricType(1, "cpu cycle", "cpu cycle")
 
-    #     mf = open(dirname_full_path+"/"+method_file);
-    #     method_map = {-1:{
-    #         "name": "ROOT",
-    #         "file_path": " "
-    #     }, 0:{
-    #         "name": "<NULL>",
-    #         "file_path": " "
-    #     } }
-    #     method_id_list = []
-    #     for line in mf:
-    #         temp = line.split(" ")
-    #         if len(temp) < 3:
-    #           continue
-    #         method_map[int(temp[0])] = {
-    #             "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
-    #             "file_path": get_file_path(temp[2], "")
-    #         }
-    #         method_id_list.append(int(temp[0]))
-    #     # print(method_id_list)
-    #     tf = open(dirname_full_path+"/"+cachemiss_file);
-    #     trace_map = []
-    #     for line in tf:
-    #         trace = {}
-    #         if line.find(" |") == -1:
-    #             continue;
-    #         temp = line.split(" |")
-    #         trace['t'] = []
-    #         trace['m'] = int(temp[1])
-    #         temp_trace = temp[0].split(" ")
-    #         for frame in temp_trace:
-    #             # if frame.split(":")[1] not in method_id_list:
-    #                 # print(frame.split(":")[1]) 
-    #             trace['t'].append([frame.split(":")[1], frame.split(":")[0]])
-    #         # print(trace['t'])
+    for key in cachemiss_thread:
+        i = 0
+        for content in threadProfileMap[key]:
+          i = i + 1
+        if i < 2:
+          continue;
+        method_file = threadProfileMap[key]["method"]
+        cachemiss_file = threadProfileMap[key]["cachemiss"]
+
+        mf = open(dirname_full_path+"/"+method_file);
+        method_map = {-1:{
+            "name": "ROOT",
+            "file_path": " "
+        }, 0:{
+            "name": "<NULL>",
+            "file_path": " "
+        } }
+        method_id_list = []
+        for line in mf:
+            temp = line.split(" ")
+            if len(temp) < 3:
+              continue
+            method_map[int(temp[0])] = {
+                "name": get_file_path(temp[2], "").rstrip() + "." + temp[1],
+                "file_path": get_file_path(temp[2], "")
+            }
+            method_id_list.append(int(temp[0]))
+        # print(method_id_list)
+        tf = open(dirname_full_path+"/"+cachemiss_file);
+        trace_map = []
+        for line in tf:
+            trace = {}
+            if line.find(" |") == -1:
+                continue;
+            temp = line.split(" |")
+            trace['t'] = []
+            trace['m'] = int(temp[1])
+            temp_trace = temp[0].split(" ")
+            for frame in temp_trace:
+                # if frame.split(":")[1] not in method_id_list:
+                    # print(frame.split(":")[1]) 
+                trace['t'].append([frame.split(":")[1], frame.split(":")[0]])
+            # print(trace['t'])
             
-    #         metricMsgList = [ddb.MetricMsg(0, trace['m'], "")]
-    #         contextMsgList = []
-    #         # contextMsgList.append(ddb.ContextMsg(1, "", "ROOT", "ROOT", 0, 0))
-    #         for i in range(len(trace['t'])):
-    #             # print(trace['t'][0:i+1])
-    #             ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
-    #             ctxt = context_array[ctxt_id]
-    #             # print(ctxt_id)
-    #             # print(ctxt["mid"])
-    #             if ctxt["mid"] in method_map:
-    #                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
-    #         # print(len(contextMsgList))
-    #         builder.addSample(contextMsgList, metricMsgList)
-    # # builder.generateProfile("./Documents/access.drcctprof")  
-    # builder.generateProfile("./results/cachemiss.drcctprof")
+            metricMsgList = [ddb.MetricMsg(0, trace['m'], "")]
+            contextMsgList = []
+            # contextMsgList.append(ddb.ContextMsg(1, "", "ROOT", "ROOT", 0, 0))
+            for i in range(len(trace['t'])):
+                # print(trace['t'][0:i+1])
+                ctxt_id = getContextId(context_root, trace['t'][0:i + 1])
+                ctxt = context_array[ctxt_id]
+                # print(ctxt_id)
+                # print(ctxt["mid"])
+                if ctxt["mid"] in method_map:
+                    contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
+            # print(len(contextMsgList))
+            builder.addSample(contextMsgList, metricMsgList) 
+    builder.generateProfile("./Results/cachemiss.drcctprof")
+
+
+    builder2 = ddb.Builder()
+    builder2.addMetricType(1, "cpu cycle", "cpu cycle")
 
     for key in trace_thread:
         i = 0
@@ -233,15 +237,15 @@ if __name__ == "__main__":
                       index2 = lst2.find(']')
                       new2 = lst2[index2+1:]
                       contextMsgList.append(ddb.ContextMsg(ctxt_id, new, new2, new2, ctxt["lineNo"], ctxt["lineNo"]))
-                      
+                      # contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
                       
             # print(len(contextMsgList))
-            builder.addSample(contextMsgList, metricMsgList)
-    # builder.generateProfile("./Documents/access.drcctprof")  
-    builder.generateProfile("./Results/access.drcctprof")  
+            builder2.addSample(contextMsgList, metricMsgList) 
+    builder2.generateProfile("./Results/access.drcctprof")  
 
-    builder2 = ddb.Builder()
-    builder2.addMetricType(1, "cpu cycle", "cpu cycle")
+
+    builder3 = ddb.Builder()
+    builder3.addMetricType(1, "cpu cycle", "cpu cycle")
 
     for key in alloc_thread:
         i = 0
@@ -296,9 +300,8 @@ if __name__ == "__main__":
                 contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             if key_not_exist == 0:
-              builder2.addSample(contextMsgList, metricMsgList)
-    # builder2.generateProfile("./Documents/alloc.drcctprof")  
-    builder2.generateProfile("./Results/alloc.drcctprof")
+              builder3.addSample(contextMsgList, metricMsgList) 
+    builder3.generateProfile("./Results/alloc.drcctprof")
 
      
 
