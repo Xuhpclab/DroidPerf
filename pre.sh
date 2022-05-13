@@ -22,7 +22,7 @@ cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debu
 adb push libjvmti_agent.so /sdcard/Download
 adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/org.jak_linux.dns66
 adb shell rm -f ./sdcard/Documents/*.run*
-adb shell cmd activity attach-agent 26966 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+adb shell cmd activity attach-agent 9275 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # Rajawali
@@ -30,7 +30,7 @@ adb shell cmd activity attach-agent 26966 /data/user/0/org.jak_linux.dns66/libjv
 # adb push libjvmti_agent.so /sdcard/Download
 # adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/org.rajawali3d.examples
 # adb shell rm -f ./sdcard/Documents/*.run*
-# adb shell cmd activity attach-agent 3380 /data/user/0/org.rajawali3d.examples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+# adb shell cmd activity attach-agent 8898 /data/user/0/org.rajawali3d.examples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # MediaPicker
@@ -70,7 +70,7 @@ adb shell cmd activity attach-agent 26966 /data/user/0/org.jak_linux.dns66/libjv
 # adb push libjvmti_agent.so /sdcard/Download
 # adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/io.reactivex.rxjava3.android.samples
 # adb shell rm -f ./sdcard/Documents/*.run*
-# adb shell cmd activity attach-agent 22011 /data/user/0/io.reactivex.rxjava3.android.samples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+# adb shell cmd activity attach-agent 8689 /data/user/0/io.reactivex.rxjava3.android.samples/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # foxydroid

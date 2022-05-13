@@ -46,6 +46,7 @@ thread_local NewContext *last_level_ctxt = nullptr;
 
 extern std::unordered_set<std::string> object_live_cycle;
 extern SpinLock object_cyc_lock;
+static std::string object_info = "";
 
 void JVM::parseArgs(const char *arg) {
     _argument = new(std::nothrow) Argument(arg);
@@ -188,8 +189,23 @@ void JVM::loadAllMethodIDs(jvmtiEnv* jvmti) {
 
 void ObjectFreeCallback(jvmtiEnv *jvmti_env, jlong tag) {
     ALOGI("ObjectFreeCallback is working");
-    uint64_t obj_size = tag;
-    __sync_fetch_and_sub(&active_memory_usage, obj_size);
+    uint64_t obj_tag = tag;
+    __sync_fetch_and_sub(&active_memory_usage, obj_tag);
+
+    object_cyc_lock.lock();
+    object_info = ""; //clear obj_info
+    for (auto it = object_live_cycle.begin(); it != object_live_cycle.end(); it++) {
+        std::string str = *it;
+        int index = str.find("#");
+        std::string tag_inset = str.substr(index+1);
+        if (obj_tag == std::stoi(tag_inset)) {
+            object_live_cycle.erase(it);
+            continue;
+        }
+        object_info = object_info + str.substr(0, index);
+    }
+    object_cyc_lock.unlock();
+
 }
 
 void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
@@ -266,9 +282,11 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                 _class_name.find("sun.") == std::string::npos) {
                                 _class_name.append(".java");
                                 ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
-                                std::string obj_identifier = _class_name + ";LN:" + lineNumber_ + ";" + std::to_string(obj_size) + ";" + std::to_string(obj_tag);
+                                std::string obj_identifier = _class_name + ";LN" + lineNumber_ + ";sz" + std::to_string(obj_size) + "#" + std::to_string(obj_tag);
+                                std::string obj_short_identifier = _class_name + ";LN" + lineNumber_ + ";sz" + std::to_string(obj_size);
                                 object_cyc_lock.lock();
                                 object_live_cycle.insert(obj_identifier);
+                                object_info = object_info + "[" + obj_short_identifier + "]";
                                 object_cyc_lock.unlock();
                             }
                         }
@@ -388,7 +406,7 @@ void MethodEntry(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jthread thread, jmethodID
                 callpath_vec.push_back(std::make_pair(frame_buffer[i].method, lineNumber_scope));
 
                 if(method_id_list.find(frame_buffer[i].method) == method_id_list.end()) {
-                    _class_name = "[blablabla]" + _class_name;
+                    _class_name = object_info + _class_name;
                     output_stream->writef("%d %s %s\n", frame_buffer[i].method, name_ptr, _class_name.c_str());
                     method_id_list.insert(frame_buffer[i].method);
                 }
