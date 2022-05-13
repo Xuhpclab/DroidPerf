@@ -22,7 +22,7 @@ cd /Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debu
 adb push libjvmti_agent.so /sdcard/Download
 adb shell cp /sdcard/Download/libjvmti_agent.so /data/user/0/org.jak_linux.dns66
 adb shell rm -f ./sdcard/Documents/*.run*
-adb shell cmd activity attach-agent 9275 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
+adb shell cmd activity attach-agent 20686 /data/user/0/org.jak_linux.dns66/libjvmti_agent.so=Generic::CYCLES:precise=2@100000000
 
 
 # Rajawali

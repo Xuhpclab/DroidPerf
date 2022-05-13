@@ -1,18 +1,2 @@
 ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-[1/2] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
-../../../../src/main/cpp/agent.cpp:289:116: warning: format specifies type 'int' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
-                                ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
-                                            ~~                                                                     ^~~~~~~
-                                            %llu
-../../../../src/main/cpp/agent.cpp:34:67: note: expanded from macro 'ALOGI'
-#define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-                                                                  ^~~~~~~~~~~
-../../../../src/main/cpp/agent.cpp:289:167: warning: format specifies type 'int' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
-                                ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
-                                                                                                              ~~                                                      ^~~~~~~~
-                                                                                                              %llu
-../../../../src/main/cpp/agent.cpp:34:67: note: expanded from macro 'ALOGI'
-#define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-                                                                  ^~~~~~~~~~~
-2 warnings generated.
-[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so
+ninja: no work to do.

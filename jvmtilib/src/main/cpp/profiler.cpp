@@ -89,13 +89,7 @@ namespace {
             OUTPUT *output_stream_trace = reinterpret_cast<OUTPUT *>(TD_GET(output_state_trace));
             OUTPUT *output_stream_cachemiss = reinterpret_cast<OUTPUT *>(TD_GET(output_state_cachemiss));
             if (output_stream_trace) {
-                int threshold = 100000000;
-
-                std::string obj_info = "";
-                for (auto str = object_live_cycle.begin(); str != object_live_cycle.end(); str++) {
-                    obj_info = obj_info + "|" + (*str);
-                }
-
+//                int threshold = 100000000;
                 for (int i = 0; i < callpath_vec.size(); i++) {
                     if (i == 0) {
                         output_stream_trace->writef("%s:%d ", callpath_vec[i].second.c_str(), callpath_vec[i].first); //line number:method id

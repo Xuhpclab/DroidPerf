@@ -93,3 +93,6 @@
 2523	2835	1652377502	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so	e0e51283d2bde704
 4	2445	1652404098	CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o	96f686caa1ebe73
 2445	2849	1652404098	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so	e0e51283d2bde704
+17	1970	1652461491	CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o	161276bef60fc08a
+16	1970	1652461491	CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o	96f686caa1ebe73
+1970	2264	1652461491	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so	e0e51283d2bde704

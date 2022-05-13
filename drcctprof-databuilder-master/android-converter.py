@@ -161,7 +161,15 @@ if __name__ == "__main__":
                 # print(ctxt_id)
                 # print(ctxt["mid"])
                 if ctxt["mid"] in method_map:
-                    contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
+                    lst = method_map[ctxt["mid"]]["file_path"]
+                    index = lst.rfind(']')
+                    new = lst[index+1:]
+
+                    lst2 = method_map[ctxt["mid"]]['name']
+                    index2 = lst2.rfind(']')
+                    new2 = lst2[index2+1:]
+                    contextMsgList.append(ddb.ContextMsg(ctxt_id, new, new2, new2, ctxt["lineNo"], ctxt["lineNo"]))
+                    # contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             builder.addSample(contextMsgList, metricMsgList) 
     builder.generateProfile("./Results/cachemiss.drcctprof")
@@ -297,7 +305,16 @@ if __name__ == "__main__":
                 if ctxt["mid"] not in method_map:
                   key_not_exist = 1
                   break;
-                contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
+
+                lst = method_map[ctxt["mid"]]["file_path"]
+                index = lst.rfind(']')
+                new = lst[index+1:]
+
+                lst2 = method_map[ctxt["mid"]]['name']
+                index2 = lst2.rfind(']')
+                new2 = lst2[index2+1:]
+                contextMsgList.append(ddb.ContextMsg(ctxt_id, new, new2, new2, ctxt["lineNo"], ctxt["lineNo"]))
+                # contextMsgList.append(ddb.ContextMsg(ctxt_id, method_map[ctxt["mid"]]["file_path"], method_map[ctxt["mid"]]['name'], method_map[ctxt["mid"]]['name'], ctxt["lineNo"], ctxt["lineNo"]))
             # print(len(contextMsgList))
             if key_not_exist == 0:
               builder3.addSample(contextMsgList, metricMsgList) 

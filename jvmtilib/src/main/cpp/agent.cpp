@@ -281,7 +281,7 @@ void ObjectAllocCallback(jvmtiEnv *jvmti, JNIEnv *jni,
                                 _class_name.find("dalvik.") == std::string::npos &&
                                 _class_name.find("sun.") == std::string::npos) {
                                 _class_name.append(".java");
-                                ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
+//                                ALOGI("tag: %d, current object's allocation class: %s, line number: %s, size: %d", obj_tag, _class_name.c_str(), lineNumber_.c_str(), obj_size);
                                 std::string obj_identifier = _class_name + ";LN" + lineNumber_ + ";sz" + std::to_string(obj_size) + "#" + std::to_string(obj_tag);
                                 std::string obj_short_identifier = _class_name + ";LN" + lineNumber_ + ";sz" + std::to_string(obj_size);
                                 object_cyc_lock.lock();
