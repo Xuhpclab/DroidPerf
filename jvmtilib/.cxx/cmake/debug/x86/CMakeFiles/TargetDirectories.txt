@@ -1,4 +1,4 @@
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/jvmti_agent.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/dexter.dir
+/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/jvmti_agent.dir
+/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/CMakeFiles/dexter.dir

@@ -1,2 +1,9 @@
-ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-ninja: no work to do.
+ninja: Entering directory `/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
+[1/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/io.cpp.o
+[2/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_mmap.cpp.o
+[3/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_util.cpp.o
+[4/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
+[5/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o
+[6/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_interface.cpp.o
+[7/8] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/code_cache.cpp.o
+[8/8] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so

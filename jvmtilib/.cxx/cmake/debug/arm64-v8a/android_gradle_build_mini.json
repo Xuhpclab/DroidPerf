@@ -1,26 +1,26 @@
 {
   "buildFiles": [
-    "/Users/bolunli/Desktop/android-jxperf/jvmtilib/CMakeLists.txt",
-    "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
-    "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
+    "/Users/bytedance/Documents/DroidPerf/jvmtilib/CMakeLists.txt",
+    "/Users/bytedance/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/Users/bytedance/Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
   ],
   "cleanCommands": [
-    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" clean"
+    "/Users/bytedance/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" clean"
   ],
-  "buildTargetsCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "/Users/bytedance/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "jvmti_agent-Debug-arm64-v8a": {
       "artifactName": "jvmti_agent",
-      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" jvmti_agent",
+      "buildCommand": "/Users/bytedance/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" jvmti_agent",
       "abi": "arm64-v8a",
-      "output": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so",
+      "output": "/Users/bytedance/Documents/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so",
       "runtimeFiles": []
     },
     "dexter-Debug-arm64-v8a": {
       "artifactName": "dexter",
-      "buildCommand": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" dexter",
+      "buildCommand": "/Users/bytedance/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a\" dexter",
       "abi": "arm64-v8a",
-      "output": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/libdexter.a",
+      "output": "/Users/bytedance/Documents/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a/libdexter.a",
       "runtimeFiles": []
     }
   }

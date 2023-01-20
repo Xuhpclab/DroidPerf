@@ -13,14 +13,3 @@
 ======
 
 ![](Screenshot.png)
-
-产生的日志可以在 Logcat 中查看
-
-```
-I/jvmti: ==========alloc callback======= [I {size:32}
-I/jvmti: ==========alloc callback======= java.lang.ref.WeakReference {size:24}
-I/jvmti: ==========alloc callback======= java.lang.ref.WeakReference {size:24}
-I/jvmti: ==========alloc callback======= [Ljava.lang.Object; {size:16}
-I/jvmti: ==========触发 GCStart=======
-I/jvmti: ==========触发 GCFinish=======
-```

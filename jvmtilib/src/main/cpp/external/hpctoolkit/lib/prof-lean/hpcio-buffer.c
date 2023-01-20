@@ -88,7 +88,7 @@
 #include "hpcfmt.h"
 #include "hpcio-buffer.h"
 #include "spinlock.h"
-#include "/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/include/min-max.h"
+#include "min-max.h"
 //#include "assert.h" //jqswang for debug
 #define HPCIO_OUTBUF_MAGIC  0x494F4246
 
