@@ -1,2 +1,43 @@
-ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
-ninja: no work to do.
+ninja: Entering directory `/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a'
+[1/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/stacktraces.cpp.o
+[2/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/debug.cpp.o
+[3/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/argument.cpp.o
+[4/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/splay.cpp.o
+[5/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/thread_data.cpp.o
+[6/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/io.cpp.o
+[7/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/metrics.cpp.o
+[8/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/xml.cpp.o
+[9/38] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c.o
+[10/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_mmap.cpp.o
+[11/38] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c.o
+[12/38] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/libpfm-4.10.1/lib/pfmlib_common.c.o
+[13/38] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event.c.o
+[14/38] Building C object CMakeFiles/jvmti_agent.dir/src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c.o
+[15/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_util.cpp.o
+[16/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/new_context.cpp.o
+[17/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/context.cpp.o
+[18/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/common.cc.o
+[19/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler_support.cpp.o
+../../../../src/main/cpp/profiler_support.cpp:100:13: warning: ignoring return value of function declared with 'warn_unused_result' attribute [-Wunused-result]
+            realpath(name, tmpname);
+            ^~~~~~~~ ~~~~~~~~~~~~~
+1 warning generated.
+[20/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_bytecode.cc.o
+[21/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/agent.cpp.o
+[22/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/profiler.cpp.o
+[23/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_utf8.cc.o
+[24/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_format.cc.o
+[25/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/control_flow_graph.cc.o
+[26/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/code_cache.cpp.o
+[27/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/bytecode_encoder.cc.o
+[28/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/debuginfo_encoder.cc.o
+[29/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_ir.cc.o
+[30/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/perf_interface.cpp.o
+[31/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/tryblocks_encoder.cc.o
+[32/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/code_ir.cc.o
+[33/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/instrumentation.cc.o
+[34/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/writer.cc.o
+[35/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/dex_ir_builder.cc.o
+[36/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/reader.cc.o
+[37/38] Linking CXX static library libdexter.a
+[38/38] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libjvmti_agent.so

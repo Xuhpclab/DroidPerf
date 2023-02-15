@@ -5,14 +5,14 @@
   ],
   "cleanCommandsComponents": [
     [
-      "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
       "-C",
       "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/x86",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
-    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
     "-C",
     "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/x86",
     "{LIST_OF_TARGETS_TO_BUILD}"
@@ -20,7 +20,7 @@
   "libraries": {
     "dexter-RelWithDebInfo-x86": {
       "buildCommandComponents": [
-        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
         "-C",
         "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/x86",
         "dexter"
@@ -32,7 +32,7 @@
     },
     "jvmti_agent-RelWithDebInfo-x86": {
       "buildCommandComponents": [
-        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
         "-C",
         "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/RelWithDebInfo/634b4o6b/x86",
         "jvmti_agent"

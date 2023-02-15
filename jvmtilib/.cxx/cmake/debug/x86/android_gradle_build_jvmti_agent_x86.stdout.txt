@@ -1,2 +1,2 @@
-ninja: Entering directory `/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86'
+ninja: Entering directory `/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86'
 ninja: no work to do.

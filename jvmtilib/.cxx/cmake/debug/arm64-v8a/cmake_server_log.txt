@@ -16,8 +16,8 @@ CMAKE SERVER: {
     "major": 1,
     "minor": 1
   },
-  "sourceDirectory": "/Users/bolunli/Desktop/android-jxperf/jvmtilib",
-  "buildDirectory": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a",
+  "sourceDirectory": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib",
+  "buildDirectory": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a",
   "generator": "Ninja"
 }
 
@@ -37,17 +37,17 @@ CMAKE SERVER: {
   "type": "configure",
   "cacheArguments": [
     "",
-    "-DCMAKE_FIND_ROOT_PATH\u003d/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/prefab/arm64-v8a/prefab",
+    "-DCMAKE_FIND_ROOT_PATH\u003d/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/prefab/arm64-v8a/prefab",
     "-DCMAKE_BUILD_TYPE\u003dDebug",
-    "-DCMAKE_TOOLCHAIN_FILE\u003d/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "-DCMAKE_TOOLCHAIN_FILE\u003d/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
     "-DANDROID_ABI\u003darm64-v8a",
-    "-DANDROID_NDK\u003d/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462",
+    "-DANDROID_NDK\u003d/Users/kwok/Library/Android/sdk/ndk/21.1.6352462",
     "-DANDROID_PLATFORM\u003dandroid-16",
     "-DCMAKE_ANDROID_ARCH_ABI\u003darm64-v8a",
-    "-DCMAKE_ANDROID_NDK\u003d/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462",
+    "-DCMAKE_ANDROID_NDK\u003d/Users/kwok/Library/Android/sdk/ndk/21.1.6352462",
     "-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON",
-    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a",
-    "-DCMAKE_MAKE_PROGRAM\u003d/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a",
+    "-DCMAKE_MAKE_PROGRAM\u003d/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
     "-DCMAKE_SYSTEM_NAME\u003dAndroid",
     "-DCMAKE_SYSTEM_VERSION\u003d16"
   ]
@@ -55,6 +55,214 @@ CMAKE SERVER: {
 
 CMAKE SERVER: ]== "CMake Server" ==]
 
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang
+CMAKE SERVER: Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":33,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works
+CMAKE SERVER: Check for working C compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang -- works
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compiler ABI info","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compiler ABI info
+CMAKE SERVER: Detecting C compiler ABI info
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":65,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compiler ABI info - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compiler ABI info - done
+CMAKE SERVER: Detecting C compiler ABI info - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compile features","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compile features
+CMAKE SERVER: Detecting C compile features
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":96,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":126,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":155,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting C compile features - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting C compile features - done
+CMAKE SERVER: Detecting C compile features - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++
+CMAKE SERVER: Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":184,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works
+CMAKE SERVER: Check for working CXX compiler: /Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ -- works
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compiler ABI info","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compiler ABI info
+CMAKE SERVER: Detecting CXX compiler ABI info
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":211,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compiler ABI info - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compiler ABI info - done
+CMAKE SERVER: Detecting CXX compiler ABI info - done
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compile features","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compile features
+CMAKE SERVER: Detecting CXX compile features
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":237,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":262,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":287,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","progressCurrent":311,"progressMaximum":1000,"progressMessage":"Configuring","progressMinimum":0,"type":"progress"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: 
+
+CMAKE SERVER: [== "CMake Server" ==[
+
+CMAKE SERVER: {"cookie":"","inReplyTo":"configure","message":"Detecting CXX compile features - done","type":"message"}
+
+CMAKE SERVER: ]== "CMake Server" ==]
+
+CMAKE SERVER: Detecting CXX compile features - done
+CMAKE SERVER: Detecting CXX compile features - done
 CMAKE SERVER: 
 
 CMAKE SERVER: [== "CMake Server" ==[
@@ -122,7 +330,7 @@ CMAKE SERVER:
 
 CMAKE SERVER: [== "CMake Server" ==[
 
-CMAKE SERVER: {"buildFiles":[{"isCMake":true,"isTemporary":false,"sources":["../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInitialize.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Initialize.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInformation.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeGenericSystem.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Linux.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/UnixPaths.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCInformation.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/GNU.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-C.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXInformation.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-CXX.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","../../../Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake"]},{"isCMake":false,"isTemporary":false,"sources":["CMakeLists.txt","../../../Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake","../../../Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"]},{"isCMake":false,"isTemporary":true,"sources":[".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeSystem.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCCompiler.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake"]}],"cmakeRootDirectory":"/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10","cookie":"","inReplyTo":"cmakeInputs","sourceDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib","type":"reply"}
+CMAKE SERVER: {"buildFiles":[{"isCMake":true,"isTemporary":false,"sources":["/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineSystem.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystem.cmake.in","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInitialize.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Initialize.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine-C.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android/Determine-Compiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeFindBinUtils.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-FindBinUtils.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCXXCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Determine-CXX.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android/Determine-Compiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeFindBinUtils.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-FindBinUtils.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompiler.cmake.in","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeSystemSpecificInformation.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeGenericSystem.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Linux.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/UnixPaths.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCInformation.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/GNU.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/CMakeCommonCompilerMacros.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-C.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCompilerCommon.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompilerABI.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeParseImplicitLinkInfo.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompilerABI.c","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompileFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Internal/FeatureTesting.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-C-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXInformation.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeLanguageInformation.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang-CXX.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Platform/Android-Clang.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCommonLanguageInclude.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCXXCompiler.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeTestCompilerCommon.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompilerABI.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeParseImplicitLinkInfo.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeDetermineCompileFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Internal/FeatureTesting.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-FeatureTests.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/Compiler/Clang-CXX-TestableFeatures.cmake","/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10/Modules/CMakeCXXCompiler.cmake.in"]},{"isCMake":false,"isTemporary":false,"sources":["CMakeLists.txt","/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake","/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake","/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake"]},{"isCMake":false,"isTemporary":true,"sources":[".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeSystem.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCCompiler.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.c",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.c",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.c",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCCompiler.cmake",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.cxx",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.cxx",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.cxx",".cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.cxx",".cxx/cmake/debug/arm64-v8a/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake"]}],"cmakeRootDirectory":"/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/share/cmake-3.10","cookie":"","inReplyTo":"cmakeInputs","sourceDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib","type":"reply"}
 
 CMAKE SERVER: ]== "CMake Server" ==]
 
@@ -136,7 +344,7 @@ CMAKE SERVER:
 
 CMAKE SERVER: [== "CMake Server" ==[
 
-CMAKE SERVER: {"configurations":[{"name":"Debug","projects":[{"buildDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a","name":"Project","sourceDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib","targets":[{"artifacts":["/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so"],"buildDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC  ","defines":["jvmti_agent_EXPORTS"],"includePath":[{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/util"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"C","sources":["src/main/cpp/libpfm-4.10.1/lib/pfmlib_common.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event.c","src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c"]},{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info  -fPIC  ","defines":["jvmti_agent_EXPORTS"],"includePath":[{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/util"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"CXX","sources":["src/main/cpp/agent.cpp","src/main/cpp/debug.cpp","src/main/cpp/argument.cpp","src/main/cpp/thread_data.cpp","src/main/cpp/stacktraces.cpp","src/main/cpp/xml.cpp","src/main/cpp/metrics.cpp","src/main/cpp/context.cpp","src/main/cpp/new_context.cpp","src/main/cpp/code_cache.cpp","src/main/cpp/splay.cpp","src/main/cpp/profiler.cpp","src/main/cpp/profiler_support.cpp","src/main/cpp/io.cpp","src/main/cpp/perf_interface.cpp","src/main/cpp/perf_mmap.cpp","src/main/cpp/perf_util.cpp"]}],"fullName":"libjvmti_agent.so","linkFlags":"-Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments","linkLibraries":"libdexter.a -lz -llog -latomic -lm","linkerLanguage":"CXX","name":"jvmti_agent","sourceDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib","sysroot":"/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"SHARED_LIBRARY"},{"artifacts":["/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a/libdexter.a"],"buildDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info  -fPIC  ","includePath":[{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/util"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"CXX","sources":["src/main/cpp/dexer/bytecode_encoder.cc","src/main/cpp/dexer/code_ir.cc","src/main/cpp/dexer/common.cc","src/main/cpp/dexer/control_flow_graph.cc","src/main/cpp/dexer/debuginfo_encoder.cc","src/main/cpp/dexer/dex_bytecode.cc","src/main/cpp/dexer/dex_format.cc","src/main/cpp/dexer/dex_ir.cc","src/main/cpp/dexer/dex_ir_builder.cc","src/main/cpp/dexer/dex_utf8.cc","src/main/cpp/dexer/instrumentation.cc","src/main/cpp/dexer/reader.cc","src/main/cpp/dexer/tryblocks_encoder.cc","src/main/cpp/dexer/writer.cc"]}],"fullName":"libdexter.a","linkerLanguage":"CXX","name":"dexter","sourceDirectory":"/Users/bolunli/Desktop/android-jxperf/jvmtilib","sysroot":"/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"STATIC_LIBRARY"}]}]}],"cookie":"","inReplyTo":"codemodel","type":"reply"}
+CMAKE SERVER: {"configurations":[{"name":"Debug","projects":[{"buildDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a","name":"Project","sourceDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib","targets":[{"artifacts":["/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a/libjvmti_agent.so"],"buildDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC  ","defines":["jvmti_agent_EXPORTS"],"includePath":[{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/util"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"C","sources":["src/main/cpp/libpfm-4.10.1/lib/pfmlib_common.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c","src/main/cpp/libpfm-4.10.1/lib/pfmlib_perf_event.c","src/main/cpp/external/hpctoolkit/lib/prof-lean/hpcio-buffer.c"]},{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info  -fPIC  ","defines":["jvmti_agent_EXPORTS"],"includePath":[{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/util"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"CXX","sources":["src/main/cpp/agent.cpp","src/main/cpp/debug.cpp","src/main/cpp/argument.cpp","src/main/cpp/thread_data.cpp","src/main/cpp/stacktraces.cpp","src/main/cpp/xml.cpp","src/main/cpp/metrics.cpp","src/main/cpp/context.cpp","src/main/cpp/new_context.cpp","src/main/cpp/code_cache.cpp","src/main/cpp/splay.cpp","src/main/cpp/profiler.cpp","src/main/cpp/profiler_support.cpp","src/main/cpp/io.cpp","src/main/cpp/perf_interface.cpp","src/main/cpp/perf_mmap.cpp","src/main/cpp/perf_util.cpp"]}],"fullName":"libjvmti_agent.so","linkFlags":"-Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments","linkLibraries":"libdexter.a -lz -llog -latomic -lm","linkerLanguage":"CXX","name":"jvmti_agent","sourceDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib","sysroot":"/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"SHARED_LIBRARY"},{"artifacts":["/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a/libdexter.a"],"buildDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a","fileGroups":[{"compileFlags":"-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces -O0 -fno-limit-debug-info  -fPIC  ","includePath":[{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/thirdparty/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/util"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/include"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/external/hpctoolkit/lib/prof-lean"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/dexer"},{"path":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/src/main/cpp/libpfm-4.10.1/include"}],"isGenerated":false,"language":"CXX","sources":["src/main/cpp/dexer/bytecode_encoder.cc","src/main/cpp/dexer/code_ir.cc","src/main/cpp/dexer/common.cc","src/main/cpp/dexer/control_flow_graph.cc","src/main/cpp/dexer/debuginfo_encoder.cc","src/main/cpp/dexer/dex_bytecode.cc","src/main/cpp/dexer/dex_format.cc","src/main/cpp/dexer/dex_ir.cc","src/main/cpp/dexer/dex_ir_builder.cc","src/main/cpp/dexer/dex_utf8.cc","src/main/cpp/dexer/instrumentation.cc","src/main/cpp/dexer/reader.cc","src/main/cpp/dexer/tryblocks_encoder.cc","src/main/cpp/dexer/writer.cc"]}],"fullName":"libdexter.a","linkerLanguage":"CXX","name":"dexter","sourceDirectory":"/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib","sysroot":"/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot","type":"STATIC_LIBRARY"}]}]}],"cookie":"","inReplyTo":"codemodel","type":"reply"}
 
 CMAKE SERVER: ]== "CMake Server" ==]
 

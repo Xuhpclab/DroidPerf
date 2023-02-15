@@ -5,9 +5,9 @@
     "environmentVariables": []
   },
   "cmake": {
-    "cmakeArtifactsBaseFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
-    "cmakeServerLogFile": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/cmake_server_log.txt",
-    "cmakeWrappingBaseFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cxx/debug/armeabi-v7a",
+    "cmakeArtifactsBaseFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
+    "cmakeServerLogFile": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/cmake_server_log.txt",
+    "cmakeWrappingBaseFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cxx/debug/armeabi-v7a",
     "effectiveConfiguration": {
       "name": "traditional-android-studio-cmake-environment",
       "description": "Composite reified CMakeSettings configuration",
@@ -15,13 +15,13 @@
       "inheritEnvironments": [
         "ndk"
       ],
-      "buildRoot": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
-      "cmakeToolchain": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
-      "cmakeExecutable": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
+      "buildRoot": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
+      "cmakeToolchain": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+      "cmakeExecutable": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
       "variables": [
         {
           "name": "CMAKE_FIND_ROOT_PATH",
-          "value": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/prefab/armeabi-v7a/prefab"
+          "value": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/prefab/armeabi-v7a/prefab"
         },
         {
           "name": "CMAKE_BUILD_TYPE",
@@ -29,7 +29,7 @@
         },
         {
           "name": "CMAKE_TOOLCHAIN_FILE",
-          "value": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake"
+          "value": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake"
         },
         {
           "name": "ANDROID_ABI",
@@ -37,7 +37,7 @@
         },
         {
           "name": "ANDROID_NDK",
-          "value": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462"
+          "value": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462"
         },
         {
           "name": "ANDROID_PLATFORM",
@@ -49,7 +49,7 @@
         },
         {
           "name": "CMAKE_ANDROID_NDK",
-          "value": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462"
+          "value": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462"
         },
         {
           "name": "CMAKE_EXPORT_COMPILE_COMMANDS",
@@ -57,11 +57,11 @@
         },
         {
           "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
-          "value": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/armeabi-v7a"
+          "value": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj/armeabi-v7a"
         },
         {
           "name": "CMAKE_MAKE_PROGRAM",
-          "value": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+          "value": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
@@ -74,14 +74,14 @@
       ]
     }
   },
-  "cxxBuildFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
+  "cxxBuildFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
   "info": {
     "abi": "ARMEABI_V7A",
     "bitness": 32,
     "deprecated": false,
     "default": true
   },
-  "originalCxxBuildFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
+  "originalCxxBuildFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/armeabi-v7a",
   "variant": {
     "buildSystemArgumentList": [],
     "buildTargetSet": [],
@@ -95,24 +95,24 @@
     "module": {
       "buildSystem": "CMAKE",
       "cmake": {
-        "cmakeExe": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
+        "cmakeExe": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
         "minimumCmakeVersion": "3.10.2",
-        "ninjaExe": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+        "ninjaExe": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
       },
-      "cmakeToolchainFile": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
-      "cxxFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx",
+      "cmakeToolchainFile": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+      "cxxFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx",
       "gradleModulePathName": ":jvmtilib",
-      "intermediatesFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates",
-      "makeFile": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/CMakeLists.txt",
-      "moduleBuildFile": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build.gradle",
-      "moduleRootFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib",
+      "intermediatesFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates",
+      "makeFile": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/CMakeLists.txt",
+      "moduleBuildFile": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build.gradle",
+      "moduleRootFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib",
       "ndkDefaultAbiList": [
         "ARMEABI_V7A",
         "ARM64_V8A",
         "X86",
         "X86_64"
       ],
-      "ndkFolder": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462",
+      "ndkFolder": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462",
       "ndkMetaAbiList": [
         {
           "abi": "ARMEABI_V7A",
@@ -169,37 +169,37 @@
       "ndkDefaultStl": "LIBCXX_STATIC",
       "ndkVersion": "21.1.6352462",
       "project": {
-        "compilerSettingsCacheFolder": "/Users/bolunli/Desktop/android-jxperf/.cxx",
-        "cxxFolder": "/Users/bolunli/Desktop/android-jxperf/.cxx",
+        "compilerSettingsCacheFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/.cxx",
+        "cxxFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/.cxx",
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isNativeCompilerSettingsCacheEnabled": false,
-        "rootBuildGradleFolder": "/Users/bolunli/Desktop/android-jxperf",
-        "sdkFolder": "/Users/bolunli/Library/Android/sdk",
+        "rootBuildGradleFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf",
+        "sdkFolder": "/Users/kwok/Library/Android/sdk",
         "isPrefabEnabled": false
       },
       "splitsAbiFilterSet": [],
       "stlSharedObjectMap": {
         "LIBCXX_SHARED": {
-          "ARMEABI_V7A": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
-          "ARM64_V8A": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
-          "X86": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
-          "X86_64": "/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+          "ARMEABI_V7A": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+          "ARM64_V8A": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+          "X86": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
+          "X86_64": "/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
         },
         "LIBCXX_STATIC": {},
         "NONE": {},
         "SYSTEM": {}
       }
     },
-    "objFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj",
+    "objFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj",
     "variantName": "debug",
     "validAbiList": [
       "ARMEABI_V7A",
       "ARM64_V8A",
       "X86"
     ],
-    "prefabDirectory": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/prefab",
+    "prefabDirectory": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/prefab",
     "prefabPackageDirectoryList": []
   },
-  "prefabFolder": "/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/prefab/armeabi-v7a"
+  "prefabFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/prefab/armeabi-v7a"
 }

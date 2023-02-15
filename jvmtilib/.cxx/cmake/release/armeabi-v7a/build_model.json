@@ -61,7 +61,7 @@
         },
         {
           "name": "CMAKE_MAKE_PROGRAM",
-          "value": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+          "value": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
@@ -97,7 +97,7 @@
       "cmake": {
         "cmakeExe": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
         "minimumCmakeVersion": "3.10.2",
-        "ninjaExe": "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+        "ninjaExe": "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
       },
       "cmakeToolchainFile": "/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
       "cxxFolder": "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx",

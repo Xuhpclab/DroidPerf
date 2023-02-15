@@ -34,6 +34,8 @@ android {
             path "CMakeLists.txt"
         }
     }
+    ndkVersion '25.1.8937393'
+    buildToolsVersion '33.0.1'
 }
 
 dependencies {
