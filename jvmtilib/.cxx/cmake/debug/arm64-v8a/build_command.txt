@@ -1,20 +1,20 @@
-                Executable : /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake
+                Executable : /Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake
 arguments : 
--H/Users/bolunli/Desktop/android-jxperf/jvmtilib
--DCMAKE_FIND_ROOT_PATH=/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/prefab/arm64-v8a/prefab
+-H/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib
+-DCMAKE_FIND_ROOT_PATH=/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/prefab/arm64-v8a/prefab
 -DCMAKE_BUILD_TYPE=Debug
--DCMAKE_TOOLCHAIN_FILE=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake
+-DCMAKE_TOOLCHAIN_FILE=/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake
 -DANDROID_ABI=arm64-v8a
--DANDROID_NDK=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462
+-DANDROID_NDK=/Users/kwok/Library/Android/sdk/ndk/21.1.6352462
 -DANDROID_PLATFORM=android-16
 -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a
--DCMAKE_ANDROID_NDK=/Users/bolunli/Library/Android/sdk/ndk/21.1.6352462
+-DCMAKE_ANDROID_NDK=/Users/kwok/Library/Android/sdk/ndk/21.1.6352462
 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/bolunli/Desktop/android-jxperf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
--DCMAKE_MAKE_PROGRAM=/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/build/intermediates/cmake/debug/obj/arm64-v8a
+-DCMAKE_MAKE_PROGRAM=/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
 -DCMAKE_SYSTEM_NAME=Android
 -DCMAKE_SYSTEM_VERSION=16
--B/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/arm64-v8a
+-B/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/arm64-v8a
 -GNinja
 jvmArgs : 
 

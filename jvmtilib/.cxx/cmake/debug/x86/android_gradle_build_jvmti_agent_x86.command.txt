@@ -1,7 +1,7 @@
-Executable : /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+Executable : /Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
 arguments : 
 -C
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/x86
+/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86
 jvmti_agent
 jvmArgs : 
 

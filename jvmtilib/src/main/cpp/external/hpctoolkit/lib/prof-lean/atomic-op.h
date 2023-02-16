@@ -64,7 +64,7 @@
 #define prof_lean_atomic_op_h
 
 //#include <include/gcc-attr.h>
-#include "/Users/bolunli/Desktop/android-jxperf/jvmtilib/src/main/cpp/external/hpctoolkit/include/gcc-attr.h"
+#include "../include/gcc-attr.h"
 
 
 #if (HPC_GCC_VERSION >= 4100)
