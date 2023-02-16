@@ -70,7 +70,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -t clean
+  command = /Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -t clean
   description = Cleaning all built files...
 
 
@@ -78,6 +78,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -t targets
+  command = /Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -t targets
   description = All primary targets available:
 

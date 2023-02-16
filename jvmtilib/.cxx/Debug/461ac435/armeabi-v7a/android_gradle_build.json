@@ -5,14 +5,14 @@
   ],
   "cleanCommandsComponents": [
     [
-      "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
       "-C",
       "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/461ac435/armeabi-v7a",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
-    "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
     "-C",
     "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/461ac435/armeabi-v7a",
     "{LIST_OF_TARGETS_TO_BUILD}"
@@ -20,7 +20,7 @@
   "libraries": {
     "dexter-Debug-armeabi-v7a": {
       "buildCommandComponents": [
-        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
         "-C",
         "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/461ac435/armeabi-v7a",
         "dexter"
@@ -32,7 +32,7 @@
     },
     "jvmti_agent-Debug-armeabi-v7a": {
       "buildCommandComponents": [
-        "/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
         "-C",
         "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/461ac435/armeabi-v7a",
         "jvmti_agent"

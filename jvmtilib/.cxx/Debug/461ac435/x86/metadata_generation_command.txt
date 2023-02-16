@@ -10,7 +10,7 @@ arguments :
 -DANDROID_NDK=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529
 -DCMAKE_ANDROID_NDK=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529
 -DCMAKE_TOOLCHAIN_FILE=/Users/bolunli/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake
--DCMAKE_MAKE_PROGRAM=/Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+-DCMAKE_MAKE_PROGRAM=/Users/kwok/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
 -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cxx/Debug/461ac435/obj/x86
 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/build/intermediates/cxx/Debug/461ac435/obj/x86
 -DCMAKE_BUILD_TYPE=Debug

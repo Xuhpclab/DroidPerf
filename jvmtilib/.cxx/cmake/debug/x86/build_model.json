@@ -171,7 +171,10 @@
       "project": {
         "compilerSettingsCacheFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/.cxx",
         "cxxFolder": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/.cxx",
+<<<<<<< HEAD
         "ideBuildTargetAbi": "x86_64,x86",
+=======
+>>>>>>> 299103704106943d346592888f4be8c1f817ef97
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isNativeCompilerSettingsCacheEnabled": false,

@@ -1,4 +1,4 @@
-# Install script for directory: /Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib
+# Install script for directory: /Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/cmake/release/x86/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/release/x86/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

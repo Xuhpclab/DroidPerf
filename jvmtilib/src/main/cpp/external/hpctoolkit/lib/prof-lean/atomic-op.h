@@ -63,7 +63,10 @@
 #ifndef prof_lean_atomic_op_h
 #define prof_lean_atomic_op_h
 
+<<<<<<< HEAD
 //#include <include/gcc-attr.h>
+=======
+>>>>>>> 299103704106943d346592888f4be8c1f817ef97
 #include "../include/gcc-attr.h"
 
 

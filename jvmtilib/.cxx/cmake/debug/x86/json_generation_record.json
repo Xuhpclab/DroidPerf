@@ -31,6 +31,7 @@
   },
   {
     "level": "INFO",
+<<<<<<< HEAD
     "message": "rebuilding JSON /Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/android_gradle_build.json due to:",
     "file": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/CMakeLists.txt",
     "tag": "debug|x86"
@@ -428,6 +429,9 @@
   {
     "level": "INFO",
     "message": "write command file /Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/build_command.txt",
+=======
+    "message": "JSON \u0027/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86/android_gradle_build.json\u0027 was up-to-date",
+>>>>>>> 299103704106943d346592888f4be8c1f817ef97
     "file": "/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/CMakeLists.txt",
     "tag": "debug|x86"
   },

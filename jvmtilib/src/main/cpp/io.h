@@ -2,7 +2,11 @@
 #define _IO_H
 
 //#include "external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
+<<<<<<< HEAD
 #include "external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
+=======
+#include "../../external/hpctoolkit/lib/prof-lean/hpcio-buffer.h"
+>>>>>>> 299103704106943d346592888f4be8c1f817ef97
 #include "lock.h"
 class INPUT {
 private:

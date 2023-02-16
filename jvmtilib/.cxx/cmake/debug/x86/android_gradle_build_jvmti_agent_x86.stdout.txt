@@ -1,4 +1,5 @@
 ninja: Entering directory `/Users/kwok/Downloads/CSC630_Independent_Study/DroidPerf/jvmtilib/.cxx/cmake/debug/x86'
+<<<<<<< HEAD
 [1/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/stacktraces.cpp.o
 [2/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/debug.cpp.o
 [3/38] Building CXX object CMakeFiles/jvmti_agent.dir/src/main/cpp/argument.cpp.o
@@ -41,3 +42,6 @@ ninja: Entering directory `/Users/kwok/Downloads/CSC630_Independent_Study/DroidP
 [36/38] Building CXX object CMakeFiles/dexter.dir/src/main/cpp/dexer/reader.cc.o
 [37/38] Linking CXX static library libdexter.a
 [38/38] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/x86/libjvmti_agent.so
+=======
+ninja: no work to do.
+>>>>>>> 299103704106943d346592888f4be8c1f817ef97
