@@ -69,7 +69,3 @@ fastlane/readme.md
 Documents/
 *.drcctprof
 
-
-CMakeLists1.txt
-CMakeLists_backup.txt
-CrossCompile.cmake
