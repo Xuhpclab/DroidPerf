@@ -1,0 +1,163 @@
+# For more information about using CMake with Android Studio, read the
+# documentation: https://d.android.com/studio/projects/add-native-code.html
+
+# Sets the minimum version of CMake required to build the native library.
+
+cmake_minimum_required(VERSION 3.4.1)
+
+# Creates and names a library, sets it as either STATIC
+# or SHARED, and provides the relative paths to its source code.
+# You can define multiple libraries, and CMake builds them for you.
+# Gradle automatically packages shared libraries with your APK.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces")
+
+# link_directories(src/main/cpp/thirdparty/lib)
+
+
+
+include_directories(src/jvmtilib/src/main/cpp)
+include_directories(dependencies/thirdparty/include)
+include_directories(src/jvmtilib/src/main/cpp/util)
+include_directories(third_party/hpctoolkit/include)
+include_directories(third_party/hpctoolkit/lib/prof-lean)
+include_directories(third_party/dexer)
+include_directories(third_party/libpfm-4.10.1/include)
+# 绝对路径怎么办   设置变量
+include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include)
+include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include/darwin)
+include_directories(/Users/kwok/Library/Android/sdk/ndk/25.1.8937393/sources/android/native_app_glue)
+
+add_library(
+        droidperf
+
+        SHARED
+
+        third_party/dexer/bytecode_encoder.cc
+        third_party/dexer/code_ir.cc
+        third_party/dexer/common.cc
+        third_party/dexer/control_flow_graph.cc
+        third_party/dexer/debuginfo_encoder.cc
+        third_party/dexer/dex_bytecode.cc
+        third_party/dexer/dex_format.cc
+        third_party/dexer/dex_ir.cc
+        third_party/dexer/dex_ir_builder.cc
+        third_party/dexer/dex_utf8.cc
+        third_party/dexer/instrumentation.cc
+        third_party/dexer/reader.cc
+        third_party/dexer/tryblocks_encoder.cc
+        third_party/dexer/writer.cc
+        #
+        src/jvmtilib/src/main/cpp/agent.cpp
+        src/jvmtilib/src/main/cpp/debug.cpp
+        src/jvmtilib/src/main/cpp/argument.cpp
+        src/jvmtilib/src/main/cpp/thread_data.cpp
+        src/jvmtilib/src/main/cpp/stacktraces.cpp
+        src/jvmtilib/src/main/cpp/xml.cpp
+        src/jvmtilib/src/main/cpp/metrics.cpp
+        src/jvmtilib/src/main/cpp/context.cpp
+        src/jvmtilib/src/main/cpp/new_context.cpp
+        src/jvmtilib/src/main/cpp/code_cache.cpp
+        src/jvmtilib/src/main/cpp/splay.cpp
+        src/jvmtilib/src/main/cpp/profiler.cpp
+        src/jvmtilib/src/main/cpp/profiler_support.cpp
+        src/jvmtilib/src/main/cpp/io.cpp
+        src/jvmtilib/src/main/cpp/perf_interface.cpp
+        src/jvmtilib/src/main/cpp/perf_mmap.cpp
+        src/jvmtilib/src/main/cpp/perf_util.cpp
+        third_party/libpfm-4.10.1/lib/pfmlib_common.c
+        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c
+        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c
+        third_party/libpfm-4.10.1/lib/pfmlib_perf_event.c
+        third_party/hpctoolkit/lib/prof-lean/hpcio-buffer.c
+)
+
+target_link_libraries(droidperf log)
+
+
+
+set_target_properties(droidperf PROPERTIES output_name "droidperf")
+
+
+
+
+#add_library(
+#        dexter
+#        STATIC
+#        third_party/dexer/bytecode_encoder.cc
+#        third_party/dexer/code_ir.cc
+#        third_party/dexer/common.cc
+#        third_party/dexer/control_flow_graph.cc
+#        third_party/dexer/debuginfo_encoder.cc
+#        third_party/dexer/dex_bytecode.cc
+#        third_party/dexer/dex_format.cc
+#        third_party/dexer/dex_ir.cc
+#        third_party/dexer/dex_ir_builder.cc
+#        third_party/dexer/dex_utf8.cc
+#        third_party/dexer/instrumentation.cc
+#        third_party/dexer/reader.cc
+#        third_party/dexer/tryblocks_encoder.cc
+#        third_party/dexer/writer.cc
+#)
+#include_directories(src/jvmtilib/src/main/cpp)
+#include_directories(dependencies/thirdparty/include)
+#include_directories(src/jvmtilib/src/main/cpp/util)
+#include_directories(third_party/hpctoolkit/include)
+#include_directories(third_party/hpctoolkit/lib/prof-lean)
+#include_directories(third_party/dexer)
+#include_directories(third_party/libpfm-4.10.1/include)
+#add_library( # Sets the name of the library.
+#        jvmti_agent
+#
+#        # Sets the library as a shared library.
+#        SHARED
+#
+#        # Provides a relative path to your source file(s).
+#        src/jvmtilib/src/main/cpp/agent.cpp
+#        src/jvmtilib/src/main/cpp/debug.cpp
+#        src/jvmtilib/src/main/cpp/argument.cpp
+#        src/jvmtilib/src/main/cpp/thread_data.cpp
+#        src/jvmtilib/src/main/cpp/stacktraces.cpp
+#        src/jvmtilib/src/main/cpp/xml.cpp
+#        src/jvmtilib/src/main/cpp/metrics.cpp
+#        src/jvmtilib/src/main/cpp/context.cpp
+#        src/jvmtilib/src/main/cpp/new_context.cpp
+#        src/jvmtilib/src/main/cpp/code_cache.cpp
+#        src/jvmtilib/src/main/cpp/splay.cpp
+#        src/jvmtilib/src/main/cpp/profiler.cpp
+#        src/jvmtilib/src/main/cpp/profiler_support.cpp
+#        src/jvmtilib/src/main/cpp/io.cpp
+#        src/jvmtilib/src/main/cpp/perf_interface.cpp
+#        src/jvmtilib/src/main/cpp/perf_mmap.cpp
+#        src/jvmtilib/src/main/cpp/perf_util.cpp
+#        third_party/libpfm-4.10.1/lib/pfmlib_common.c
+#        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c
+#        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c
+#        third_party/libpfm-4.10.1/lib/pfmlib_perf_event.c
+#        third_party/hpctoolkit/lib/prof-lean/hpcio-buffer.c
+#)
+
+# Searches for a specified prebuilt library and stores the path as a
+# variable. Because CMake includes system libraries in the search path by
+# default, you only need to specify the name of the public NDK library
+# you want to add. CMake verifies that the library exists before
+# completing its build.
+#
+#find_library( # Sets the name of the path variable.
+#        log-lib
+#
+#        # Specifies the name of the NDK library that
+#        # you want CMake to locate.
+#        log
+#)
+
+# Specifies libraries CMake should link to your target library. You
+# can link multiple libraries, such as libraries you define in this
+# build script, prebuilt third-party libraries, or system libraries.
+#target_link_libraries( # Specifies the target library.
+#        droidperf
+#        dexter
+#        z
+#        # Links the target library to the log library
+#        # included in the NDK.
+#        ${log-lib}
+#)
