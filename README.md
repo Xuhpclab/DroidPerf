@@ -10,7 +10,7 @@ inefficiencies with objects used by Android apps. With such object-level informa
 - [Usage](#usage)
 - [Supported Platforms](#support-platforms)
 - [License](#license)
-- [Related Publications](#Related Publications)
+- [Related Publications](#Related-Publications)
 
 ## Installation
 
