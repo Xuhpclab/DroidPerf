@@ -1,6 +1,6 @@
 # DroidPerf
 
-DroidPerf is a lightweight, object-centric memory profiler for ART, which associates memory
+DroidPerf is a lightweight, object-centric memory profiler for Android Runtime(ART), which associates memory
 inefficiencies with objects used by Android apps. With such object-level information, DroidPerf is able to guide locality optimization on memory layouts, access patterns, and allocation patterns.
 
 
@@ -14,11 +14,7 @@ inefficiencies with objects used by Android apps. With such object-level informa
 
 ## Installation
 
-
-
-### Build
-
-In order to build you'll need the following packages:
+### Requirements
 
 - gcc (>= 4.8)
 - [cmake](https://cmake.org/download/) (>= 3.4)
@@ -26,10 +22,13 @@ In order to build you'll need the following packages:
 - Android NDK (>= 21)
 
 
-Follow these steps to get source code and build DroidPerf:
+### Build and Installation
+
+
+Follow these steps to build and install DroidPerf:
 
 1. Clone this repository to your local machine.
-2. Run the shell script file *cross.sh*.
+2. Run the shell script file cross.sh to implement cross-compilation. Modify the variables based on your device's architecture and package name.
 
 ```shell
 #/bin/bash
@@ -40,7 +39,7 @@ rm -r build
 mkdir build && cd build
 
 cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
-	-DANDROID_ABI="arm64-v8a" \     # 
+	-DANDROID_ABI="arm64-v8a" \     # Architecture of Android device
 	-DANDROID_NDK=$ANDROID_NDK \
 	-DANDROID_PLATFORM=android-22 \
 	..
@@ -53,54 +52,30 @@ cd ..
 
 ## Usage
 
-### Linux
+To use DroidPerf, follow these steps:
 
-To run DroidPerf, one needs to use the following command:
+1. Connect your Android device to your computer using a USB cable.
+2. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
+3. Run the following script after modifying the variables:
 
-#### 1 Set the global environment variable
+```shell
+PATH_TARGET_ELF = "/data/user/0/org.jak_linux.dns66"
+PID_TARGET = "16514"
 
-```console
-$ export drrun=/path/to/DroidPerf/build/bin64/drrun
+adb push libdroidperf.so /sdcard/Download
+
+adb shell su root cp /sdcard/Download/libdroidperf.so /data/user/0/org.jak_linux.dns66
+
+adb shell rm -f ./sdcard/Documents/*.run*
+
+adb shell cmd activity attach-agent $PID_TARGET $PATH_TARGET_ELF/libdroidperf.so=Generic::CYCLES:precise=2@100000000
 ```
-
-#### 2 Run client tool
-
--   **x86_64**
-
-```console
-$ $drrun -t <client tool> -- <application> [apllication args]
-```
-
-e.g. The command below will start the client **drcctlib_instr_statistics_clean_call** to analyze **echo _"Hello World!"_**.
-
-```console
-$ $drrun -t drcctlib_instr_statistics_clean_call -- echo "Hello World!"
-```
-
--   **aarch64**
-
-```console
-$ $drrun -unsafe_build_ldstex -t <client tool> -- <application> [apllication args]
-```
-
 
 ## Support Platforms
 
-The following platforms pass our tests.
+DroidPerf is evaluated on a Google Pixel 7 with the Google Tensor G2 chipset. It has eight Octa-core cores and an Mali-G710 MP7 GPU, with 8 GB of LPDDR4X RAM and 128 GB of non-expandable UFS 3.1 internal storage. The cache hierarchy consists of 128 KB and 512 KB L1 and L2 caches and a 4 MB L3 cache.
 
-### Linux
 
-| CPU                               | Systems       | Architecture |
-| --------------------------------- | ------------- | ------------ |
-| Intel(R) Xeon(R) CPU E5-2699 v3   | Ubuntu 18.04  | x86_64       |
-| Intel(R) Xeon(R) CPU E5-2650 v4   | Ubuntu 14.04  | x86_64       |
-| Intel(R) Xeon(R) CPU E7-4830 v4   | Red Hat 4.8.3 | x86_64       |
-| Arm Cortex A53(Raspberry pi 3 b+) | Ubuntu 18.04  | aarch64      |
-| Arm Cortex-A57(Jetson Nano)       | Ubuntu 18.04  | aarch64      |
-| ThunderX2 99xx                    | Ubuntu 20.04  | aarch64      |
-| AWS Graviton1                     | Ubuntu 18.04  | aarch64      |
-| AWS Graviton2                     | Ubuntu 18.04  | aarch64      |
-| Fujitsu A64FX                     | CentOS 8.1    | aarch64      |
 
 
 ## License
