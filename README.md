@@ -6,11 +6,11 @@ inefficiencies with objects used by Android apps. With such object-level informa
 
 ## Contents
 
--   [Installation](#installation)
--   [Usage](#usage)
--   [Client tools](#client-tools)
--   [Supported Platforms](#support-platforms)
--   [License](#license)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Supported Platforms](#support-platforms)
+- [License](#license)
+- [Related Publications](#Related Publications)
 
 ## Installation
 
@@ -82,4 +82,4 @@ DroidPerf is evaluated on a Google Pixel 7 with the Google Tensor G2 chipset. It
 
 DroidPerf is released under the [MIT License](http://www.opensource.org/licenses/MIT).
 
-## Related Publication
+## Related Publications
