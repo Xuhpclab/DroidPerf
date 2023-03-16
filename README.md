@@ -68,8 +68,8 @@ To use DroidPerf, follow these steps:
 3. Run the following script after modifying the variables:
 
 ```shell
-PATH_TARGET_ELF = "/data/user/0/org.jak_linux.dns66"
-PID_TARGET = "16514"
+PATH_TARGET_ELF = "/data/user/0/org.jak_linux.dns66"  # Path of the target ELF file of the application 
+PID_TARGET = "16514"  # Process ID of corresponding application
 
 adb push libdroidperf.so /sdcard/Download
 
