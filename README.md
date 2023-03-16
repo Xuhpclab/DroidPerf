@@ -52,6 +52,15 @@ cd ..
 
 ## Usage
 
+### Requirements
+
+- Android device
+- Root privileges of this device
+
+
+### Profiling
+
+
 To use DroidPerf, follow these steps:
 
 1. Connect your Android device to your computer using a USB cable.
