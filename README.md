@@ -6,11 +6,11 @@ inefficiencies with objects used by Android apps. With such object-level informa
 
 ## Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Supported Platforms](#support-platforms)
-- [License](#license)
-- [Related Publications](#Related-Publications)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Supported Platforms](#support-platforms)
+-   [License](#license)
+-   [Related Publications](#Related-Publications)
 
 ## Installation
 
