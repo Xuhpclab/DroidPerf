@@ -1,7 +1,0 @@
-Executable : /Users/bolunli/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
-arguments : 
--C
-/Users/bolunli/Desktop/andrioid_repo/JVMTI_Sample/jvmtilib/.cxx/Debug/461ac435/armeabi-v7a
-jvmti_agent
-jvmArgs : 
-

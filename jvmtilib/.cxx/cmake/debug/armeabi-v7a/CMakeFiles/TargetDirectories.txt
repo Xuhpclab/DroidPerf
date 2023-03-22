@@ -1,4 +1,0 @@
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/jvmti_agent.dir
-/Users/bolunli/Desktop/android-jxperf/jvmtilib/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/dexter.dir
