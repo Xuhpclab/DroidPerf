@@ -41,9 +41,9 @@ include_directories(third_party/hpctoolkit/lib/prof-lean)
 include_directories(third_party/dexer)
 include_directories(third_party/libpfm-4.10.1/include)
 
-include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include)
-include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include/darwin)
-include_directories(/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/sources/android/native_app_glue)
+#include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include)
+#include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include/darwin)
+#include_directories(/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/sources/android/native_app_glue)
 
 add_library( # Sets the name of the library.
         droidperf
