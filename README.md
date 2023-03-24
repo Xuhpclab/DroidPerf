@@ -65,21 +65,25 @@ To use DroidPerf, follow these steps:
 
 1. Connect your Android device to your computer using a USB cable.
 2. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
-3. Run the following script after modifying the variables:
+3. Run the following commands after modifying the variables:
 
 ```shell
+adb push libdroidperf.so /sdcard/Download
+
+adb shell
+
+su
+
 PATH_APP="PATH/OF/APPLICATION"  # Path of the application like "/data/data/0/org.jak_linux.dns66"
 PID_TARGET="PROCESS/ID/OF/APPLICATION"  # Process ID of corresponding application
 
-adb push libdroidperf.so /sdcard/Download
+cp /sdcard/Download/libdroidperf.so $PATH_APP
 
-adb shell su root cp /sdcard/Download/libdroidperf.so /data/data/org.jak_linux.dns66
+rm -f ./sdcard/Documents/*.run*
 
-adb shell rm -f ./sdcard/Documents/*.run*
+chmod 777 $PATH_APP/libdroidperf.so
 
-adb shell su root chmod 777 /data/data/org.jak_linux.dns66/libdroidperf.so
-
-adb shell cmd activity attach-agent $PID_TARGET $PATH_APP/libdroidperf.so=Generic::CYCLES:precise=2@100000000
+cmd activity attach-agent $PID_TARGET $PATH_APP/libdroidperf.so=Generic::CYCLES:precise=2@100000000
 ```
 
 ## Support Platforms
