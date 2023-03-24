@@ -64,8 +64,9 @@ cd ..
 To use DroidPerf, follow these steps:
 
 1. Connect your Android device to your computer using a USB cable.
-2. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
-3. Run the following commands after modifying the variables:
+2. Install and run the application you want to profile on your Android device.
+3. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
+4. Run the following commands after modifying the variables:
 
 ```shell
 adb push libdroidperf.so /sdcard/Download
