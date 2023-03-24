@@ -69,13 +69,15 @@ To use DroidPerf, follow these steps:
 
 ```shell
 PATH_APP="PATH/OF/APPLICATION"  # Path of the application like "/data/data/0/org.jak_linux.dns66"
-PID_TARGET=$PROCESS/ID/OF/APPLICATION  # Process ID of corresponding application
+PID_TARGET="PROCESS/ID/OF/APPLICATION"  # Process ID of corresponding application
 
 adb push libdroidperf.so /sdcard/Download
 
-adb shell su root cp /sdcard/Download/libdroidperf.so /data/user/0/org.jak_linux.dns66
+adb shell su root cp /sdcard/Download/libdroidperf.so /data/data/org.jak_linux.dns66
 
 adb shell rm -f ./sdcard/Documents/*.run*
+
+adb shell su root chmod 777 /data/data/org.jak_linux.dns66/libdroidperf.so
 
 adb shell cmd activity attach-agent $PID_TARGET $PATH_APP/libdroidperf.so=Generic::CYCLES:precise=2@100000000
 ```
