@@ -33,7 +33,7 @@ Follow these steps to build and install DroidPerf:
 ```shell
 #/bin/bash
 
-export ANDROID_NDK=/Users/kwok/Library/Android/sdk/ndk/21.1.6352462 # Path of NDK
+export ANDROID_NDK=PATH/OF/NDK # Path of NDK
 
 rm -r build
 mkdir build && cd build
@@ -64,20 +64,27 @@ cd ..
 To use DroidPerf, follow these steps:
 
 1. Connect your Android device to your computer using a USB cable.
-2. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
-3. Run the following script after modifying the variables:
+2. Install and run the application you want to profile on your Android device.
+3. Open a terminal or command prompt on your computer and navigate to the directory where *libdroidperf.so* is located.
+4. Run the following commands after modifying the variables:
 
 ```shell
-PATH_TARGET_ELF = "/data/user/0/org.jak_linux.dns66"  # Path of the target ELF file of the application 
-PID_TARGET = "16514"  # Process ID of corresponding application
-
 adb push libdroidperf.so /sdcard/Download
 
-adb shell su root cp /sdcard/Download/libdroidperf.so /data/user/0/org.jak_linux.dns66
+adb shell
 
-adb shell rm -f ./sdcard/Documents/*.run*
+su
 
-adb shell cmd activity attach-agent $PID_TARGET $PATH_TARGET_ELF/libdroidperf.so=Generic::CYCLES:precise=2@100000000
+PATH_APP="PATH/OF/APPLICATION"  # Path of the application like "/data/data/0/org.jak_linux.dns66"
+PID_TARGET="PROCESS/ID/OF/APPLICATION"  # Process ID of corresponding application
+
+cp /sdcard/Download/libdroidperf.so $PATH_APP
+
+rm -f ./sdcard/Documents/*.run*
+
+chmod 777 $PATH_APP/libdroidperf.so
+
+cmd activity attach-agent $PID_TARGET $PATH_APP/libdroidperf.so=Generic::CYCLES:precise=2@100000000
 ```
 
 ## Support Platforms
