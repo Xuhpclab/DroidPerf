@@ -6,11 +6,17 @@ inefficiencies with objects used by Android apps. With such object-level informa
 
 ## Contents
 
--   [Installation](#installation)
--   [Usage](#usage)
--   [Supported Platforms](#support-platforms)
--   [License](#license)
--   [Related Publications](#Related-Publications)
+- [DroidPerf](#droidperf)
+	- [Contents](#contents)
+	- [Installation](#installation)
+		- [Requirements](#requirements)
+		- [Build and Installation](#build-and-installation)
+	- [Usage](#usage)
+		- [Requirements](#requirements-1)
+		- [Profiling](#profiling)
+	- [Support Platforms](#support-platforms)
+	- [License](#license)
+	- [Related Publications](#related-publications)
 
 ## Installation
 
@@ -28,26 +34,11 @@ inefficiencies with objects used by Android apps. With such object-level informa
 Follow these steps to build and install DroidPerf:
 
 1. Clone this repository to your local machine.
-2. Run the shell script file cross.sh to implement cross-compilation. Modify the variables based on your device's architecture and package name.
+2. Run the shell script file build.sh to implement cross-compilation. The first argument is the path of the NDK, and the second argument is the architecture of the Android device. The command could be like:
 
-```shell
-#/bin/bash
 
-export ANDROID_NDK=PATH/OF/NDK # Path of NDK
-
-rm -r build
-mkdir build && cd build
-
-cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
-	-DANDROID_ABI="arm64-v8a" \     # Architecture of Android device
-	-DANDROID_NDK=$ANDROID_NDK \
-	-DANDROID_PLATFORM=android-22 \
-	..
-
-make && make install
-
-cd ..
-
+```bash
+sh build.sh ~/Library/Android/sdk/ndk/21.1.6352462 "arm64-v8a"
 ```
 
 ## Usage
@@ -75,12 +66,12 @@ adb shell
 
 su
 
-PATH_APP="PATH/OF/APPLICATION"  # Path of the application like "/data/data/0/org.jak_linux.dns66"
+PATH_APP="PATH/OF/APPLICATION"  # Path of the application like "/data/data/org.jak_linux.dns66"
 PID_TARGET="PROCESS/ID/OF/APPLICATION"  # Process ID of corresponding application
 
 cp /sdcard/Download/libdroidperf.so $PATH_APP
 
-rm -f ./sdcard/Documents/*.run*
+rm -f /sdcard/Documents/*.run*
 
 chmod 777 $PATH_APP/libdroidperf.so
 

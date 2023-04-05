@@ -1,3 +1,0 @@
-
-default:
-	make -C lib
