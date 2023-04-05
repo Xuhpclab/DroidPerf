@@ -11,7 +11,6 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frtti -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-shift-count-overflow -Wno-error=non-virtual-dtor -Wno-sign-compare -Wno-switch -Wno-missing-braces")
 
-# link_directories(src/main/cpp/thirdparty/lib)
 
 add_library(
         dexer
@@ -32,47 +31,40 @@ add_library(
         third_party/dexer/writer.cc
 )
 
-
-include_directories(src/main/cpp)
-include_directories(dependencies/thirdparty/include)
-include_directories(src/main/cpp/util)
 include_directories(third_party/hpctoolkit/include)
 include_directories(third_party/hpctoolkit/lib/prof-lean)
 include_directories(third_party/dexer)
-include_directories(third_party/libpfm-4.10.1/include)
+include_directories(third_party)
+include_directories(third_party/libpfm-4.13.0/include)
 
-#include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include)
-#include_directories(/Library/Java/JavaVirtualMachines/jdk-18.jdk/Contents/Home/include/darwin)
-#include_directories(/Users/kwok/Library/Android/sdk/ndk/21.1.6352462/sources/android/native_app_glue)
 
-add_library( # Sets the name of the library.
+add_library(
+        # Sets the name of the library.
         droidperf
-
         # Sets the library as a shared library.
         SHARED
-
         # Provides a relative path to your source file(s).
-        src/main/cpp/agent.cpp
-        src/main/cpp/debug.cpp
-        src/main/cpp/argument.cpp
-        src/main/cpp/thread_data.cpp
-        src/main/cpp/stacktraces.cpp
-        src/main/cpp/xml.cpp
-        src/main/cpp/metrics.cpp
-        src/main/cpp/context.cpp
-        src/main/cpp/new_context.cpp
-        src/main/cpp/code_cache.cpp
-        src/main/cpp/splay.cpp
-        src/main/cpp/profiler.cpp
-        src/main/cpp/profiler_support.cpp
-        src/main/cpp/io.cpp
-        src/main/cpp/perf_interface.cpp
-        src/main/cpp/perf_mmap.cpp
-        src/main/cpp/perf_util.cpp
-        third_party/libpfm-4.10.1/lib/pfmlib_common.c
-        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_raw.c
-        third_party/libpfm-4.10.1/lib/pfmlib_perf_event_pmu.c
-        third_party/libpfm-4.10.1/lib/pfmlib_perf_event.c
+        src/agent.cpp
+        src/debug.cpp
+        src/argument.cpp
+        src/thread_data.cpp
+        src/stacktraces.cpp
+        src/xml.cpp
+        src/metrics.cpp
+        src/context.cpp
+        src/new_context.cpp
+        src/code_cache.cpp
+        src/splay.cpp
+        src/profiler.cpp
+        src/profiler_support.cpp
+        src/io.cpp
+        src/perf_interface.cpp
+        src/perf_mmap.cpp
+        src/perf_util.cpp
+        third_party/libpfm-4.13.0/lib/pfmlib_common.c
+        third_party/libpfm-4.13.0/lib/pfmlib_perf_event_raw.c
+        third_party/libpfm-4.13.0/lib/pfmlib_perf_event_pmu.c
+        third_party/libpfm-4.13.0/lib/pfmlib_perf_event.c
         third_party/hpctoolkit/lib/prof-lean/hpcio-buffer.c
 )
 
@@ -81,10 +73,6 @@ add_library( # Sets the name of the library.
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
-
-
-
-
 
 find_library( # Sets the name of the path variable.
         log-lib
